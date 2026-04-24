@@ -1,0 +1,145 @@
+﻿# =========================
+# Build / compilation
+# =========================
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+build/
+out/
+
+# =========================
+# Rider / JetBrains
+# =========================
+.idea/
+*.sln.iml
+*.iml
+
+# Fichiers JetBrains parfois générés localement
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/usage.statistics.xml
+.idea/**/dictionaries/
+.idea/**/shelf/
+.idea/**/contentModel.xml
+.idea/**/dataSources/
+.idea/**/dataSources.ids
+.idea/**/dataSources.local.xml
+.idea/**/sqlDataSources.xml
+.idea/**/dynamic.xml
+.idea/**/uiDesigner.xml
+.idea/**/dbnavigator.xml
+
+# Plugin Sonar / autres caches JetBrains
+.idea/**/sonarlint/
+
+# =========================
+# Visual Studio / .NET
+# =========================
+.vs/
+*.user
+*.rsuser
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Mono / Xamarin anciens cas
+*.userprefs
+
+# =========================
+# Logs / temporaires
+# =========================
+*.log
+*.tmp
+*.temp
+*.cache
+*.pid
+*.seed
+*.stackdump
+
+# =========================
+# NuGet
+# =========================
+*.nupkg
+*.snupkg
+packages/
+!packages/build/
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# =========================
+# Publish / packaging
+# =========================
+publish/
+AppPackages/
+BundleArtifacts/
+Package.StoreAssociation.xml
+_pkginfo.txt
+*.appx
+*.appxbundle
+*.appxupload
+*.msix
+*.msixbundle
+*.msixupload
+
+# =========================
+# Fichiers générés WPF / designer
+# =========================
+*.g.cs
+*.g.i.cs
+*.Designer.cs
+Generated_Code/
+
+# =========================
+# Tests / couverture
+# =========================
+TestResults/
+*.trx
+*.coverage
+*.coveragexml
+
+# =========================
+# Resharper
+# =========================
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# =========================
+# Azure / profils de publication
+# =========================
+*.Publish.xml
+*.pubxml
+*.pubxml.user
+*.azurePubxml
+
+# =========================
+# OS
+# =========================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# =========================
+# Local secrets / env
+# =========================
+.env
+.env.*
+secrets.json
+
+# =========================
+# Fichiers optionnels à ignorer
+# Décommente si besoin
+# =========================
+# *.db
+# *.sqlite
+# *.mdf
+# *.ldf

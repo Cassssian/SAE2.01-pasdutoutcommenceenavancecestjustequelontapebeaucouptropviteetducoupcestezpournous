@@ -1,0 +1,39 @@
+﻿<Window x:Class="VraiPseudoSae.view.Maze"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Maze"
+        Height="700"
+        Width="900"
+        WindowStartupLocation="CenterScreen"
+        Background="#1E1E1E"
+        Loaded="Window_Loaded"
+        KeyDown="Window_KeyDown"
+        KeyUp="Window_KeyUp">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal" Margin="10">
+            <TextBlock x:Name="InfoText"
+                       Foreground="White"
+                       FontSize="18"
+                       Text="Déplace-toi avec les flèches jusqu'à la sortie verte."/>
+        </StackPanel>
+
+        <Border Grid.Row="1"
+                Margin="10"
+                BorderBrush="White"
+                BorderThickness="2"
+                Background="Black"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top">
+            <Canvas x:Name="MazeCanvas"
+                    Width="775"
+                    Height="525"
+                    Focusable="True"
+                    Background="Black"/>
+        </Border>
+    </Grid>
+</Window>
