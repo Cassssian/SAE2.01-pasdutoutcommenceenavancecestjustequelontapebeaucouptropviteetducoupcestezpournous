@@ -6,9 +6,10 @@
       xmlns:local="clr-namespace:VraiPseudoSae.view"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="Accueil">
+      Title="Accueil"
+      Background="#000015">
 
     <Grid>
-        
+        <Canvas x:Name="MainCanvas" Background="Transparent"></Canvas>
     </Grid>
 </Page>
