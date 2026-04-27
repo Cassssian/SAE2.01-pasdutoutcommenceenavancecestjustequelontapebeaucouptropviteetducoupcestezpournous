@@ -135,11 +135,5 @@ desktop.ini
 .env.*
 secrets.json
 
-# =========================
-# Fichiers optionnels à ignorer
-# Décommente si besoin
-# =========================
-# *.db
-# *.sqlite
-# *.mdf
-# *.ldf
+*.ogg
+*.mp3

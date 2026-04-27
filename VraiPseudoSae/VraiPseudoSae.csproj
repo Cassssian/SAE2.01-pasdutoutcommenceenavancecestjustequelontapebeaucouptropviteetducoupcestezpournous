@@ -9,11 +9,20 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Page Update="view\MainWindow.xaml">
+      <Page Update="view\HomePage.xaml">
         <Generator>MSBuild:Compile</Generator>
         <XamlRuntime>Wpf</XamlRuntime>
         <SubType>Designer</SubType>
       </Page>
+      <Page Update="view\RLS_Pages\RLS.xaml">
+        <Generator>MSBuild:Compile</Generator>
+        <XamlRuntime>Wpf</XamlRuntime>
+        <SubType>Designer</SubType>
+      </Page>
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="NAudio" Version="2.3.0" />
     </ItemGroup>
 
 </Project>

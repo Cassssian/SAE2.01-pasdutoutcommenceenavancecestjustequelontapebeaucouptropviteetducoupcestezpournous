@@ -1,0 +1,400 @@
+﻿{
+  "packs": [
+    "ambiance.pak",
+    "balls.pak",
+    "boosts.pak",
+    "goal-explosions.pak",
+    "ui-voice.pak"
+  ],
+  "groups": [
+    {
+      "id": "ambiance.default",
+      "pack": "ambiance.pak",
+      "path": "Ambiance/SFX_AMB_3D",
+      "category": "ambiance",
+      "stadiums": []
+    },
+    {
+      "id": "ambiance.aquatic",
+      "pack": "ambiance.pak",
+      "path": "Ambiance/SFX_Amb_Aquatic",
+      "category": "ambiance",
+      "stadiums": ["Aquatic"]
+    },
+    {
+      "id": "ambiance.basketball-arena",
+      "pack": "ambiance.pak",
+      "path": "Ambiance/SFX_Amb_BBallArena",
+      "category": "ambiance",
+      "stadiums": ["Basketball"]
+    },
+    {
+      "id": "ambiance.beach-common",
+      "pack": "ambiance.pak",
+      "path": "Ambiance/SFX_AMB_Beach_Common",
+      "category": "ambiance",
+      "stadiums": ["Beach"]
+    },
+    {
+      "id": "ambiance.beach-day",
+      "pack": "ambiance.pak",
+      "path": "Ambiance/SFX_AMB_Beach_Day",
+      "category": "ambiance",
+      "stadiums": ["BeachDay", "Beach"]
+    },
+    {
+      "id": "ambiance.beach-night",
+      "pack": "ambiance.pak",
+      "path": "Ambiance/SFX_AMB_Beach_Night",
+      "category": "ambiance",
+      "stadiums": ["BeachNight", "Beach"]
+    },
+    {
+      "id": "ambiance.celebration-stadium",
+      "pack": "ambiance.pak",
+      "path": "Ambiance/SFX_AMB_CelebrationStadium",
+      "category": "ambiance",
+      "stadiums": ["CelebrationStadium"]
+    },
+    {
+      "id": "ambiance.china",
+      "pack": "ambiance.pak",
+      "path": "Ambiance/SFX_AMB_CHN",
+      "category": "ambiance",
+      "stadiums": ["China"]
+    },
+    {
+      "id": "ambiance.farm-base",
+      "pack": "ambiance.pak",
+      "path": "Ambiance/SFX_AMB_Farm_Base",
+      "category": "ambiance",
+      "stadiums": ["Farm"]
+    },
+    {
+      "id": "ambiance.farm-dusk",
+      "pack": "ambiance.pak",
+      "path": "Ambiance/SFX_AMB_Farm_Dusk",
+      "category": "ambiance",
+      "stadiums": ["FarmDusk", "Farm"]
+    },
+    {
+      "id": "ambiance.farm-night",
+      "pack": "ambiance.pak",
+      "path": "Ambiance/SFX_AMB_Farm_Night",
+      "category": "ambiance",
+      "stadiums": ["FarmNight", "Farm"]
+    },
+    {
+      "id": "ambiance.farm-nst",
+      "pack": "ambiance.pak",
+      "path": "Ambiance/SFX_AMB_Farm_NST",
+      "category": "ambiance",
+      "stadiums": ["FarmNST", "Farm"]
+    },
+    {
+      "id": "ambiance.farm-spooky",
+      "pack": "ambiance.pak",
+      "path": "Ambiance/SFX_AMB_Farm_Spooky",
+      "category": "ambiance",
+      "stadiums": ["FarmSpooky", "Farm"]
+    },
+    {
+      "id": "ambiance.fire-and-ice",
+      "pack": "ambiance.pak",
+      "path": "Ambiance/SFX_AMB_FireAndIce",
+      "category": "ambiance",
+      "stadiums": ["FireAndIce"]
+    },
+    {
+      "id": "ambiance.neotokyo",
+      "pack": "ambiance.pak",
+      "path": "Ambiance/SFX_Amb_NeoTokyo",
+      "category": "ambiance",
+      "stadiums": ["NeoTokyo"]
+    },
+    {
+      "id": "ambiance.outlaw",
+      "pack": "ambiance.pak",
+      "path": "Ambiance/SFX_AMB_Outlaw",
+      "category": "ambiance",
+      "stadiums": ["Outlaw"]
+    },
+    {
+      "id": "ambiance.park",
+      "pack": "ambiance.pak",
+      "path": "Ambiance/SFX_AMB_Park",
+      "category": "ambiance",
+      "stadiums": ["Park"]
+    },
+    {
+      "id": "ambiance.park-base",
+      "pack": "ambiance.pak",
+      "path": "Ambiance/SFX_AMB_Park_Base",
+      "category": "ambiance",
+      "stadiums": ["ParkBase", "Park"]
+    },
+    {
+      "id": "ambiance.rocketlabs",
+      "pack": "ambiance.pak",
+      "path": "Ambiance/SFX_AMB_RocketLabs",
+      "category": "ambiance",
+      "stadiums": ["RocketLabs"]
+    },
+    {
+      "id": "ambiance.space",
+      "pack": "ambiance.pak",
+      "path": "Ambiance/SFX_Amb_Space",
+      "category": "ambiance",
+      "stadiums": ["Space"]
+    },
+    {
+      "id": "ambiance.space-dark",
+      "pack": "ambiance.pak",
+      "path": "Ambiance/SFX_AMB_Space_Dark",
+      "category": "ambiance",
+      "stadiums": ["SpaceDark", "Space"]
+    },
+    {
+      "id": "ambiance.stadium-race",
+      "pack": "ambiance.pak",
+      "path": "Ambiance/SFX_AMB_Stadium_Race",
+      "category": "ambiance",
+      "stadiums": ["StadiumRace"]
+    },
+    {
+      "id": "ambiance.stadium-rain",
+      "pack": "ambiance.pak",
+      "path": "Ambiance/SFX_AMB_Stadium_Rain",
+      "category": "ambiance",
+      "stadiums": ["StadiumRain"]
+    },
+    {
+      "id": "ambiance.street",
+      "pack": "ambiance.pak",
+      "path": "Ambiance/SFX_AMB_Street",
+      "category": "ambiance",
+      "stadiums": ["Street"]
+    },
+    {
+      "id": "ambiance.trainstation",
+      "pack": "ambiance.pak",
+      "path": "Ambiance/SFX_Amb_TrainStation",
+      "category": "ambiance",
+      "stadiums": ["TrainStation"]
+    },
+    {
+      "id": "ambiance.utopia",
+      "pack": "ambiance.pak",
+      "path": "Ambiance/SFX_Amb_Utopia",
+      "category": "ambiance",
+      "stadiums": ["Utopia"]
+    },
+    {
+      "id": "ambiance.utopia-lux",
+      "pack": "ambiance.pak",
+      "path": "Ambiance/SFX_AMB_Utopia_Lux",
+      "category": "ambiance",
+      "stadiums": ["UtopiaLux", "Utopia"]
+    },
+    {
+      "id": "ambiance.wasteland",
+      "pack": "ambiance.pak",
+      "path": "Ambiance/SFX_AMB_Wasteland",
+      "category": "ambiance",
+      "stadiums": ["Wasteland"]
+    },
+    {
+      "id": "ambiance.winter",
+      "pack": "ambiance.pak",
+      "path": "Ambiance/SFX_AMB_Winter",
+      "category": "ambiance",
+      "stadiums": ["Winter"]
+    },
+
+    {
+      "id": "crowd.default",
+      "pack": "ambiance.pak",
+      "path": "Crowds/SFX_BG_Crowd",
+      "category": "crowd",
+      "stadiums": []
+    },
+    {
+      "id": "crowd.farm",
+      "pack": "ambiance.pak",
+      "path": "Crowds/SFX_BG_Crowd_Farm",
+      "category": "crowd",
+      "stadiums": ["Farm", "FarmDusk", "FarmNight", "FarmSpooky", "FarmNST"]
+    },
+    {
+      "id": "crowd.individual",
+      "pack": "ambiance.pak",
+      "path": "Crowds/SFX_BG_Crowd_Individual",
+      "category": "crowd",
+      "stadiums": []
+    },
+    {
+      "id": "crowd.small",
+      "pack": "ambiance.pak",
+      "path": "Crowds/SFX_BG_Crowd_Small",
+      "category": "crowd",
+      "stadiums": []
+    },
+    {
+      "id": "crowd.wasteland",
+      "pack": "ambiance.pak",
+      "path": "Crowds/SFX_BG_Crowd_Wasteland",
+      "category": "crowd",
+      "stadiums": ["Wasteland"]
+    },
+
+    {
+      "id": "ball.standard",
+      "pack": "balls.pak",
+      "path": "Balls/SFX_Ball",
+      "category": "ball",
+      "stadiums": []
+    },
+    {
+      "id": "ball.cannon",
+      "pack": "balls.pak",
+      "path": "Balls/SFX_BallCannon",
+      "category": "ball",
+      "stadiums": []
+    },
+    {
+      "id": "ball.basketball",
+      "pack": "balls.pak",
+      "path": "Balls/SFX_BasketBall",
+      "category": "ball",
+      "stadiums": ["Basketball"]
+    },
+    {
+      "id": "ball.beach",
+      "pack": "balls.pak",
+      "path": "Balls/SFX_Beachball",
+      "category": "ball",
+      "stadiums": ["Beach", "BeachDay", "BeachNight"]
+    },
+    {
+      "id": "ball.ghost",
+      "pack": "balls.pak",
+      "path": "Balls/SFX_GhostBall",
+      "category": "ball",
+      "stadiums": []
+    },
+    {
+      "id": "ball.god",
+      "pack": "balls.pak",
+      "path": "Balls/SFX_GodBall",
+      "category": "ball",
+      "stadiums": []
+    },
+    {
+      "id": "ball.puck",
+      "pack": "balls.pak",
+      "path": "Balls/SFX_Puck",
+      "category": "ball",
+      "stadiums": []
+    },
+
+    {
+      "id": "ui.boost",
+      "pack": "ui-voice.pak",
+      "path": "UserInterface/SFX_UI_Boost",
+      "category": "ui",
+      "stadiums": []
+    },
+    {
+      "id": "ui.countdown",
+      "pack": "ui-voice.pak",
+      "path": "UserInterface/SFX_UI_Countdown",
+      "category": "ui",
+      "stadiums": []
+    },
+    {
+      "id": "ui.ingame",
+      "pack": "ui-voice.pak",
+      "path": "UserInterface/SFX_UI_InGame",
+      "category": "ui",
+      "stadiums": []
+    },
+    {
+      "id": "ui.mainmenu",
+      "pack": "ui-voice.pak",
+      "path": "UserInterface/SFX_UI_MainMenu",
+      "category": "ui",
+      "stadiums": []
+    },
+    {
+      "id": "ui.training",
+      "pack": "ui-voice.pak",
+      "path": "UserInterface/SFX_UI_Training",
+      "category": "ui",
+      "stadiums": []
+    },
+    {
+      "id": "ui.tutorial",
+      "pack": "ui-voice.pak",
+      "path": "UserInterface/SFX_UI_Tutorial",
+      "category": "ui",
+      "stadiums": []
+    },
+
+    {
+      "id": "voice.basketball",
+      "pack": "ui-voice.pak",
+      "path": "VoiceOvers/VO_Basketball",
+      "category": "voice",
+      "stadiums": ["Basketball"]
+    },
+    {
+      "id": "voice.beach-common",
+      "pack": "ui-voice.pak",
+      "path": "VoiceOvers/VO_Beach_Common",
+      "category": "voice",
+      "stadiums": ["Beach"]
+    },
+    {
+      "id": "voice.beach-day",
+      "pack": "ui-voice.pak",
+      "path": "VoiceOvers/VO_Beach_Day",
+      "category": "voice",
+      "stadiums": ["BeachDay", "Beach"]
+    },
+    {
+      "id": "voice.champions",
+      "pack": "ui-voice.pak",
+      "path": "VoiceOvers/VO_Champions",
+      "category": "voice",
+      "stadiums": ["Champions"]
+    },
+    {
+      "id": "voice.farm",
+      "pack": "ui-voice.pak",
+      "path": "VoiceOvers/VO_Farm",
+      "category": "voice",
+      "stadiums": ["Farm", "FarmDusk", "FarmNight", "FarmSpooky", "FarmNST"]
+    },
+    {
+      "id": "voice.neotokyo",
+      "pack": "ui-voice.pak",
+      "path": "VoiceOvers/VO_NeoTokyo",
+      "category": "voice",
+      "stadiums": ["NeoTokyo"]
+    },
+    {
+      "id": "voice.space",
+      "pack": "ui-voice.pak",
+      "path": "VoiceOvers/VO_Space",
+      "category": "voice",
+      "stadiums": ["Space"]
+    },
+    {
+      "id": "voice.space-dark",
+      "pack": "ui-voice.pak",
+      "path": "VoiceOvers/VO_Space_Dark",
+      "category": "voice",
+      "stadiums": ["SpaceDark", "Space"]
+    }
+  ]
+}

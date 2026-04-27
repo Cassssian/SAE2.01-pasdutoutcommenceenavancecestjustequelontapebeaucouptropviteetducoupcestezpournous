@@ -1,0 +1,36 @@
+﻿<UserControl x:Class="VraiPseudoSae.view.StarControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Width="30" Height="30" Background="Transparent">
+    <Grid>
+        <Path x:Name="StarPath"
+              Fill="#F6BC3B"
+              Stretch="Uniform"
+              Width="30"
+              Height="30"
+              RenderTransformOrigin="0.5,0.5">
+            <Path.Data>
+                <PathGeometry>
+                    <PathFigure StartPoint="110,10" IsClosed="True">
+                        <ArcSegment Point="210,110"
+                                    Size="120,120"
+                                    IsLargeArc="False"
+                                    SweepDirection="Counterclockwise" />
+                        <ArcSegment Point="110,210"
+                                    Size="120,120"
+                                    IsLargeArc="False"
+                                    SweepDirection="Counterclockwise" />
+                        <ArcSegment Point="10,110"
+                                    Size="120,120"
+                                    IsLargeArc="False"
+                                    SweepDirection="Counterclockwise" />
+                        <ArcSegment Point="110,10"
+                                    Size="120,120"
+                                    IsLargeArc="False"
+                                    SweepDirection="Counterclockwise" />
+                    </PathFigure>
+                </PathGeometry>
+            </Path.Data>
+        </Path>
+    </Grid>
+</UserControl>

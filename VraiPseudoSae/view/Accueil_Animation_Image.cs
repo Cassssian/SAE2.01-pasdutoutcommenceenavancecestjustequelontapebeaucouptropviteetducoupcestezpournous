@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Media;
+using System.Windows.Controls;
 
 namespace VraiPseudoSae.view
 {
-    public class ImagePiece
+    public class ImagePieceold
     {
         public Image Element { get; set; }
         public TranslateTransform Transform { get; set; }
