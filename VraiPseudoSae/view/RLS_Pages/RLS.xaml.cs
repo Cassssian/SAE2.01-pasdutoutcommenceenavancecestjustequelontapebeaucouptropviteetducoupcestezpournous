@@ -51,6 +51,7 @@ namespace VraiPseudoSae.view.RLS_Pages
         int goalTimer = 0;
         bool gameRunning = false;
         Random rng = new Random();
+        AudioRegistry registry = new AudioRegistry();
 
         // Pour le bot : edge detection du saut
         bool botJumpPrev = false;
@@ -59,6 +60,7 @@ namespace VraiPseudoSae.view.RLS_Pages
         {
             InitializeComponent();
             Loaded += (s, e) => Focus();
+            registry.Load(@"C:\Users\Asus\RiderProjects\VraiPseudoSae201\VraiPseudoSae\data\RLS_Audio\AudioStructure.json");
         }
 
         public void StartGame(bool vsBot)
@@ -148,6 +150,7 @@ namespace VraiPseudoSae.view.RLS_Pages
                     c.VY = -12;
                     c.OnGround = false;
                     c.JumpsLeft = 1; // il lui reste 1 double saut
+                    //registry.Play("car_sound/category/second_jump_mouvement/jump0020");
                 }
                 else if (c.JumpsLeft > 0)
                 {
@@ -191,10 +194,10 @@ namespace VraiPseudoSae.view.RLS_Pages
         void HandleP2Input()
         {
             ProcessCarInput(p2,
-                left: keys.Contains(Key.Left),
-                right: keys.Contains(Key.Right),
-                jump: keys.Contains(Key.Up),
-                boost: keys.Contains(Key.NumPad6));
+                left: keys.Contains(Key.K),
+                right: keys.Contains(Key.M),
+                jump: keys.Contains(Key.O),
+                boost: keys.Contains(Key.Enter));
         }
 
         void HandleBotInput()

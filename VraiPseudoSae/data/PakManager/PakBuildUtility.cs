@@ -39,6 +39,13 @@ public static class PakBuildUtility
             });
 
         BuildPak(
+            outputPakPath: Path.Combine(outputPaksFolder, "uncategorized.pak"),
+            sources: new[]
+            {
+                new PakSource(Path.Combine(rootAudioFolder, "Uncategorized"), "Uncategorized"),
+            });    
+        
+        BuildPak(
             outputPakPath: Path.Combine(outputPaksFolder, "ui-voice.pak"),
             sources: new[]
             {

@@ -4,8 +4,11 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 using System.Windows.Controls;
+using System.Windows.Shapes;
+using System.IO;
 using VraiPseudoSae.view.RLS_Pages;
 using VraiPseudoSae.data.PakManager;
+using Path = System.IO.Path;
 
 namespace VraiPseudoSae.view
 {
@@ -22,6 +25,10 @@ namespace VraiPseudoSae.view
         public HomePage()
         {
             InitializeComponent();
+            string rootAudioFolder = @"C:\Users\Asus\RiderProjects\VraiPseudoSae201\VraiPseudoSae\data\RLS_Audio";
+            string outputPaksFolder = @"C:\Users\Asus\RiderProjects\VraiPseudoSae201\VraiPseudoSae\Assets\Packs";
+
+            PakBuildUtility.BuildAllDefaultPaks(rootAudioFolder, outputPaksFolder);
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
