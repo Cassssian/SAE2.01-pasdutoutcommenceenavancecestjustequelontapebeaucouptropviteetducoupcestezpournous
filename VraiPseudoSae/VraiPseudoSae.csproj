@@ -25,4 +25,10 @@
       <PackageReference Include="NAudio" Version="2.3.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Reference Include="IUTGame">
+        <HintPath>IUTGame.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
 </Project>
