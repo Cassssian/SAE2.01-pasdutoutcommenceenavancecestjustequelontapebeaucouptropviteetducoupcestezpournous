@@ -8,12 +8,10 @@
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
         Background="#101820"
-        KeyDown="Window_KeyDown"
-        KeyUp="Window_KeyUp"
         Loaded="Window_Loaded">
 
     <Grid>
-        
+
         <Canvas Name="GameCanvas" Background="#87CEEB">
 
             <!-- Sol -->
@@ -26,7 +24,8 @@
 
             <!-- Zone foot -->
             <Canvas Name="FootballZone" Width="170" Height="120"
-                    Canvas.Left="930" Canvas.Top="360">
+                    Canvas.Left="930" Canvas.Top="360"
+                    IsHitTestVisible="False">
                 <Polygon Points="85,0 170,30 85,60 0,30"
                          Fill="#F4E285"/>
                 <TextBlock Text="FOOT"
@@ -36,9 +35,11 @@
                            Canvas.Left="52"
                            Canvas.Top="15"/>
             </Canvas>
-            
+
+            <!-- Zone RLS -->
             <Canvas Name="RLSZone" Width="170" Height="120"
-                    Canvas.Left="550" Canvas.Top="360">
+                    Canvas.Left="550" Canvas.Top="360"
+                    IsHitTestVisible="False">
                 <Polygon Points="85,0 170,30 85,60 0,30"
                          Fill="DarkSlateGray"/>
                 <TextBlock Text="RLS"
@@ -51,7 +52,8 @@
 
             <!-- Zone labyrinthe -->
             <Canvas Name="MazeZone" Width="170" Height="120"
-                    Canvas.Left="120" Canvas.Top="330">
+                    Canvas.Left="120" Canvas.Top="330"
+                    IsHitTestVisible="False">
                 <Polygon Points="85,0 170,30 85,60 0,30"
                          Fill="#C792EA"/>
                 <TextBlock Text="LABY"
@@ -63,45 +65,22 @@
             </Canvas>
 
             <!-- Arbres rétro -->
-            <Canvas Canvas.Left="240" Canvas.Top="250">
+            <Canvas Canvas.Left="240" Canvas.Top="250" IsHitTestVisible="False">
                 <Rectangle Width="18" Height="50" Fill="#6B3E26" Canvas.Left="22" Canvas.Top="42"/>
                 <Ellipse Width="60" Height="60" Fill="#2E8B57"/>
             </Canvas>
 
-            <Canvas Canvas.Left="980" Canvas.Top="260">
+            <Canvas Canvas.Left="980" Canvas.Top="260" IsHitTestVisible="False">
                 <Rectangle Width="18" Height="50" Fill="#6B3E26" Canvas.Left="22" Canvas.Top="42"/>
                 <Ellipse Width="60" Height="60" Fill="#2E8B57"/>
             </Canvas>
 
-            <Canvas Canvas.Left="600" Canvas.Top="260">
+            <Canvas Canvas.Left="600" Canvas.Top="260" IsHitTestVisible="False">
                 <Rectangle Width="18" Height="50" Fill="#6B3E26" Canvas.Left="22" Canvas.Top="42"/>
                 <Ellipse Width="60" Height="60" Fill="#2E8B57"/>
             </Canvas>
-            
-            <!-- Joueur -->
-            <Canvas Name="Player" Width="60" Height="90" Canvas.Left="610" Canvas.Top="520">
-                <!-- Ombre -->
-                <Ellipse Width="46" Height="14" Fill="#55000000"
-                         Canvas.Left="7" Canvas.Top="72"/>
-                <!-- Jambes -->
-                <Rectangle Width="12" Height="24" Fill="#2244AA"
-                           Canvas.Left="14" Canvas.Top="50"/>
-                <Rectangle Width="12" Height="24" Fill="#2244AA"
-                           Canvas.Left="34" Canvas.Top="50"/>
-                <!-- Corps -->
-                <Rectangle Width="34" Height="30" Fill="#D95F43"
-                           RadiusX="4" RadiusY="4"
-                           Canvas.Left="13" Canvas.Top="24"/>
-                <!-- Tête -->
-                <Ellipse Width="28" Height="28" Fill="#F2C29B"
-                         Canvas.Left="16" Canvas.Top="2"/>
-                <!-- Cheveux -->
-                <Rectangle Width="28" Height="10" Fill="#2B1B17"
-                           RadiusX="3" RadiusY="3"
-                           Canvas.Left="16" Canvas.Top="2"/>
-            </Canvas>
-            
-            <local:StarControl Canvas.Right="10" Canvas.Top="10"></local:StarControl>
+
+            <local:StarControl Canvas.Right="10" Canvas.Top="10"/>
         </Canvas>
 
         <Border HorizontalAlignment="Left"
@@ -125,6 +104,32 @@
                            Margin="0,6,0,0"/>
             </StackPanel>
         </Border>
-        <ContentControl x:Name="MainContent"></ContentControl>
+
+        <!-- Source XAML du sprite du joueur -->
+        <Canvas x:Name="PlayerSpriteSource"
+                Width="60"
+                Height="90"
+                Visibility="Collapsed">
+            <Ellipse Width="46" Height="14" Fill="#55000000"
+                     Canvas.Left="7" Canvas.Top="72"/>
+
+            <Rectangle Width="12" Height="24" Fill="#2244AA"
+                       Canvas.Left="14" Canvas.Top="50"/>
+            <Rectangle Width="12" Height="24" Fill="#2244AA"
+                       Canvas.Left="34" Canvas.Top="50"/>
+
+            <Rectangle Width="34" Height="30" Fill="#D95F43"
+                       RadiusX="4" RadiusY="4"
+                       Canvas.Left="13" Canvas.Top="24"/>
+
+            <Ellipse Width="28" Height="28" Fill="#F2C29B"
+                     Canvas.Left="16" Canvas.Top="2"/>
+
+            <Rectangle Width="28" Height="10" Fill="#2B1B17"
+                       RadiusX="3" RadiusY="3"
+                       Canvas.Left="16" Canvas.Top="2"/>
+        </Canvas>
+
+        <ContentControl x:Name="MainContent"/>
     </Grid>
 </Window>
