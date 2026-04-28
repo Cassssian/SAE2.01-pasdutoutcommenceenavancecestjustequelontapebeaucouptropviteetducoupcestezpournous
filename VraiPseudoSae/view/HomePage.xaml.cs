@@ -25,10 +25,6 @@ namespace VraiPseudoSae.view
         public HomePage()
         {
             InitializeComponent();
-            string rootAudioFolder = @"C:\Users\Asus\RiderProjects\VraiPseudoSae201\VraiPseudoSae\data\RLS_Audio";
-            string outputPaksFolder = @"C:\Users\Asus\RiderProjects\VraiPseudoSae201\VraiPseudoSae\Assets\Packs";
-
-            PakBuildUtility.BuildAllDefaultPaks(rootAudioFolder, outputPaksFolder);
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

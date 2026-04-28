@@ -8,6 +8,7 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using VraiPseudoSae.data.AudioPlayer;
+using VraiPseudoSae.data.PakManager;
 
 namespace VraiPseudoSae.view.RLS_Pages
 {
@@ -19,6 +20,10 @@ namespace VraiPseudoSae.view.RLS_Pages
         const double Friction = 0.92;
         const double BallFriction = 0.99;
         const double BallBounce = 0.75;
+        static PakAudioCatalog catalog = new PakAudioCatalog();
+        JsonPakAudioService audio = new JsonPakAudioService(catalog);
+        
+        
 
         class Car(string NameCar)
         {
@@ -51,7 +56,6 @@ namespace VraiPseudoSae.view.RLS_Pages
         int goalTimer = 0;
         bool gameRunning = false;
         Random rng = new Random();
-        AudioRegistry registry = new AudioRegistry();
 
         // Pour le bot : edge detection du saut
         bool botJumpPrev = false;
@@ -60,7 +64,15 @@ namespace VraiPseudoSae.view.RLS_Pages
         {
             InitializeComponent();
             Loaded += (s, e) => Focus();
-            registry.Load(@"C:\Users\Asus\RiderProjects\VraiPseudoSae201\VraiPseudoSae\data\RLS_Audio\AudioStructure.json");
+            catalog.LoadFromPaks(@"C:\Users\Asus\RiderProjects\VraiPseudoSae201\VraiPseudoSae\Assets\Packs");
+            audio.Load(@"C:\Users\Asus\RiderProjects\VraiPseudoSae201\VraiPseudoSae\data\RLS_Audio\AudioStructure.json");
+            audio.Preload("car_sound/category/first_jump/jump0001", "first_jump");
+            audio.Preload("car_sound/category/second_jump/jump0003", "second_jump");
+            audio.Preload("car_sound/category/second_jump_movement/jump0002", "second_jump_movement");
+
+            // Initialisation manuelle des dépendances pour l'explosion de but
+            // puisque WPF a utilisé le constructeur par défaut.
+            GoalExplosionAnime.SetDependencies(GameCanvas, audio);
         }
 
         public void StartGame(bool vsBot)
@@ -118,6 +130,7 @@ namespace VraiPseudoSae.view.RLS_Pages
                 {
                     goalPaused = false;
                     GoalText.Visibility = Visibility.Collapsed;
+                    GoalExplosionAnime.Visibility = Visibility.Collapsed;
                     ResetPositions();
                 }
                 return;
@@ -150,12 +163,20 @@ namespace VraiPseudoSae.view.RLS_Pages
                     c.VY = -12;
                     c.OnGround = false;
                     c.JumpsLeft = 1; // il lui reste 1 double saut
-                    //registry.Play("car_sound/category/second_jump_mouvement/jump0020");
+                    audio.Play("first_jump");
+                }
+                else if (c.JumpsLeft > 0 && left || c.JumpsLeft > 0 && right)
+                {
+                    c.VX += c.name =="p1" ? c.FacingDir * 20 : (c.FacingDir * -20);
+                    c.VY = -11; // 2e saut légèrement plus faible
+                    c.JumpsLeft--;
+                    audio.Play("second_jump_movement");
                 }
                 else if (c.JumpsLeft > 0)
                 {
-                    c.VY = -11; // 2e saut légèrement plus faible
+                    c.VY = -11;
                     c.JumpsLeft--;
+                    audio.Play("second_jump");
                 }
             }
             c.JumpKeyPrev = jump;
@@ -304,7 +325,7 @@ namespace VraiPseudoSae.view.RLS_Pages
 
             if (c.X < 0) { c.X = 0; c.VX = 0; }
             if (c.X + c.Width > FieldWidth) { c.X = FieldWidth - c.Width; c.VX = 0; }
-            if (c.Y < 0) { c.Y = 0; c.VY = 0; }
+            if (c.Y < 0) { c.Y = 0; c.VY = 0.1; }
 
             c.VX = Math.Max(-15, Math.Min(15, c.VX));
             c.VY = Math.Max(-18, Math.Min(20, c.VY));
@@ -379,16 +400,36 @@ namespace VraiPseudoSae.view.RLS_Pages
 
             if (dist < ballSize / 2)
             {
-                if (dist == 0) { dx = 1; dy = 0; dist = 1; }
+                if (dist == 0)
+                {
+                    // Si la balle est exactement au centre (coincée), 
+                    // on utilise la direction de déplacement de la voiture ou sa position relative
+                    dx = bcx - (c.X + c.Width / 2);
+                    dy = bcy - (c.Y + c.Height / 2);
+                    dist = Math.Sqrt(dx * dx + dy * dy);
+                    if (dist == 0) { dx = 0; dy = -1; dist = 1; } // Cas extrême: plein centre, on pousse vers le haut
+                }
                 double nx = dx / dist;
                 double ny = dy / dist;
                 double overlap = ballSize / 2 - dist;
                 ballX += nx * overlap;
                 ballY += ny * overlap;
 
+                // Empêcher la balle de s'enfoncer dans le sol si la voiture l'écrase
+                if (ballY + ballSize > GroundY)
+                {
+                    double correction = (ballY + ballSize) - GroundY;
+                    ballY -= correction;
+                    // Si on l'écrase contre le sol, on lui donne une impulsion horizontale pour qu'elle s'échappe
+                    if (Math.Abs(ballVX) < 2) ballVX += (nx >= 0 ? 5 : -5);
+                }
+
                 double impact = 8 + Math.Sqrt(c.VX * c.VX + c.VY * c.VY) * 0.6;
                 ballVX = nx * impact + c.VX * 0.5;
-                ballVY = ny * impact + c.VY * 0.5 - 2;
+                ballVY = ny * impact + c.VY * 0.5;
+
+                // Si on frappe la balle par le haut (on vole au-dessus), on assure une impulsion vers le bas
+                if (ny > 0.5) ballVY += 3;
             }
         }
 
@@ -408,9 +449,19 @@ namespace VraiPseudoSae.view.RLS_Pages
         void CheckGoal()
         {
             if (ballX <= 20 && ballY > 373 && ballY < 520)
-            { score2++; ShowGoal("GOAL P2!"); }
+            { 
+                score2++; 
+                GoalExplosionAnime.Visibility = Visibility.Visible;
+                GoalExplosionAnime.PlayLeftGoal();
+                ShowGoal("GOAL P2!"); 
+            }
             else if (ballX + ballSize >= 980 && ballY > 373 && ballY < 520)
-            { score1++; ShowGoal("GOAL P1!"); }
+            { 
+                score1++; 
+                GoalExplosionAnime.Visibility = Visibility.Visible;
+                GoalExplosionAnime.PlayRightGoal();
+                ShowGoal("GOAL P1!"); 
+            }
         }
 
         void ShowGoal(string msg)
@@ -434,7 +485,8 @@ namespace VraiPseudoSae.view.RLS_Pages
             ApplyFlip(p1);
             ApplyFlip(p2);
 
-            ScoreText.Text = $"{score1} - {score2}";
+            ScoreP1Text.Text = score1.ToString();
+            ScoreP2Text.Text = score2.ToString();
             Boost1Bar.Width = 150 * (p1.Boost / 100.0);
             Boost2Bar.Width = 150 * (p2.Boost / 100.0);
         }

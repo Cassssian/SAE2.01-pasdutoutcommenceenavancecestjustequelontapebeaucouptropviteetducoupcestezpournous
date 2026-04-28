@@ -405,49 +405,49 @@
           {
             "id" : "jump0001",
             "pack": "uncategorized.pak",
-            "path": "Uncategorized/SFX_Car_Mouvements",
+            "path": "Uncategorized/SFX_Car_Movements",
             "number": "0001"
           },
           {
             "id" : "jump0005",
             "pack": "uncategorized.pak",
-            "path": "Uncategorized/SFX_Car_Mouvements",
+            "path": "Uncategorized/SFX_Car_Movements",
             "number": "0005"
           },
           {
             "id" : "jump0008",
             "pack": "uncategorized.pak",
-            "path": "Uncategorized/SFX_Car_Mouvements",
+            "path": "Uncategorized/SFX_Car_Movements",
             "number": "0008"
           },
           {
             "id" : "jump0009",
             "pack": "uncategorized.pak",
-            "path": "Uncategorized/SFX_Car_Mouvements",
+            "path": "Uncategorized/SFX_Car_Movements",
             "number": "0009"
           },
           {
             "id" : "jump0015",
             "pack": "uncategorized.pak",
-            "path": "Uncategorized/SFX_Car_Mouvements",
+            "path": "Uncategorized/SFX_Car_Movements",
             "number": "0015"
           },
           {
             "id" : "jump0017",
             "pack": "uncategorized.pak",
-            "path": "Uncategorized/SFX_Car_Mouvements",
+            "path": "Uncategorized/SFX_Car_Movements",
             "number": "0017"
           },
           {
             "id": "jump0023",
             "pack": "uncategorized.pak",
-            "path": "Uncategorized/SFX_Car_Mouvements",
+            "path": "Uncategorized/SFX_Car_Movements",
             "number": "0023"
           },
           {
             "id": "jump0024",
             "pack": "uncategorized.pak",
-            "path": "Uncategorized/SFX_Car_Mouvements",
+            "path": "Uncategorized/SFX_Car_Movements",
             "number": "0024"
           }
         ],
@@ -455,109 +455,611 @@
           {
             "id": "jump0003",
             "pack": "uncategorized.pak",
-            "path": "Uncategorized/SFX_Car_Mouvements",
+            "path": "Uncategorized/SFX_Car_Movements",
             "number": "0003"
           },
           {
             "id": "jump0006",
             "pack": "uncategorized.pak",
-            "path": "Uncategorized/SFX_Car_Mouvements",
+            "path": "Uncategorized/SFX_Car_Movements",
             "number": "0006"
           },
           {
             "id": "jump0007",
             "pack": "uncategorized.pak",
-            "path": "Uncategorized/SFX_Car_Mouvements",
+            "path": "Uncategorized/SFX_Car_Movements",
             "number": "0007"
           },
           {
             "id": "jump0012",
             "pack": "uncategorized.pak",
-            "path": "Uncategorized/SFX_Car_Mouvements",
+            "path": "Uncategorized/SFX_Car_Movements",
             "number": "0012"
           },
           {
             "id": "jump0013",
             "pack": "uncategorized.pak",
-            "path": "Uncategorized/SFX_Car_Mouvements",
+            "path": "Uncategorized/SFX_Car_Movements",
             "number": "0013"
           },
           {
             "id": "jump0019",
             "pack": "uncategorized.pak",
-            "path": "Uncategorized/SFX_Car_Mouvements",
+            "path": "Uncategorized/SFX_Car_Movements",
             "number": "0019"
           },
           {
             "id": "jump0022",
             "pack": "uncategorized.pak",
-            "path": "Uncategorized/SFX_Car_Mouvements",
+            "path": "Uncategorized/SFX_Car_Movements",
             "number": "0022"
           },
           {
             "id": "jump0025",
             "pack": "uncategorized.pak",
-            "path": "Uncategorized/SFX_Car_Mouvements",
+            "path": "Uncategorized/SFX_Car_Movements",
             "number": "0025"
           }
         ],
-        "second_jump_mouvement": [
+        "second_jump_movement": [
           {
             "id": "jump0002",
             "pack": "uncategorized.pak",
-            "path": "Uncategorized/SFX_Car_Mouvements",
+            "path": "Uncategorized/SFX_Car_Movements",
             "number": "0002"
           },
           {
             "id": "jump0004",
             "pack": "uncategorized.pak",
-            "path": "Uncategorized/SFX_Car_Mouvements",
+            "path": "Uncategorized/SFX_Car_Movements",
             "number": "0004"
           },
           {
             "id": "jump0010",
             "pack": "uncategorized.pak",
-            "path": "Uncategorized/SFX_Car_Mouvements",
+            "path": "Uncategorized/SFX_Car_Movements",
             "number": "0010"
           },
           {
             "id": "jump0011",
             "pack": "uncategorized.pak",
-            "path": "Uncategorized/SFX_Car_Mouvements",
+            "path": "Uncategorized/SFX_Car_Movements",
             "number": "0011"
           },
           {
             "id": "jump0014",
             "pack": "uncategorized.pak",
-            "path": "Uncategorized/SFX_Car_Mouvements",
+            "path": "Uncategorized/SFX_Car_Movements",
             "number": "0014"
           },
           {
             "id": "jump0016",
             "pack": "uncategorized.pak",
-            "path": "Uncategorized/SFX_Car_Mouvements",
+            "path": "Uncategorized/SFX_Car_Movements",
             "number": "0016"
           },
           {
             "id": "jump0018",
             "pack": "uncategorized.pak",
-            "path": "Uncategorized/SFX_Car_Mouvements",
+            "path": "Uncategorized/SFX_Car_Movements",
             "number": "0018"
           },
           {
             "id": "jump0020",
             "pack": "uncategorized.pak",
-            "path": "Uncategorized/SFX_Car_Mouvements",
+            "path": "Uncategorized/SFX_Car_Movements",
             "number": "0020"
           },
           {
             "id": "jump0021",
             "pack": "uncategorized.pak",
-            "path": "Uncategorized/SFX_Car_Mouvements",
+            "path": "Uncategorized/SFX_Car_Movements",
             "number": "0021"
           }
         ]
       }
     }
+  ],
+  "goal_sound": [
+    [
+      {
+        "id": "Anime",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_Anime",
+        "number": "0001"
+      },
+      {
+        "id": "AnimeSmoke",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_AnimeSmoke",
+        "number": "0001"
+      },
+      {
+        "id": "B89",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_B89",
+        "number": ["0001", "0002", "0003", "0004", "0005"]
+      },
+      {
+        "id": "Badaboom",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_Badaboom",
+        "number": "0001"
+      },
+      {
+        "id": "Ballistic",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_Ballistic",
+        "number": "0001"
+      },
+      {
+        "id": "Baseball",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_Baseball",
+        "number": ["0001", "0002", "0003", "0004", "0005", "0006", "0007"]
+      },
+      {
+        "id": "Batman",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_Batman",
+        "number": ["0001", "0002", "0003", "0004", "0005"]
+      },
+      {
+        "id": "Bats",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_Bats",
+        "number": ["0001", "0002", "0003", "0004", "0005"]
+      },
+      {
+        "id": "BeachBalls",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_BeachBalls",
+        "number": "0001"
+      },
+      {
+        "id": "Blade_T01",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_Blade_T01",
+        "number": "0001"
+      },
+      {
+        "id": "Blade_T02",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_Blade_T02",
+        "number": "0001"
+      },
+      {
+        "id": "BPMS",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_BPMS",
+        "number": ["0001", "0002"]
+      },
+      {
+        "id": "Break",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_Break",
+        "number": ["0001", "0002"]
+      },
+      {
+        "id": "Bubbles",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_Bubbles",
+        "number": "0001"
+      },
+      {
+        "id": "Butterflies",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_Butterflies",
+        "number": ["0001", "0002", "0003", "0004", "0005", "0006", "0007", "0008", "0009", "0010", "0011"]
+      },
+      {
+        "id": "ChinaDragon",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_ChinaDragon",
+        "number": "0001"
+      },
+      {
+        "id": "Confetti",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_Confetti",
+        "number": "0001"
+      },
+      {
+        "id": "DarkEnergy_T01",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_DarkEnergy_T01",
+        "number": ["0001", "0002", "0003", "0004"]
+      },
+      {
+        "id": "DarkEnergy_T02",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_DarkEnergy_T02",
+        "number": ["0001", "0002", "0003", "0004"]
+      },
+      {
+        "id": "DarkEnergy_T03",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_DarkEnergy_T03",
+        "number": ["0001", "0002", "0003", "0004"]
+      },
+      {
+        "id": "Digiglobe",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_Digiglobe",
+        "number": ["0001", "0002"]
+      },
+      {
+        "id": "Dirt",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_Dirt",
+        "number": "0001"
+      },
+      {
+        "id": "Dragon",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_Dragon",
+        "number": ["0001", "0002", "0003"]
+      },
+      {
+        "id": "DynamicEnergy",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_DynamicEnergy",
+        "number": "0001"
+      },
+      {
+        "id": "Electric",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_Electric",
+        "number": "0001"
+      },
+      {
+        "id": "Fingerguns",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_Fingerguns",
+        "number": "0001"
+      },
+      {
+        "id": "Finish",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_Finish",
+        "number": "0001"
+      },
+      {
+        "id": "Fireworks",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_Fireworks",
+        "number": ["0001", "0002", "0003", "0004", "0005"]
+      },
+      {
+        "id": "Fish",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_Fish",
+        "number": "0001"
+      },
+      {
+        "id": "Fruit",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_Fruit",
+        "number": "0001"
+      },
+      {
+        "id": "GeoTech",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_GeoTech",
+        "number": ["0001", "0002"]
+      },
+      {
+        "id": "Ghost",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_Ghost",
+        "number": ["0001", "0002"]
+      },
+      {
+        "id": "Gravity",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_Gravity",
+        "number": "0001"
+      },
+      {
+        "id": "HeartHands",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_HeartHands",
+        "number": ["0001", "0002"]
+      },
+      {
+        "id": "HorseHindLegs",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_HorseHindLegs",
+        "number": "0001"
+      },
+      {
+        "id": "Hypnotik",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_Hypnotik",
+        "number": ["0001", "0002"]
+      },
+      {
+        "id": "IceShards",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_IceShards",
+        "number": ["0001", "0002", "0003", "0004", "0005", "0006", "0007", "0008", "0009"]
+      },
+      {
+        "id": "IllustratedBursts",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_IllustratedBursts",
+        "number": ["0001", "0002"]
+      },
+      {
+        "id": "IonCannon",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_IonCannon",
+        "number": ["0001", "0002"]
+      },
+      {
+        "id": "Lanterns",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_Lanterns",
+        "number": "0001"
+      },
+      {
+        "id": "Leaves",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_Leaves",
+        "number": "0001"
+      },
+      {
+        "id": "LoopDeLoop",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_LoopDeLoop",
+        "number": "0001"
+      },
+      {
+        "id": "Meteors",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_Meteors",
+        "number": ["0001", "0002"]
+      },
+      {
+        "id": "MicDrop",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_MicDrop",
+        "number": ["0001", "0002"]
+      },
+      {
+        "id": "Missiles",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_Missiles",
+        "number": ["0001", "0002", "0003"]
+      },
+      {
+        "id": "MisterMonsoon",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_MisterMonsoon",
+        "number": ["0001", "0002", "0003", "0004", "0005", "0006"]
+      },
+      {
+        "id": "Neurons",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_Neurons",
+        "number": "0001"
+      },
+      {
+        "id": "NewDefault",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_NewDefault",
+        "number": "0001"
+      },
+      {
+        "id": "Nuhai",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_Nuhai",
+        "number": "0001"
+      },
+      {
+        "id": "Nuke",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_Nuke",
+        "number": "0001"
+      },
+      {
+        "id": "October",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_October",
+        "number": "0001"
+      },
+      {
+        "id": "Polygon",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_Polygon",
+        "number": "0001"
+      },
+      {
+        "id": "Popcorn",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_Popcorn",
+        "number": "0001"
+      },
+      {
+        "id": "Portal",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_Portal",
+        "number": "0001"
+      },
+      {
+        "id": "Presents",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_Presents",
+        "number": "0001"
+      },
+      {
+        "id": "Quartz",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_Quartz",
+        "number": ["0001", "0002"]
+      },
+      {
+        "id": "Ring_T01",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_Ring_T01",
+        "number": "0001"
+      },
+      {
+        "id": "Ring_T02",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_Ring_T02",
+        "number": "0001"
+      },
+      {
+        "id": "Ring_T03",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_Ring_T03",
+        "number": "0001"
+      },
+      {
+        "id": "RLCS_01",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_RLCS_01",
+        "number": "0001"
+      },
+      {
+        "id": "SARBPC",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_SARBPC",
+        "number": "0001"
+      },
+      {
+        "id": "Season10_T1",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_Season10_T1",
+        "number": ["0001", "0002"]
+      },
+      {
+        "id": "Season10_T2",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_Season10_T2",
+        "number": ["0001", "0002"]
+      },
+      {
+        "id": "Season10_T3",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_Season10_T3",
+        "number": ["0001", "0002"]
+      },
+      {
+        "id": "SideSwipe",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_SideSwipe",
+        "number": "0001"
+      },
+      {
+        "id": "SimplePoof",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_SimplePoof",
+        "number": "0001"
+      },
+      {
+        "id": "SingleAtoms",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_SingleAtoms",
+        "number": ["0001", "0002"]
+      },
+      {
+        "id": "Skull",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_Skull",
+        "number": "0001"
+      },
+      {
+        "id": "Solar",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_Solar",
+        "number": ["0001", "0002", "0003", "0004", "0005", "0006", "0007"]
+      },
+      {
+        "id": "SpaceSticker",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_SpaceSticker",
+        "number": "0001"
+      },
+      {
+        "id": "Sphenergy",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_Sphenergy",
+        "number": ["0001", "0002"]
+      },
+      {
+        "id": "Splash",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_Splash",
+        "number": "0001"
+      },
+      {
+        "id": "Stage",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_Stage",
+        "number": "0001"
+      },
+      {
+        "id": "Starbeam",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_Starbeam",
+        "number": ["0001", "0002"]
+      },
+      {
+        "id": "Techy",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_Techy",
+        "number": "0001"
+      },
+      {
+        "id": "Tmblr",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_Tmblr",
+        "number": ["0001", "0002", "0003", "0004", "0005"]
+      },
+      {
+        "id": "Toon",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_Toon",
+        "number": "0001"
+      },
+      {
+        "id": "Trex",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_Trex",
+        "number": "0001"
+      },
+      {
+        "id": "TW",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_TW",
+        "number": "0001"
+      },
+      {
+        "id": "Voxel",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_Voxel",
+        "number": "0001"
+      },
+      {
+        "id": "WallBreak_T01",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_WallBreak_T01",
+        "number": "0001"
+      },
+      {
+        "id": "WallBreak_T02",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_WallBreak_T02",
+        "number": "0001"
+      },
+      {
+        "id": "WarpSpeed",
+        "pack": "goal-explosions.pak",
+        "path": "GoalExplosions/SFX_GoalExplosion_WarpSpeed",
+        "number": ["0001", "0002"]
+      }
+    ]
   ]
 }
