@@ -12,48 +12,74 @@
         Background="#1a1a2e">
     <Grid>
         <!-- MENU -->
-        <local:Menu x:Name="MainMenu"></local:Menu>
-        
+        <local:Menu x:Name="MainMenu"/>
+
         <!-- GAME -->
         <Canvas x:Name="GameCanvas" Width="1000" Height="600" Background="#16213e" ClipToBounds="True" Visibility="Collapsed">
+
             <!-- Background Score -->
             <Viewbox Canvas.Left="0" Canvas.Top="0" Width="500" Height="520" Opacity="0.15" Panel.ZIndex="0">
-                <TextBlock x:Name="ScoreP1Text" Text="0" Foreground="White" FontWeight="Bold" />
+                <TextBlock x:Name="ScoreP1Text" Text="0" Foreground="White" FontWeight="Bold"/>
             </Viewbox>
             <Viewbox Canvas.Left="500" Canvas.Top="0" Width="500" Height="520" Opacity="0.15" Panel.ZIndex="0">
-                <TextBlock x:Name="ScoreP2Text" Text="0" Foreground="White" FontWeight="Bold" />
+                <TextBlock x:Name="ScoreP2Text" Text="0" Foreground="White" FontWeight="Bold"/>
             </Viewbox>
 
             <!-- Ligne médiane -->
             <Line X1="500" Y1="0" X2="500" Y2="520" Stroke="White" StrokeThickness="1" StrokeDashArray="4 4" Opacity="0.3"/>
-            
+
             <!-- Mode info -->
             <TextBlock x:Name="ModeText" Text="" Foreground="White" Opacity="0.7" FontSize="13" Canvas.Left="440" Canvas.Top="80"/>
-            
+
             <!-- Boost P1 -->
             <TextBlock Text="P1 BOOST" Foreground="White" Canvas.Left="20" Canvas.Top="20" FontSize="14" FontWeight="Bold"/>
             <Rectangle Stroke="White" StrokeThickness="1" Width="150" Height="15" Canvas.Left="20" Canvas.Top="40"/>
             <Rectangle x:Name="Boost1Bar" Fill="Orange" Width="150" Height="15" Canvas.Left="20" Canvas.Top="40"/>
-            
+
             <!-- Boost P2 -->
             <TextBlock Text="P2 BOOST" Foreground="White" Canvas.Left="830" Canvas.Top="20" FontSize="14" FontWeight="Bold"/>
             <Rectangle Stroke="White" StrokeThickness="1" Width="150" Height="15" Canvas.Left="830" Canvas.Top="40"/>
             <Rectangle x:Name="Boost2Bar" Fill="Orange" Width="150" Height="15" Canvas.Left="830" Canvas.Top="40"/>
-            
-            <!-- Instructions en bas -->
-            <TextBlock Text="P1: A/D/W/S  •  P2: ←/→/↑/↓  •  Saut+Boost = VOL  •  R: Reset  •  ESC: Menu"
-                       Foreground="White" Opacity="0.7" Canvas.Left="220" Canvas.Top="575" FontSize="12"/>
-            
+
+            <!-- Instructions -->
+            <TextBlock Text="P1: Q/D/Z/Espace  •  P2: K/M/O/Entrée  •  Saut+Boost = VOL  •  R: Reset  •  ESC: Menu"
+                       Foreground="White" Opacity="0.7" Canvas.Left="180" Canvas.Top="575" FontSize="12"/>
+
             <!-- Message goal -->
-            <TextBlock x:Name="GoalText" Text="" FontSize="80" FontWeight="Bold" Foreground="Yellow" 
+            <TextBlock x:Name="GoalText" Text="" FontSize="80" FontWeight="Bold" Foreground="Yellow"
                        Canvas.Left="280" Canvas.Top="200" Visibility="Collapsed" Panel.ZIndex="100"/>
+
+            <!-- ── Flamme boost voiture 1 (derrière la voiture) ── -->
+            <Canvas x:Name="Flame1" Visibility="Collapsed" Panel.ZIndex="9">
+                <!-- Corps principal de la flamme -->
+                <Polygon Points="0,10 -28,4 -36,10 -28,16" Fill="OrangeRed" Opacity="0.95"/>
+                <Polygon Points="0,10 -22,6 -28,10 -22,14" Fill="Orange"    Opacity="0.9"/>
+                <Polygon Points="0,10 -16,7 -20,10 -16,13" Fill="Yellow"    Opacity="0.85"/>
+                <!-- Petites langues de feu -->
+                <Polygon Points="0,8  -30,2  -35,6"  Fill="OrangeRed" Opacity="0.7"/>
+                <Polygon Points="0,12 -30,18 -35,14" Fill="OrangeRed" Opacity="0.7"/>
+                <!-- Halo lumineux -->
+                <Ellipse Width="18" Height="18" Canvas.Left="-26" Canvas.Top="1"
+                         Fill="Yellow" Opacity="0.25"/>
+            </Canvas>
+
+            <!-- ── Flamme boost voiture 2 (derrière la voiture, miroir) ── -->
+            <Canvas x:Name="Flame2" Visibility="Collapsed" Panel.ZIndex="9">
+                <Polygon Points="60,10 88,4  96,10  88,16" Fill="OrangeRed" Opacity="0.95"/>
+                <Polygon Points="60,10 82,6  88,10  82,14" Fill="Orange"    Opacity="0.9"/>
+                <Polygon Points="60,10 76,7  80,10  76,13" Fill="Yellow"    Opacity="0.85"/>
+                <Polygon Points="60,8  90,2  95,6"  Fill="OrangeRed" Opacity="0.7"/>
+                <Polygon Points="60,12 90,18 95,14" Fill="OrangeRed" Opacity="0.7"/>
+                <Ellipse Width="18" Height="18" Canvas.Left="68" Canvas.Top="1"
+                         Fill="Yellow" Opacity="0.25"/>
+            </Canvas>
 
             <!-- Explosions de but -->
             <ge:GoalExplosion_Anime x:Name="GoalExplosionAnime" Panel.ZIndex="50" Visibility="Collapsed"/>
         </Canvas>
 
         <!-- ═══════════════════════════════════════════════════════════════
-             SOURCES XAML DES SPRITES (cachées, utilisées pour le rendu PNG)
+             SOURCES XAML DES SPRITES
              ═══════════════════════════════════════════════════════════════ -->
 
         <!-- Sprite voiture 1 (rouge, 60×34) -->
@@ -96,23 +122,19 @@
             </Ellipse>
         </Canvas>
 
-        <!-- Sprite cage gauche (26×155) — poteau + crossbar + filet -->
+        <!-- Sprite cage gauche (26×160) -->
         <Canvas x:Name="SpriteGoalSource" Width="26" Height="160" Visibility="Collapsed">
-            <!-- Zone colorée arrière-plan cage -->
             <Rectangle Fill="#e94560" Opacity="0.25" Width="20" Height="150" Canvas.Left="0" Canvas.Top="5"/>
-            <!-- Montant vertical -->
             <Rectangle Fill="White" Width="6" Height="155" Canvas.Left="20" Canvas.Top="0"/>
-            <!-- Crossbar -->
             <Rectangle Fill="White" Width="26" Height="8" Canvas.Left="0" Canvas.Top="0"/>
-            <!-- Filet -->
             <Path Stroke="White" StrokeThickness="1" Opacity="0.4">
                 <Path.Data>
                     <GeometryGroup>
-                        <LineGeometry StartPoint="5,10" EndPoint="5,150"/>
+                        <LineGeometry StartPoint="5,10"  EndPoint="5,150"/>
                         <LineGeometry StartPoint="10,10" EndPoint="10,150"/>
                         <LineGeometry StartPoint="15,10" EndPoint="15,150"/>
-                        <LineGeometry StartPoint="0,35" EndPoint="20,35"/>
-                        <LineGeometry StartPoint="0,75" EndPoint="20,75"/>
+                        <LineGeometry StartPoint="0,35"  EndPoint="20,35"/>
+                        <LineGeometry StartPoint="0,75"  EndPoint="20,75"/>
                         <LineGeometry StartPoint="0,115" EndPoint="20,115"/>
                     </GeometryGroup>
                 </Path.Data>
@@ -121,8 +143,8 @@
 
         <!-- Sprite demi-sol gauche (500×40) -->
         <Canvas x:Name="SpriteFloorSource" Width="500" Height="40" Visibility="Collapsed">
-            <Rectangle Fill="#0f3460" Height="40" Width="500" Canvas.Left="0" Canvas.Top="0"/>
-            <Rectangle Fill="#0a2540" Height="4" Width="500" Canvas.Left="0" Canvas.Top="0"/>
+            <Rectangle Fill="#0f3460" Height="40" Width="500"/>
+            <Rectangle Fill="#0a2540" Height="4"  Width="500"/>
         </Canvas>
 
     </Grid>
