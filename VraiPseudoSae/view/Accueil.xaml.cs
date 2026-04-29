@@ -46,7 +46,7 @@ namespace VraiPseudoSae.view
 
 
 
-        private void GameLoop(object sender, EventArgs e)
+        private void GameLoop(object? sender, EventArgs e)
         {
             foreach (ImagePiece piece in _pieces)
             {
@@ -106,8 +106,8 @@ namespace VraiPseudoSae.view
 
         public ImagePiece(Image element, TranslateTransform transform, double destX, double destY, double vitesse)
         {
-            this.element = element;
-            this.transform = transform;
+            this.element = element ?? throw new ArgumentNullException(nameof(element));
+            this.transform = transform ?? throw new ArgumentNullException(nameof(transform));
             this.destx = destX;
             this.desty = destY;
             this.vitesse = vitesse;

@@ -1,4 +1,3 @@
-﻿using System;
 using System.Windows;
 using IUTGame.WPF;
 using VraiPseudoSae.view.hub;
@@ -17,26 +16,22 @@ namespace VraiPseudoSae.view
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            SpritePaths.EnsureDirectories();
-
-            XamlSpriteExporter.ExportIfMissing(
-                PlayerSpriteSource,
-                SpritePaths.PlayerHubPng,
-                60,
-                90);
-
             var screen = new WPFScreen(GameCanvas);
-            
-            if (!System.IO.File.Exists(SpritePaths.PlayerHubPng))
-            {
-                MessageBox.Show("Sprite introuvable : " + SpritePaths.PlayerHubPng);
-                return;
-            }
+
+            // 1. Rendre le sprite du joueur depuis le XAML en mémoire
+            var playerBitmap = XamlSpriteExporter.RenderToBitmapImage(PlayerSpriteSource, 60, 90);
+
+            // 2. L'injecter dans le SpriteStore de la DLL sous le nom exact attendu par HubPlayer
+            SpriteInjector.PreRegister(screen, "player_hub.png", playerBitmap);
+
+            // 3. Créer et lancer le jeu (le LoadSprite("player_hub.png") trouvera le bitmap injecté)
+            string spritesResourcePath = "Resources/Sprites";
+            string soundsResourcePath = "Resources/Sounds";
 
             hubGame = new HubGame(
                 screen,
-                "Resources/Sprites",
-                "Resources/Sounds",
+                spritesResourcePath,
+                soundsResourcePath,
                 this,
                 FootballZone,
                 MazeZone,

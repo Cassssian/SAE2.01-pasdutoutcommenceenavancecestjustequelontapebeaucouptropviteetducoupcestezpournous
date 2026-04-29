@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Windows;
 using System.Windows.Input;
 using IUTGame;
@@ -27,12 +27,10 @@ namespace VraiPseudoSae.view.hub
 
         public void Animate(TimeSpan interval)
         {
-            double speed = BaseSpeed;
-
-            if (goUp) MoveXY(0, -speed);
-            if (goDown) MoveXY(0, speed);
-            if (goLeft) MoveXY(-speed, 0);
-            if (goRight) MoveXY(speed, 0);
+            if (goUp) MoveXY(0, -BaseSpeed);
+            if (goDown) MoveXY(0, BaseSpeed);
+            if (goLeft) MoveXY(-BaseSpeed, 0);
+            if (goRight) MoveXY(BaseSpeed, 0);
 
             ClampToHub();
             ApplyFake3DScale();
@@ -43,31 +41,19 @@ namespace VraiPseudoSae.view.hub
 
         private void ClampToHub()
         {
-            if (Left < 0)
-                Left = 0;
-
-            if (Top < 250)
-                Top = 250;
-
-            if (Left > 1220)
-                Left = 1220;
-
-            if (Top > 610)
-                Top = 610;
+            if (Left < 0) Left = 0;
+            if (Top < 250) Top = 250;
+            if (Left > 1220) Left = 1220;
+            if (Top > 610) Top = 610;
         }
 
         private void ApplyFake3DScale()
         {
-            double minScale = 0.72;
-            double maxScale = 1.18;
-
             double t = (Top - 250) / (610 - 250);
-
             if (t < 0) t = 0;
             if (t > 1) t = 1;
 
-            double scale = minScale + (maxScale - minScale) * t;
-
+            double scale = 0.72 + (1.18 - 0.72) * t;
             ChangeScale(scale, scale);
             ZIndex = (int)Top;
         }
@@ -91,8 +77,6 @@ namespace VraiPseudoSae.view.hub
             if (key == Key.D || key == Key.Right) goRight = false;
         }
 
-        public override void CollideEffect(GameItem other)
-        {
-        }
+        public override void CollideEffect(GameItem other) { }
     }
 }

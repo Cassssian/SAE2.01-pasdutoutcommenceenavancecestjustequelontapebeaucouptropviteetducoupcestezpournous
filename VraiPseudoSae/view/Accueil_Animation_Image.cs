@@ -8,8 +8,8 @@ namespace VraiPseudoSae.view
 {
     public class ImagePieceold
     {
-        public Image Element { get; set; }
-        public TranslateTransform Transform { get; set; }
+        public Image Element { get; set; } = null!;
+        public TranslateTransform Transform { get; set; } = null!;
         public double DestX { get; set; }
         public double DestY { get; set; }
         public double Vitesse { get; set; } = 0.1; // Coefficient de fluidité (Lerp)

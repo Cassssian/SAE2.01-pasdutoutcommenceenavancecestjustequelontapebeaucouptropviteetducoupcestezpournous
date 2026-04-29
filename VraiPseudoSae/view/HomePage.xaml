@@ -132,4 +132,4 @@
 
         <ContentControl x:Name="MainContent"/>
     </Grid>
-</Window>
+</Window> 

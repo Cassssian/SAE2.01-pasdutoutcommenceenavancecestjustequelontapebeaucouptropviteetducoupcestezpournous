@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -9,45 +9,38 @@ namespace VraiPseudoSae.Utils.Sprite
 {
     public static class XamlSpriteExporter
     {
-        public static void ExportIfMissing(FrameworkElement element, string outputPath, int pixelWidth, int pixelHeight)
+        /// <summary>
+        /// Rend un Canvas XAML en BitmapImage en mémoire (sans passer par le disque).
+        /// </summary>
+        public static BitmapImage RenderToBitmapImage(FrameworkElement element, int pixelWidth, int pixelHeight)
         {
-            if (File.Exists(outputPath))
-                return;
+            FrameworkElement clone = CloneElement(element, pixelWidth, pixelHeight);
+            clone.Measure(new Size(pixelWidth, pixelHeight));
+            clone.Arrange(new Rect(0, 0, pixelWidth, pixelHeight));
+            clone.UpdateLayout();
 
-            Export(element, outputPath, pixelWidth, pixelHeight);
-        }
-
-        public static void ExportOverwrite(FrameworkElement element, string outputPath, int pixelWidth, int pixelHeight)
-        {
-            Export(element, outputPath, pixelWidth, pixelHeight);
-        }
-
-        private static void Export(FrameworkElement element, string outputPath, int pixelWidth, int pixelHeight)
-        {
-            if (element == null)
-                throw new ArgumentNullException(nameof(element));
-
-            Directory.CreateDirectory(Path.GetDirectoryName(outputPath)!);
-
-            FrameworkElement visualToRender = CloneElement(element, pixelWidth, pixelHeight);
-            visualToRender.Measure(new Size(pixelWidth, pixelHeight));
-            visualToRender.Arrange(new Rect(0, 0, pixelWidth, pixelHeight));
-            visualToRender.UpdateLayout();
-
-            RenderTargetBitmap renderBitmap = new RenderTargetBitmap(
-                pixelWidth,
-                pixelHeight,
-                96,
-                96,
+            RenderTargetBitmap rtb = new RenderTargetBitmap(
+                pixelWidth, pixelHeight,
+                96, 96,
                 PixelFormats.Pbgra32);
+            rtb.Render(clone);
 
-            renderBitmap.Render(visualToRender);
-
+            // Conversion RenderTargetBitmap → BitmapImage (nécessaire pour la DLL)
             PngBitmapEncoder encoder = new PngBitmapEncoder();
-            encoder.Frames.Add(BitmapFrame.Create(renderBitmap));
+            encoder.Frames.Add(BitmapFrame.Create(rtb));
 
-            using FileStream fileStream = new FileStream(outputPath, FileMode.Create, FileAccess.Write);
-            encoder.Save(fileStream);
+            using MemoryStream ms = new MemoryStream();
+            encoder.Save(ms);
+            ms.Seek(0, SeekOrigin.Begin);
+
+            BitmapImage bitmapImage = new BitmapImage();
+            bitmapImage.BeginInit();
+            bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+            bitmapImage.StreamSource = ms;
+            bitmapImage.EndInit();
+            bitmapImage.Freeze(); // Obligatoire pour utilisation cross-thread
+
+            return bitmapImage;
         }
 
         private static FrameworkElement CloneElement(FrameworkElement source, int width, int height)

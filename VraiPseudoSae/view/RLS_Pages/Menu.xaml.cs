@@ -16,7 +16,7 @@ public partial class Menu : UserControl
         InitializeComponent();
     }
 
-    private RLS ParentWindow => Window.GetWindow(this) as RLS;
+    private RLS? ParentWindow => Window.GetWindow(this) as RLS;
     
     private void Btn2P_Click(object sender, RoutedEventArgs e) => ParentWindow?.StartGame(false);
     private void Btn1P_Click(object sender, RoutedEventArgs e) => ParentWindow?.StartGame(true);

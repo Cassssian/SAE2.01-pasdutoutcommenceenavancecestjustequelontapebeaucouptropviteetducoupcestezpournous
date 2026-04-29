@@ -17,8 +17,8 @@ namespace VraiPseudoSae.data.GoalExplosion
             _audio = audio;
         }
 
-        protected Canvas _gameCanvas;
-        protected JsonPakAudioService _audio;
+        protected Canvas? _gameCanvas;
+        protected JsonPakAudioService? _audio;
         /// <summary>
         /// Explosion quand le ballon rentre dans le but gauche (but pour P2).
         /// </summary>

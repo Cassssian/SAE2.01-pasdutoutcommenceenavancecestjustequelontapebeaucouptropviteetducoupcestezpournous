@@ -2,6 +2,8 @@
 using System.Windows;
 using System.Windows.Controls;
 using IUTGame;
+using System.Collections.Generic;
+using System.Windows.Media;
 using VraiPseudoSae.view.RLS_Pages;
 
 namespace VraiPseudoSae.view.hub

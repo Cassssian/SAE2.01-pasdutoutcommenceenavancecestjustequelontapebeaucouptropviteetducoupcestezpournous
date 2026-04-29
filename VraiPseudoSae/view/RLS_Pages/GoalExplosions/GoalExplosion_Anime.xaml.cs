@@ -13,10 +13,9 @@ namespace VraiPseudoSae.view.RLS_Pages.GoalExplosions
     public partial class GoalExplosion_Anime : GoalExplosionBase, IDisposable
     {
         private readonly string _audioKey = "goal_sound/Anime";
-        private readonly string _category = "goal_sound";
         private readonly Random _rng = new Random();
 
-        public GoalExplosion_Anime() : base(null, null)
+        public GoalExplosion_Anime() : base(null!, null!)
         {
             InitializeComponent();
         }
@@ -33,12 +32,12 @@ namespace VraiPseudoSae.view.RLS_Pages.GoalExplosions
             _audio?.Preload(_audioKey, "goal_anime");
         }
 
-        public void PlayLeftGoal()
+        public override void PlayLeftGoal()
         {
             PlayAt(new Point(60, 430));
         }
 
-        public void PlayRightGoal()
+        public override void PlayRightGoal()
         {
             PlayAt(new Point(940, 430));
         }
@@ -99,7 +98,7 @@ namespace VraiPseudoSae.view.RLS_Pages.GoalExplosions
             sbWave.Begin();
 
             // Lancer le son principal via son alias
-            _audio.Play("goal_anime");
+            _audio?.Play("goal_anime");
         }
 
         private void CreateParticles(Point center)
