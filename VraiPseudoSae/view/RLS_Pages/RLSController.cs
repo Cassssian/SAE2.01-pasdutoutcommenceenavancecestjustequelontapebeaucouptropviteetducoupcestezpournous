@@ -164,6 +164,10 @@ namespace VraiPseudoSae.view.RLS_Pages
             c.PutPosition(nextX, nextY);
         }
 
+        //TODO: Rajouter les sons de but/arrêt
+        // Attention pour l'arrêt, vérifier si la balle est tirée par le joueur adverse, et sauvée par le joueur où y'a
+        // la cage, et vérifier aussi avant si la balle passe de l'autre moitié de terrain avant de rejouer un son sous
+        // peine de spam de son
         private void UpdateBall()
         {
             var b = game.Ball;

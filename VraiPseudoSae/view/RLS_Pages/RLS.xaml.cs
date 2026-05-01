@@ -1,10 +1,13 @@
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using IUTGame.WPF;
 using VraiPseudoSae.data.AudioPlayer;
+using VraiPseudoSae.data.GoalExplosion;
 using VraiPseudoSae.data.PakManager;
 using VraiPseudoSae.Utils.Sprite;
+using VraiPseudoSae.view.RLS_Pages.GoalExplosions;
 
 namespace VraiPseudoSae.view.RLS_Pages
 {
@@ -12,6 +15,8 @@ namespace VraiPseudoSae.view.RLS_Pages
     {
         private static readonly PakAudioCatalog Catalog = new();
         private readonly JsonPakAudioService audio = new(Catalog);
+        private GoalExplosionBase explosionBaseP1;
+        private GoalExplosionBase explosionBaseP2;
 
         private RLSGame?   game;
         private WPFScreen? screen;
@@ -21,13 +26,19 @@ namespace VraiPseudoSae.view.RLS_Pages
             InitializeComponent();
             Loaded += (_, _) => Focus();
 
-            Catalog.LoadFromPaks(@"C:\Users\Asus\RiderProjects\VraiPseudoSae201\VraiPseudoSae\Assets\Packs");
-            audio.Load(@"C:\Users\Asus\RiderProjects\VraiPseudoSae201\VraiPseudoSae\data\RLS_Audio\AudioStructure.json");
+            string executionDir = AppDomain.CurrentDomain.BaseDirectory;
+
+            string projectRoot = Path.GetFullPath(Path.Combine(executionDir, "..", "..", ".."));
+
+            string packsPath = Path.Combine(projectRoot, "Assets", "Packs");
+            string audioJsonPath = Path.Combine(projectRoot, "data", "RLS_Audio", "AudioStructure.json");
+
+            Catalog.LoadFromPaks(packsPath);
+            audio.Load(audioJsonPath);
             audio.Preload("car_sound/category/first_jump/jump0001",          "first_jump");
             audio.Preload("car_sound/category/second_jump/jump0003",         "second_jump");
             audio.Preload("car_sound/category/second_jump_movement/jump0002","second_jump_movement");
-
-            GoalExplosionAnime.SetDependencies(GameCanvas, audio);
+            
         }
 
         public void StartGame(bool vsBot)
@@ -44,6 +55,9 @@ namespace VraiPseudoSae.view.RLS_Pages
             game.OnGoalShown  = ShowGoal;
             game.OnGoalHidden = HideGoal;
             game.OnBackToMenu = BackToMenu;
+            
+            EnsureExplosionLoaded(ref explosionBaseP1, GoalExplosionType.AnimeSmoke);
+            EnsureExplosionLoaded(ref explosionBaseP2, GoalExplosionType.Anime);
 
             game.Run();
             Focus();
@@ -58,6 +72,32 @@ namespace VraiPseudoSae.view.RLS_Pages
             SpriteInjector.PreRegister(s, "rls_floor.png", XamlSpriteExporter.RenderToBitmapImage(SpriteFloorSource, 500, 40));
         }
 
+        private void EnsureExplosionLoaded(ref GoalExplosionBase explosionPlayer, GoalExplosionType id)
+        {
+
+            switch (id)
+            {
+                case GoalExplosionType.Anime:
+                    GoalExplosion_Anime goalExplosionAnime = new GoalExplosion_Anime();
+                    goalExplosionAnime.SetDependencies(GameCanvas, audio);
+                    explosionPlayer = goalExplosionAnime;
+                    break;
+
+                case GoalExplosionType.AnimeSmoke:
+                    GoalExplosion_AnimeSmoke goalExplosionAnimeSmoke = new GoalExplosion_AnimeSmoke();
+                    explosionPlayer = goalExplosionAnimeSmoke;
+                    break;
+
+                // TODO: autres cases
+            }
+
+            if (!GoalExplosionLayer.Children.Contains(explosionPlayer))
+            {
+                GoalExplosionLayer.Children.Add(explosionPlayer);
+            }
+        }
+
+        
         // ── HUD + flammes ─────────────────────────────────────────────────
 
         private void RefreshHud()
@@ -79,7 +119,7 @@ namespace VraiPseudoSae.view.RLS_Pages
 
         /// <summary>
         /// Positionne et affiche/cache la flamme d'une voiture.
-        /// La flamme suit X,Y de la voiture, décalée derrière selon FacingDir.
+        /// La flamme suit X, Y de la voiture, décalée derrière selon FacingDir.
         /// </summary>
         private static void UpdateFlame(Canvas flame, RLSCar car)
         {
@@ -104,16 +144,24 @@ namespace VraiPseudoSae.view.RLS_Pages
         {
             GoalText.Text       = message;
             GoalText.Visibility = Visibility.Visible;
-            GoalExplosionAnime.Visibility = Visibility.Visible;
 
-            if (message.Contains("P1")) GoalExplosionAnime.PlayRightGoal();
-            else                        GoalExplosionAnime.PlayLeftGoal();
+            if (message.Contains("P1"))
+            {
+                explosionBaseP1.Visibility = Visibility.Visible;
+                explosionBaseP1.PlayRightGoal();
+            }
+            else
+            {
+                explosionBaseP2.Visibility = Visibility.Visible;
+                explosionBaseP2.PlayLeftGoal();
+            }
         }
 
         private void HideGoal()
         {
             GoalText.Visibility           = Visibility.Collapsed;
-            GoalExplosionAnime.Visibility = Visibility.Collapsed;
+            explosionBaseP1.Visibility = Visibility.Collapsed;
+            explosionBaseP2.Visibility = Visibility.Collapsed;
             RefreshHud();
         }
 
@@ -123,7 +171,8 @@ namespace VraiPseudoSae.view.RLS_Pages
             GameCanvas.Visibility         = Visibility.Collapsed;
             MainMenu.Visibility           = Visibility.Visible;
             GoalText.Visibility           = Visibility.Collapsed;
-            GoalExplosionAnime.Visibility = Visibility.Collapsed;
+            explosionBaseP1.Visibility    = Visibility.Collapsed;
+            explosionBaseP2.Visibility    = Visibility.Collapsed;
             Flame1.Visibility             = Visibility.Collapsed;
             Flame2.Visibility             = Visibility.Collapsed;
         }

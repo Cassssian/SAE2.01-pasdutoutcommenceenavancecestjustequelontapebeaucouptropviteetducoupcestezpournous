@@ -28,7 +28,6 @@ namespace VraiPseudoSae.view.RLS_Pages.GoalExplosions
         public new void SetDependencies(Canvas gameCanvas, JsonPakAudioService audio)
         {
             base.SetDependencies(gameCanvas, audio);
-            // On précharge le son avec l'alias "goal_anime" pour plus de clarté
             _audio?.Preload(_audioKey, "goal_anime");
         }
 

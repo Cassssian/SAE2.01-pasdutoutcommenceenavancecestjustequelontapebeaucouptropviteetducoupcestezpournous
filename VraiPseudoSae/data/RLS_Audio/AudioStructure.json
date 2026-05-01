@@ -1061,5 +1061,221 @@
         "number": ["0001", "0002"]
       }
     ]
-  ]
+  ],
+  "voice_sound":
+    {
+      "goal_sound": [
+        {
+          "stadium": {
+            "Champions": [
+              {
+                "id" : "0001",
+                "pack": "ui-voice.pak",
+                "path": "VoiceOvers/VO_Champions",
+                "number": "0001"
+              },
+              {
+                "id" : "0003",
+                "pack": "ui-voice.pak",
+                "path": "VoiceOvers/VO_Champions",
+                "number": "0003"
+              },
+              {
+                "id" : "0004",
+                "pack": "ui-voice.pak",
+                "path": "VoiceOvers/VO_Champions",
+                "number": "0004"
+              },
+              {
+                "id" : "0010",
+                "pack": "ui-voice.pak",
+                "path": "VoiceOvers/VO_Champions",
+                "number": "0010"
+              },
+              {
+                "id" : "0012",
+                "pack": "ui-voice.pak",
+                "path": "VoiceOvers/VO_Champions",
+                "number": "0012"
+              },
+              {
+                "id" : "0013",
+                "pack": "ui-voice.pak",
+                "path": "VoiceOvers/VO_Champions",
+                "number": "0013"
+              },
+              {
+                "id" : "0015",
+                "pack": "ui-voice.pak",
+                "path": "VoiceOvers/VO_Champions",
+                "number": "0015"
+              },
+              {
+                "id" : "0017",
+                "pack": "ui-voice.pak",
+                "path": "VoiceOvers/VO_Champions",
+                "number": "0017"
+              },
+              {
+                "id" : "0021",
+                "pack": "ui-voice.pak",
+                "path": "VoiceOvers/VO_Champions",
+                "number": "0021"
+              },
+              {
+                "id" : "0026",
+                "pack": "ui-voice.pak",
+                "path": "VoiceOvers/VO_Champions",
+                "number": "0026"
+              }
+            ]
+          }
+        }
+      ],
+      "save_sound": [
+        {
+          "stadium": {
+            "Champions": [
+              {
+                "id" : "0002",
+                "pack": "ui-voice.pak",
+                "path": "VoiceOvers/VO_Champions",
+                "number": "0002"
+              },
+              {
+                "id": "0006",
+                "pack": "ui-voice.pak",
+                "path": "VoiceOvers/VO_Champions",
+                "number": "0006"
+              },
+              {
+                "id": "0007",
+                "pack": "ui-voice.pak",
+                "path": "VoiceOvers/VO_Champions",
+                "number": "0007"
+              },
+              {
+                "id": "0009",
+                "pack": "ui-voice.pak",
+                "path": "VoiceOvers/VO_Champions",
+                "number": "0009"
+              },
+              {
+                "id": "0014",
+                "pack": "ui-voice.pak",
+                "path": "VoiceOvers/VO_Champions",
+                "number": "0014"
+              },
+              {
+                "id": "0016",
+                "pack": "ui-voice.pak",
+                "path": "VoiceOvers/VO_Champions",
+                "number": "0016"
+              },
+              {
+                "id": "0020",
+                "pack": "ui-voice.pak",
+                "path": "VoiceOvers/VO_Champions",
+                "number": "0020"
+              }
+            ]
+          }
+        }
+      ],
+      "overtime_sound": [
+        {
+          "stadium": {
+            "Champions": [
+              {
+                "id" : "0003",
+                "pack": "ui-voice.pak",
+                "path": "VoiceOvers/VO_Champions",
+                "number": "0003"
+              },
+              {
+                "id" : "0008",
+                "pack": "ui-voice.pak",
+                "path": "VoiceOvers/VO_Champions",
+                "number": "0008"
+              },
+              {
+
+              }
+            ]
+          }
+        }
+      ],
+      "end_sound": [
+        {
+          "stadium": {
+            "Champions": [
+              {
+                "id" : "0005",
+                "pack": "ui-voice.pak",
+                "path": "VoiceOvers/VO_Champions",
+                "number": "0005"
+              },
+              {
+                "id" : "0011",
+                "pack": "ui-voice.pak",
+                "path": "VoiceOvers/VO_Champions",
+                "number": "0011"
+              },
+              {
+                "id": "0022",
+                "pack": "ui-voice.pak",
+                "path": "VoiceOvers/VO_Champions",
+                "number": "0022"
+              },
+              {
+                "id": "0025",
+                "pack": "ui-voice.pak",
+                "path": "VoiceOvers/VO_Champions",
+                "number": "0025"
+              }
+            ]
+          }
+        }
+      ],
+      "time_sound": [
+        {
+          "stadium": {
+            "Champions": [
+              {
+                "id" : "30s",
+                "pack": "ui-voice.pak",
+                "path": "VoiceOvers/VO_Champions",
+                "number": "0018"
+              },
+              {
+                "id": "60s",
+                "pack": "ui-voice.pak",
+                "path": "VoiceOvers/VO_Champions",
+                "number": "0024"
+              }
+            ]
+          }
+        }
+      ],
+      "demo_sound": [
+        {
+          "stadium": {
+            "Champions": [
+              {
+                "id" : "0019",
+                "pack": "ui-voice.pak",
+                "path": "VoiceOvers/VO_Champions",
+                "number": "0019"
+              },
+              {
+                "id": "0023",
+                "pack": "ui-voice.pak",
+                "path": "VoiceOvers/VO_Champions",
+                "number": "0023"
+              }
+            ]
+          }
+        }
+      ]
+    }
 }

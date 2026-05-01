@@ -1,4 +1,4 @@
-﻿namespace VraiPseudoSae.data.GoalExplosions
+﻿namespace VraiPseudoSae.data.GoalExplosion
 {
     public enum GoalExplosionType
     {

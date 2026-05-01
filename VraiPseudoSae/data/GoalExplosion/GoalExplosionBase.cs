@@ -3,15 +3,14 @@ using VraiPseudoSae.data.AudioPlayer;
 
 namespace VraiPseudoSae.data.GoalExplosion
 {
-    public class GoalExplosionBase : UserControl
+    public abstract class GoalExplosionBase : UserControl
     {
-        public GoalExplosionBase() { }
-        public GoalExplosionBase(Canvas gameCanvas, JsonPakAudioService audio)
+        protected GoalExplosionBase(Canvas gameCanvas, JsonPakAudioService audio)
         {
             SetDependencies(gameCanvas, audio);
         }
 
-        public void SetDependencies(Canvas gameCanvas, JsonPakAudioService audio)
+        protected void SetDependencies(Canvas gameCanvas, JsonPakAudioService audio)
         {
             _gameCanvas = gameCanvas;
             _audio = audio;

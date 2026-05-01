@@ -1,0 +1,138 @@
+﻿<goalExplosion:GoalExplosionBase x:Class="VraiPseudoSae.view.RLS_Pages.GoalExplosions.GoalExplosion_AnimeSmoke"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:goalExplosion="clr-namespace:VraiPseudoSae.data.GoalExplosion"
+             Width="1000"
+             Height="600"
+             IsHitTestVisible="False"
+             Opacity="1">
+    <Canvas x:Name="Root"
+            Width="1000"
+            Height="600"
+            ClipToBounds="True"
+            IsHitTestVisible="False">
+
+        <!-- flash -->
+        <Ellipse x:Name="FlashCore"
+                 Width="40"
+                 Height="40"
+                 Opacity="0"
+                 StrokeThickness="0">
+            <Ellipse.Fill>
+                <RadialGradientBrush GradientOrigin="0.35,0.35">
+                    <GradientStop Color="#FFFFFFFF" Offset="0"/>
+                    <GradientStop Color="#FFFFB6FF" Offset="0.35"/>
+                    <GradientStop Color="#00C86CFF" Offset="1"/>
+                </RadialGradientBrush>
+            </Ellipse.Fill>
+            <Ellipse.RenderTransform>
+                <ScaleTransform x:Name="FlashScale" CenterX="20" CenterY="20"/>
+            </Ellipse.RenderTransform>
+        </Ellipse>
+
+        <!-- anneau principal -->
+        <Ellipse x:Name="RingMain"
+                 Width="64"
+                 Height="64"
+                 Stroke="#FFF46BFF"
+                 StrokeThickness="8"
+                 Opacity="0">
+            <Ellipse.RenderTransform>
+                <ScaleTransform x:Name="RingMainScale" CenterX="32" CenterY="32"/>
+            </Ellipse.RenderTransform>
+        </Ellipse>
+
+        <!-- anneau secondaire -->
+        <Ellipse x:Name="RingSecondary"
+                 Width="54"
+                 Height="54"
+                 Stroke="#FF6FE8FF"
+                 StrokeThickness="5"
+                 StrokeDashArray="3 2"
+                 Opacity="0">
+            <Ellipse.RenderTransform>
+                <ScaleTransform x:Name="RingSecondaryScale" CenterX="27" CenterY="27"/>
+            </Ellipse.RenderTransform>
+        </Ellipse>
+
+        <!-- fumée douce -->
+        <Ellipse x:Name="Smoke1" Width="110" Height="110" Opacity="0">
+            <Ellipse.Fill>
+                <RadialGradientBrush>
+                    <GradientStop Color="#B06C4C90" Offset="0"/>
+                    <GradientStop Color="#60795CB0" Offset="0.55"/>
+                    <GradientStop Color="#00AA88FF" Offset="1"/>
+                </RadialGradientBrush>
+            </Ellipse.Fill>
+            <Ellipse.RenderTransform>
+                <ScaleTransform x:Name="Smoke1Scale" CenterX="55" CenterY="55"/>
+            </Ellipse.RenderTransform>
+        </Ellipse>
+
+        <Ellipse x:Name="Smoke2" Width="150" Height="150" Opacity="0">
+            <Ellipse.Fill>
+                <RadialGradientBrush>
+                    <GradientStop Color="#905F4A8F" Offset="0"/>
+                    <GradientStop Color="#507A5FB4" Offset="0.6"/>
+                    <GradientStop Color="#00AA88FF" Offset="1"/>
+                </RadialGradientBrush>
+            </Ellipse.Fill>
+            <Ellipse.RenderTransform>
+                <ScaleTransform x:Name="Smoke2Scale" CenterX="75" CenterY="75"/>
+            </Ellipse.RenderTransform>
+        </Ellipse>
+
+        <Ellipse x:Name="Smoke3" Width="190" Height="190" Opacity="0">
+            <Ellipse.Fill>
+                <RadialGradientBrush>
+                    <GradientStop Color="#80524B88" Offset="0"/>
+                    <GradientStop Color="#407D67B8" Offset="0.62"/>
+                    <GradientStop Color="#00AA88FF" Offset="1"/>
+                </RadialGradientBrush>
+            </Ellipse.Fill>
+            <Ellipse.RenderTransform>
+                <ScaleTransform x:Name="Smoke3Scale" CenterX="95" CenterY="95"/>
+            </Ellipse.RenderTransform>
+        </Ellipse>
+
+        <!-- étoiles anime -->
+        <Polygon x:Name="Star1"
+                 Points="10,0 13,7 20,10 13,13 10,20 7,13 0,10 7,7"
+                 Fill="#FFFFE066"
+                 Opacity="0">
+            <Polygon.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform x:Name="Star1Scale" CenterX="10" CenterY="10"/>
+                    <RotateTransform x:Name="Star1Rotate" CenterX="10" CenterY="10"/>
+                </TransformGroup>
+            </Polygon.RenderTransform>
+        </Polygon>
+
+        <Polygon x:Name="Star2"
+                 Points="8,0 10,6 16,8 10,10 8,16 6,10 0,8 6,6"
+                 Fill="#FFFF8AF2"
+                 Opacity="0">
+            <Polygon.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform x:Name="Star2Scale" CenterX="8" CenterY="8"/>
+                    <RotateTransform x:Name="Star2Rotate" CenterX="8" CenterY="8"/>
+                </TransformGroup>
+            </Polygon.RenderTransform>
+        </Polygon>
+
+        <Polygon x:Name="Star3"
+                 Points="8,0 10,6 16,8 10,10 8,16 6,10 0,8 6,6"
+                 Fill="#FF7EE7FF"
+                 Opacity="0">
+            <Polygon.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform x:Name="Star3Scale" CenterX="8" CenterY="8"/>
+                    <RotateTransform x:Name="Star3Rotate" CenterX="8" CenterY="8"/>
+                </TransformGroup>
+            </Polygon.RenderTransform>
+        </Polygon>
+
+        <!-- container pour particules dynamiques -->
+        <Canvas x:Name="ParticlesLayer" Width="1000" Height="600" IsHitTestVisible="False"/>
+    </Canvas>
+</goalExplosion:GoalExplosionBase>

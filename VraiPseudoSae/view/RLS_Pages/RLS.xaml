@@ -75,7 +75,11 @@
             </Canvas>
 
             <!-- Explosions de but -->
-            <ge:GoalExplosion_Anime x:Name="GoalExplosionAnime" Panel.ZIndex="50" Visibility="Collapsed"/>
+            <!-- Slot pour l’explosion courante -->
+            <Canvas x:Name="GoalExplosionLayer"
+                    Width="1000" Height="600"
+                    IsHitTestVisible="False"
+                    Panel.ZIndex="50"/>
         </Canvas>
 
         <!-- ═══════════════════════════════════════════════════════════════
