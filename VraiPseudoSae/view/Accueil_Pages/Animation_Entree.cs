@@ -6,5 +6,6 @@ namespace VraiPseudoSae.view.Accueil_Pages
 {
     internal class Animation_Entree
     {
+
     }
 }
