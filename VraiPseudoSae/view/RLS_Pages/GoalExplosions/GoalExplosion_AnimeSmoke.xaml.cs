@@ -1,11 +1,10 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
-using VraiPseudoSae.data.AudioPlayer;
 using VraiPseudoSae.data.GoalExplosion;
+using VraiPseudoSae.Utils.AudioPlayer;
 
 namespace VraiPseudoSae.view.RLS_Pages.GoalExplosions
 {
@@ -14,19 +13,9 @@ namespace VraiPseudoSae.view.RLS_Pages.GoalExplosions
         private readonly string _audioKey = "goal_sound/AnimeSmoke";
         private readonly Random _rng = new Random();
 
-        public GoalExplosion_AnimeSmoke() : base(null!, null!)
-        {
-            InitializeComponent();
-        }
-
         public GoalExplosion_AnimeSmoke(Canvas gameCanvas, JsonPakAudioService audio) : base(gameCanvas, audio)
         {
             InitializeComponent();
-        }
-
-        public new void SetDependencies(Canvas gameCanvas, JsonPakAudioService audio)
-        {
-            base.SetDependencies(gameCanvas, audio);
             _audio?.Preload(_audioKey, "goal_animesmoke");
         }
 
@@ -54,8 +43,6 @@ namespace VraiPseudoSae.view.RLS_Pages.GoalExplosions
         private void ResetVisualState()
         {
             ParticlesLayer.Children.Clear();
-
-            FlashCore.Opacity = 0;
             RingMain.Opacity = 0;
             RingSecondary.Opacity = 0;
             Smoke1.Opacity = 0;
@@ -64,9 +51,6 @@ namespace VraiPseudoSae.view.RLS_Pages.GoalExplosions
             Star1.Opacity = 0;
             Star2.Opacity = 0;
             Star3.Opacity = 0;
-
-            FlashScale.ScaleX = 1;
-            FlashScale.ScaleY = 1;
 
             RingMainScale.ScaleX = 1;
             RingMainScale.ScaleY = 1;
@@ -98,9 +82,6 @@ namespace VraiPseudoSae.view.RLS_Pages.GoalExplosions
 
         private void PositionElements(Point center)
         {
-            Canvas.SetLeft(FlashCore, center.X - 20);
-            Canvas.SetTop(FlashCore, center.Y - 20);
-
             Canvas.SetLeft(RingMain, center.X - 32);
             Canvas.SetTop(RingMain, center.Y - 32);
 
@@ -130,47 +111,6 @@ namespace VraiPseudoSae.view.RLS_Pages.GoalExplosions
         {
             var easeOut = new CubicEase { EasingMode = EasingMode.EaseOut };
             var easeSoft = new QuadraticEase { EasingMode = EasingMode.EaseOut };
-
-            var flashStoryboard = new Storyboard();
-
-            var flashOpacityIn = new DoubleAnimation
-            {
-                From = 0,
-                To = 1,
-                Duration = TimeSpan.FromMilliseconds(90)
-            };
-            Storyboard.SetTarget(flashOpacityIn, FlashCore);
-            Storyboard.SetTargetProperty(flashOpacityIn, new PropertyPath("Opacity"));
-            flashStoryboard.Children.Add(flashOpacityIn);
-
-            var flashOpacityOut = new DoubleAnimation
-            {
-                From = 1,
-                To = 0,
-                BeginTime = TimeSpan.FromMilliseconds(90),
-                Duration = TimeSpan.FromMilliseconds(220)
-            };
-            Storyboard.SetTarget(flashOpacityOut, FlashCore);
-            Storyboard.SetTargetProperty(flashOpacityOut, new PropertyPath("Opacity"));
-            flashStoryboard.Children.Add(flashOpacityOut);
-
-            var flashScaleX = new DoubleAnimation
-            {
-                From = 0.2,
-                To = 5.5,
-                Duration = TimeSpan.FromMilliseconds(300),
-                EasingFunction = easeOut
-            };
-            Storyboard.SetTarget(flashScaleX, FlashScale);
-            Storyboard.SetTargetProperty(flashScaleX, new PropertyPath("ScaleX"));
-            flashStoryboard.Children.Add(flashScaleX);
-
-            var flashScaleY = flashScaleX.Clone();
-            Storyboard.SetTarget(flashScaleY, FlashScale);
-            Storyboard.SetTargetProperty(flashScaleY, new PropertyPath("ScaleY"));
-            flashStoryboard.Children.Add(flashScaleY);
-
-            flashStoryboard.Begin();
 
             var ringStoryboard = new Storyboard();
 

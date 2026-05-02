@@ -5,12 +5,6 @@
              Width="1000" Height="600"
              IsHitTestVisible="False">
     <Canvas x:Name="RootCanvas" Width="1000" Height="600">
-        <!-- Flash plein écran -->
-        <Rectangle x:Name="Flash"
-                   Width="1000" Height="600"
-                   Fill="White"
-                   Opacity="0" />
-
         <!-- Onde circulaire -->
         <Ellipse x:Name="Wave"
                  Width="40" Height="40"

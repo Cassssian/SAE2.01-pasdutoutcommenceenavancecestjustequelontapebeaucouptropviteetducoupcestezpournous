@@ -1,5 +1,5 @@
 ﻿using System.Windows.Controls;
-using VraiPseudoSae.data.AudioPlayer;
+using VraiPseudoSae.Utils.AudioPlayer;
 
 namespace VraiPseudoSae.data.GoalExplosion
 {

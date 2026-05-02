@@ -1,0 +1,154 @@
+﻿<goalExplosion:GoalExplosionBase x:Class="VraiPseudoSae.view.RLS_Pages.GoalExplosions.GoalExplosion_B89"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:goalExplosion="clr-namespace:VraiPseudoSae.data.GoalExplosion"
+             Width="1000"
+             Height="600"
+             IsHitTestVisible="False"
+             Opacity="1">
+    <Canvas x:Name="Root"
+            Width="1000"
+            Height="600"
+            ClipToBounds="True"
+            IsHitTestVisible="False">
+
+        <!-- noyau -->
+        <Ellipse x:Name="CoreFlash"
+                 Width="34"
+                 Height="34"
+                 Opacity="0"
+                 StrokeThickness="0">
+            <Ellipse.Fill>
+                <RadialGradientBrush GradientOrigin="0.35,0.35">
+                    <GradientStop Color="#FFFFFFFF" Offset="0"/>
+                    <GradientStop Color="#FFFDF4C8" Offset="0.35"/>
+                    <GradientStop Color="#00FFFFFF" Offset="1"/>
+                </RadialGradientBrush>
+            </Ellipse.Fill>
+            <Ellipse.RenderTransform>
+                <ScaleTransform x:Name="CoreFlashScale" CenterX="17" CenterY="17"/>
+            </Ellipse.RenderTransform>
+        </Ellipse>
+
+        <!-- anneau dur -->
+        <Ellipse x:Name="ShockRing"
+                 Width="70"
+                 Height="70"
+                 Stroke="#FFF7F7F7"
+                 StrokeThickness="9"
+                 Opacity="0">
+            <Ellipse.RenderTransform>
+                <ScaleTransform x:Name="ShockRingScale" CenterX="35" CenterY="35"/>
+            </Ellipse.RenderTransform>
+        </Ellipse>
+
+        <!-- éclats fixes -->
+        <Rectangle x:Name="ShardA"
+                   Width="12"
+                   Height="90"
+                   RadiusX="4"
+                   RadiusY="4"
+                   Fill="#FFFFFFFF"
+                   Opacity="0">
+            <Rectangle.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform x:Name="ShardAScale" CenterX="6" CenterY="45"/>
+                    <RotateTransform x:Name="ShardARotate" Angle="0" CenterX="6" CenterY="45"/>
+                </TransformGroup>
+            </Rectangle.RenderTransform>
+        </Rectangle>
+
+        <Rectangle x:Name="ShardB"
+                   Width="10"
+                   Height="70"
+                   RadiusX="4"
+                   RadiusY="4"
+                   Fill="#FFF7D774"
+                   Opacity="0">
+            <Rectangle.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform x:Name="ShardBScale" CenterX="5" CenterY="35"/>
+                    <RotateTransform x:Name="ShardBRotate" Angle="0" CenterX="5" CenterY="35"/>
+                </TransformGroup>
+            </Rectangle.RenderTransform>
+        </Rectangle>
+
+        <Rectangle x:Name="ShardC"
+                   Width="10"
+                   Height="80"
+                   RadiusX="4"
+                   RadiusY="4"
+                   Fill="#FFFF9A3C"
+                   Opacity="0">
+            <Rectangle.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform x:Name="ShardCScale" CenterX="5" CenterY="40"/>
+                    <RotateTransform x:Name="ShardCRotate" Angle="0" CenterX="5" CenterY="40"/>
+                </TransformGroup>
+            </Rectangle.RenderTransform>
+        </Rectangle>
+
+        <Rectangle x:Name="ShardD"
+                   Width="8"
+                   Height="62"
+                   RadiusX="4"
+                   RadiusY="4"
+                   Fill="#FFFFFFFF"
+                   Opacity="0">
+            <Rectangle.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform x:Name="ShardDScale" CenterX="4" CenterY="31"/>
+                    <RotateTransform x:Name="ShardDRotate" Angle="0" CenterX="4" CenterY="31"/>
+                </TransformGroup>
+            </Rectangle.RenderTransform>
+        </Rectangle>
+
+        <!-- croix d’impact -->
+        <Rectangle x:Name="CrossH"
+                   Width="120"
+                   Height="10"
+                   RadiusX="5"
+                   RadiusY="5"
+                   Fill="#CCFFFFFF"
+                   Opacity="0">
+            <Rectangle.RenderTransform>
+                <ScaleTransform x:Name="CrossHScale" CenterX="60" CenterY="5"/>
+            </Rectangle.RenderTransform>
+        </Rectangle>
+
+        <Rectangle x:Name="CrossV"
+                   Width="10"
+                   Height="120"
+                   RadiusX="5"
+                   RadiusY="5"
+                   Fill="#CCFFF1B0"
+                   Opacity="0">
+            <Rectangle.RenderTransform>
+                <ScaleTransform x:Name="CrossVScale" CenterX="5" CenterY="60"/>
+            </Rectangle.RenderTransform>
+        </Rectangle>
+
+        <!-- nuage de poussée discret -->
+        <Ellipse x:Name="DustBack"
+                 Width="140"
+                 Height="80"
+                 Opacity="0">
+            <Ellipse.Fill>
+                <RadialGradientBrush>
+                    <GradientStop Color="#B0FFF0C0" Offset="0"/>
+                    <GradientStop Color="#50E1A84A" Offset="0.65"/>
+                    <GradientStop Color="#00E1A84A" Offset="1"/>
+                </RadialGradientBrush>
+            </Ellipse.Fill>
+            <Ellipse.RenderTransform>
+                <ScaleTransform x:Name="DustBackScale" CenterX="70" CenterY="40"/>
+            </Ellipse.RenderTransform>
+        </Ellipse>
+
+        <!-- particules dynamiques -->
+        <Canvas x:Name="ParticlesLayer"
+                Width="1000"
+                Height="600"
+                IsHitTestVisible="False"/>
+    </Canvas>
+</goalExplosion:GoalExplosionBase>

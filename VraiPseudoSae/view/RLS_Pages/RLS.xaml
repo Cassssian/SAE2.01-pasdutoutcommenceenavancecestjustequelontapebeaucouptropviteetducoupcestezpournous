@@ -2,7 +2,6 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:VraiPseudoSae.view.RLS_Pages"
-        xmlns:ge="clr-namespace:VraiPseudoSae.view.RLS_Pages.GoalExplosions"
         Title="Rocket League 2D" 
         Width="1020" Height="640"
         SizeToContent="WidthAndHeight"
@@ -80,6 +79,55 @@
                     Width="1000" Height="600"
                     IsHitTestVisible="False"
                     Panel.ZIndex="50"/>
+            
+            <!-- FLASH GOAL -->
+            <Rectangle x:Name="GoalFlashWhite"
+                       Width="1000"
+                       Height="520"
+                       Canvas.Left="0"
+                       Canvas.Top="0"
+                       Fill="#FFFFFFFF"
+                       Opacity="0"
+                       IsHitTestVisible="False"
+                       Panel.ZIndex="180"/>
+
+            <Rectangle x:Name="GoalFlashPowder"
+                       Width="1000"
+                       Height="520"
+                       Canvas.Left="0"
+                       Canvas.Top="0"
+                       Opacity="0"
+                       IsHitTestVisible="False"
+                       Panel.ZIndex="181"
+                       SnapsToDevicePixels="True"
+                       RenderOptions.BitmapScalingMode="HighQuality">
+                <Rectangle.Fill>
+                    <SolidColorBrush x:Name="GoalFlashPowderFill" Color="#FFFF4FA3"/>
+                </Rectangle.Fill>
+
+                <Rectangle.OpacityMask>
+                    <RadialGradientBrush x:Name="GoalFlashPowderMaskBrush"
+                                         MappingMode="RelativeToBoundingBox"
+                                         Center="0.06,0.83"
+                                         GradientOrigin="0.06,0.83"
+                                         RadiusX="0.03"
+                                         RadiusY="0.06"
+                                         SpreadMethod="Pad">
+                        <GradientStop Color="#FF000000" Offset="0.00"/>
+                        <GradientStop Color="#FF000000" Offset="0.04"/>
+                        <GradientStop Color="#F6000000" Offset="0.08"/>
+                        <GradientStop Color="#E4000000" Offset="0.12"/>
+                        <GradientStop Color="#C8000000" Offset="0.18"/>
+                        <GradientStop Color="#A0000000" Offset="0.26"/>
+                        <GradientStop Color="#76000000" Offset="0.36"/>
+                        <GradientStop Color="#4A000000" Offset="0.50"/>
+                        <GradientStop Color="#22000000" Offset="0.68"/>
+                        <GradientStop Color="#08000000" Offset="0.84"/>
+                        <GradientStop Color="#00000000" Offset="1.00"/>
+                    </RadialGradientBrush>
+                </Rectangle.OpacityMask>
+            </Rectangle>
+            
         </Canvas>
 
         <!-- ═══════════════════════════════════════════════════════════════

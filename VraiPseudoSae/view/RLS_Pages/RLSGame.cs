@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Input;
 using IUTGame;
-using VraiPseudoSae.data.AudioPlayer;
+using VraiPseudoSae.Utils.AudioPlayer;
 
 namespace VraiPseudoSae.view.RLS_Pages
 {
@@ -95,7 +95,7 @@ namespace VraiPseudoSae.view.RLS_Pages
         public void ShowGoal(string message)
         {
             GoalPaused = true;
-            GoalTimer  = 90;
+            GoalTimer  = 150;
             OnGoalShown?.Invoke(message);
         }
 

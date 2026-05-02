@@ -12,24 +12,6 @@
             ClipToBounds="True"
             IsHitTestVisible="False">
 
-        <!-- flash -->
-        <Ellipse x:Name="FlashCore"
-                 Width="40"
-                 Height="40"
-                 Opacity="0"
-                 StrokeThickness="0">
-            <Ellipse.Fill>
-                <RadialGradientBrush GradientOrigin="0.35,0.35">
-                    <GradientStop Color="#FFFFFFFF" Offset="0"/>
-                    <GradientStop Color="#FFFFB6FF" Offset="0.35"/>
-                    <GradientStop Color="#00C86CFF" Offset="1"/>
-                </RadialGradientBrush>
-            </Ellipse.Fill>
-            <Ellipse.RenderTransform>
-                <ScaleTransform x:Name="FlashScale" CenterX="20" CenterY="20"/>
-            </Ellipse.RenderTransform>
-        </Ellipse>
-
         <!-- anneau principal -->
         <Ellipse x:Name="RingMain"
                  Width="64"

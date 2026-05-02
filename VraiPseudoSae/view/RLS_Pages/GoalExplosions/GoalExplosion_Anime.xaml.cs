@@ -1,12 +1,10 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
-using VraiPseudoSae.data.AudioPlayer;
 using VraiPseudoSae.data.GoalExplosion;
-using VraiPseudoSae.data.PakManager;
+using VraiPseudoSae.Utils.AudioPlayer;
 
 namespace VraiPseudoSae.view.RLS_Pages.GoalExplosions
 {
@@ -15,19 +13,9 @@ namespace VraiPseudoSae.view.RLS_Pages.GoalExplosions
         private readonly string _audioKey = "goal_sound/Anime";
         private readonly Random _rng = new Random();
 
-        public GoalExplosion_Anime() : base(null!, null!)
-        {
-            InitializeComponent();
-        }
-
         public GoalExplosion_Anime(Canvas gameCanvas, JsonPakAudioService audio) : base(gameCanvas, audio)
         {
             InitializeComponent();
-        }
-
-        public new void SetDependencies(Canvas gameCanvas, JsonPakAudioService audio)
-        {
-            base.SetDependencies(gameCanvas, audio);
             _audio?.Preload(_audioKey, "goal_anime");
         }
 
@@ -49,21 +37,6 @@ namespace VraiPseudoSae.view.RLS_Pages.GoalExplosions
 
             // Créer quelques particules autour du centre
             CreateParticles(center);
-
-            // Animation flash
-            var flashStoryboard = new Storyboard();
-            var flashAnim = new DoubleAnimation
-            {
-                From = 0,
-                To = 1,
-                Duration = TimeSpan.FromMilliseconds(80),
-                AutoReverse = true,
-                EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseOut }
-            };
-            Storyboard.SetTarget(flashAnim, Flash);
-            Storyboard.SetTargetProperty(flashAnim, new PropertyPath("Opacity"));
-            flashStoryboard.Children.Add(flashAnim);
-            flashStoryboard.Begin();
 
             // Animation onde
             var sbWave = new Storyboard();
