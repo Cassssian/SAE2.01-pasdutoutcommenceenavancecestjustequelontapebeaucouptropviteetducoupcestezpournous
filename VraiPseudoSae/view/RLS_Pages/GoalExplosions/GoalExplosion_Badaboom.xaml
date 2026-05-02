@@ -1,0 +1,201 @@
+﻿<goalExplosion:GoalExplosionBase x:Class="VraiPseudoSae.view.RLS_Pages.GoalExplosions.GoalExplosion_Badaboom"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:goalExplosion="clr-namespace:VraiPseudoSae.data.GoalExplosion"
+             Width="1000"
+             Height="600"
+             IsHitTestVisible="False">
+    <Canvas x:Name="Root"
+            Width="1000"
+            Height="600"
+            ClipToBounds="True"
+            IsHitTestVisible="False">
+
+        <!-- étoile dentelée centrale -->
+        <Polygon x:Name="MainBurst"
+                 Points="-40,0 -15,-30 10,-40 40,-25 35,10 5,40 -25,35 -45,10"
+                 Fill="#FFFFC400"
+                 Stroke="#FF111111"
+                 StrokeThickness="5"
+                 Opacity="0"
+                 RenderTransformOrigin="0.5,0.5">
+            <Polygon.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform x:Name="MainBurstScale" ScaleX="0.2" ScaleY="0.2"/>
+                    <RotateTransform x:Name="MainBurstRotate" Angle="0"/>
+                </TransformGroup>
+            </Polygon.RenderTransform>
+        </Polygon>
+
+        <!-- barres d'impact diagonales -->
+        <Rectangle x:Name="ImpactBarA"
+                   Width="110"
+                   Height="14"
+                   Fill="#FFFFF59D"
+                   Stroke="#FF111111"
+                   StrokeThickness="3"
+                   RadiusX="4"
+                   RadiusY="4"
+                   Opacity="0"
+                   RenderTransformOrigin="0.5,0.5">
+            <Rectangle.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform x:Name="ImpactBarAScale" ScaleX="0.2" ScaleY="0.2"/>
+                    <RotateTransform x:Name="ImpactBarARotate" Angle="-22"/>
+                </TransformGroup>
+            </Rectangle.RenderTransform>
+        </Rectangle>
+
+        <Rectangle x:Name="ImpactBarB"
+                   Width="110"
+                   Height="14"
+                   Fill="#FFFFF59D"
+                   Stroke="#FF111111"
+                   StrokeThickness="3"
+                   RadiusX="4"
+                   RadiusY="4"
+                   Opacity="0"
+                   RenderTransformOrigin="0.5,0.5">
+            <Rectangle.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform x:Name="ImpactBarBScale" ScaleX="0.2" ScaleY="0.2"/>
+                    <RotateTransform x:Name="ImpactBarBRotate" Angle="28"/>
+                </TransformGroup>
+            </Rectangle.RenderTransform>
+        </Rectangle>
+
+        <!-- gros éclats triangulaires -->
+        <Polygon x:Name="Shard1"
+                 Points="0,-26 10,0 -4,26 -20,4"
+                 Fill="#FFFFAB40"
+                 Stroke="#FF111111"
+                 StrokeThickness="3"
+                 Opacity="0"
+                 RenderTransformOrigin="0.5,0.5">
+            <Polygon.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform x:Name="Shard1Scale" ScaleX="0.25" ScaleY="0.25"/>
+                    <RotateTransform x:Name="Shard1Rotate" Angle="-20"/>
+                </TransformGroup>
+            </Polygon.RenderTransform>
+        </Polygon>
+
+        <Polygon x:Name="Shard2"
+                 Points="0,-30 16,-4 20,22 -8,26 -22,0"
+                 Fill="#FFFF6F00"
+                 Stroke="#FF111111"
+                 StrokeThickness="3"
+                 Opacity="0"
+                 RenderTransformOrigin="0.5,0.5">
+            <Polygon.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform x:Name="Shard2Scale" ScaleX="0.25" ScaleY="0.25"/>
+                    <RotateTransform x:Name="Shard2Rotate" Angle="40"/>
+                </TransformGroup>
+            </Polygon.RenderTransform>
+        </Polygon>
+
+        <Polygon x:Name="Shard3"
+                 Points="0,-24 18,-6 14,18 -8,24 -18,2"
+                 Fill="#FFFF8A65"
+                 Stroke="#FF111111"
+                 StrokeThickness="3"
+                 Opacity="0"
+                 RenderTransformOrigin="0.5,0.5">
+            <Polygon.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform x:Name="Shard3Scale" ScaleX="0.25" ScaleY="0.25"/>
+                    <RotateTransform x:Name="Shard3Rotate" Angle="130"/>
+                </TransformGroup>
+            </Polygon.RenderTransform>
+        </Polygon>
+
+        <Polygon x:Name="Shard4"
+                 Points="0,-22 16,-2 10,18 -10,24 -20,4"
+                 Fill="#FFFFB74D"
+                 Stroke="#FF111111"
+                 StrokeThickness="3"
+                 Opacity="0"
+                 RenderTransformOrigin="0.5,0.5">
+            <Polygon.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform x:Name="Shard4Scale" ScaleX="0.25" ScaleY="0.25"/>
+                    <RotateTransform x:Name="Shard4Rotate" Angle="-120"/>
+                </TransformGroup>
+            </Polygon.RenderTransform>
+        </Polygon>
+
+        <!-- petites étoiles accent -->
+        <Polygon x:Name="StarA"
+                 Points="0,-10 3,-3 10,0 3,3 0,10 -3,3 -10,0 -3,-3"
+                 Fill="#FFFFFF8D"
+                 Stroke="#FF111111"
+                 StrokeThickness="2"
+                 Opacity="0"
+                 RenderTransformOrigin="0.5,0.5">
+            <Polygon.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform x:Name="StarAScale" ScaleX="0.3" ScaleY="0.3"/>
+                    <RotateTransform x:Name="StarARotate" Angle="0"/>
+                </TransformGroup>
+            </Polygon.RenderTransform>
+        </Polygon>
+
+        <Polygon x:Name="StarB"
+                 Points="0,-10 3,-3 10,0 3,3 0,10 -3,3 -10,0 -3,-3"
+                 Fill="#FFFFF9C4"
+                 Stroke="#FF111111"
+                 StrokeThickness="2"
+                 Opacity="0"
+                 RenderTransformOrigin="0.5,0.5">
+            <Polygon.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform x:Name="StarBScale" ScaleX="0.3" ScaleY="0.3"/>
+                    <RotateTransform x:Name="StarBRotate" Angle="0"/>
+                </TransformGroup>
+            </Polygon.RenderTransform>
+        </Polygon>
+
+        <!-- texte BADABOOM -->
+        <Canvas x:Name="BoomTextHost"
+                Width="260"
+                Height="110"
+                Opacity="0"
+                IsHitTestVisible="False"
+                RenderTransformOrigin="0.5,0.5">
+            <Canvas.RenderTransform>
+                <TranslateTransform x:Name="BoomTextHostTranslate"/>
+            </Canvas.RenderTransform>
+
+            <TextBlock x:Name="BoomText"
+                       Width="260"
+                       TextAlignment="Center"
+                       Text="BADABOOM!"
+                       FontSize="40"
+                       FontWeight="Black"
+                       Foreground="#FFFFF176"
+                       Opacity="1"
+                       RenderTransformOrigin="0.5,0.5">
+                <TextBlock.Effect>
+                    <DropShadowEffect Color="#FF000000"
+                                      BlurRadius="0"
+                                      ShadowDepth="0"
+                                      Opacity="1"/>
+                </TextBlock.Effect>
+                <TextBlock.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform x:Name="BoomTextScale" ScaleX="0.2" ScaleY="0.2"/>
+                        <SkewTransform x:Name="BoomTextSkew" AngleX="-18" AngleY="0"/>
+                        <RotateTransform x:Name="BoomTextRotate" Angle="-10"/>
+                    </TransformGroup>
+                </TextBlock.RenderTransform>
+            </TextBlock>
+        </Canvas>
+
+        <!-- couche particules dynamiques -->
+        <Canvas x:Name="ParticlesLayer"
+                Width="1000"
+                Height="600"
+                IsHitTestVisible="False"/>
+    </Canvas>
+</goalExplosion:GoalExplosionBase>
