@@ -137,6 +137,12 @@ namespace VraiPseudoSae.view.RLS_Pages.GoalExplosions
             }
         }
 
+        public override GoalExplosionType ToType()
+        {
+            return GoalExplosionType.Anime;
+            
+        }
+
         public void Dispose()
         {
             // Rien de spécial ici pour l’instant

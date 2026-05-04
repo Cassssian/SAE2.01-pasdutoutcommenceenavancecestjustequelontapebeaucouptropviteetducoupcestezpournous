@@ -442,6 +442,11 @@ namespace VraiPseudoSae.view.RLS_Pages.GoalExplosions
 
         #endregion
 
+        public override GoalExplosionType ToType()
+        {
+            return GoalExplosionType.Badaboom;
+        }
+
         public void Dispose()
         {
             // rien de spécial à libérer pour le moment
