@@ -46,4 +46,8 @@
       </Reference>
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="view\images_drop\decors\" />
+    </ItemGroup>
+
 </Project>
