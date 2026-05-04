@@ -64,14 +64,16 @@ namespace VraiPseudoSae.view.RLS_Pages
             screen = new WPFScreen(GameCanvas);
             InjectSprites(screen);
 
-            game = new RLSGame(screen, "Resources/Sprites", "Resources/Sounds", audio, vsBot);
-            game.OnHudRefresh = RefreshHud;
-            game.OnGoalShown  = ShowGoal;
-            game.OnGoalHidden = HideGoal;
-            game.OnBackToMenu = BackToMenu;
-            
-            EnsureExplosionLoaded(ref explosionBaseP1, GoalExplosionType.AnimeSmoke);
-            EnsureExplosionLoaded(ref explosionBaseP2, GoalExplosionType.B89);
+            game = new RLSGame(screen, "Resources/Sprites", "Resources/Sounds", audio, vsBot)
+            {
+                OnHudRefresh = RefreshHud,
+                OnGoalShown = ShowGoal,
+                OnGoalHidden = HideGoal,
+                OnBackToMenu = BackToMenu
+            };
+ 
+            EnsureExplosionLoaded(ref explosionBaseP2, GoalExplosionType.Batman);
+            EnsureExplosionLoaded(ref explosionBaseP1, GoalExplosionType.Baseball);
 
             game.Run();
             Focus();
@@ -94,7 +96,7 @@ namespace VraiPseudoSae.view.RLS_Pages
             SpriteInjector.PreRegister(s, "rls_floor.png", XamlSpriteExporter.RenderToBitmapImage(SpriteFloorSource, 500, 40));
         }
 
-        private void EnsureExplosionLoaded(ref GoalExplosionBase explosionPlayer, GoalExplosionType id)
+        private void EnsureExplosionLoaded(ref GoalExplosionBase? explosionPlayer, GoalExplosionType id)
         {
 
             switch (id)
@@ -115,12 +117,20 @@ namespace VraiPseudoSae.view.RLS_Pages
                     explosionPlayer = goalExplosionB89;
                     break;
                 case GoalExplosionType.Badaboom:
+                    GoalExplosion_Badaboom goalExplosionBadaboom = new GoalExplosion_Badaboom(GameCanvas, audio);
+                    explosionPlayer = goalExplosionBadaboom;
                     break;
                 case GoalExplosionType.Ballistic:
+                    GoalExplosion_Ballistic goalExplosionBallistic = new GoalExplosion_Ballistic(GameCanvas, audio);
+                    explosionPlayer = goalExplosionBallistic;
                     break;
                 case GoalExplosionType.Baseball:
+                    GoalExplosion_Baseball goalExplosionBaseball = new GoalExplosion_Baseball(GameCanvas, audio);
+                    explosionPlayer = goalExplosionBaseball;
                     break;
                 case GoalExplosionType.Batman:
+                    GoalExplosion_Batman goalExplosionBatman = new GoalExplosion_Batman(GameCanvas, audio);
+                    explosionPlayer = goalExplosionBatman;
                     break;
                 case GoalExplosionType.Bats:
                     break;
@@ -334,23 +344,26 @@ namespace VraiPseudoSae.view.RLS_Pages
 
             if (message.Contains("P1"))
             {
+                GoalText.Visibility = explosionBaseP1!.ToType() != GoalExplosionType.Batman ? Visibility.Visible : Visibility.Collapsed;
                 goalFlashController?.PlayP1GoalFlash();
-                explosionBaseP1.Visibility = Visibility.Visible;
-                explosionBaseP1.PlayRightGoal();
+                explosionBaseP1!.Visibility = Visibility.Visible;
+                explosionBaseP1!.PlayRightGoal();
             }
             else
             {
+                GoalText.Visibility = explosionBaseP2!.ToType() != GoalExplosionType.Batman ? Visibility.Visible : Visibility.Collapsed;
                 goalFlashController?.PlayP2GoalFlash();
-                explosionBaseP2.Visibility = Visibility.Visible;
-                explosionBaseP2.PlayLeftGoal();
+                explosionBaseP2!.Visibility = Visibility.Visible;
+                explosionBaseP2!.PlayLeftGoal();
+
             }
         }
 
         private void HideGoal()
         {
             GoalText.Visibility           = Visibility.Collapsed;
-            explosionBaseP1.Visibility = Visibility.Collapsed;
-            explosionBaseP2.Visibility = Visibility.Collapsed;
+            explosionBaseP1!.Visibility = Visibility.Collapsed;
+            explosionBaseP2!.Visibility = Visibility.Collapsed;
             RefreshHud();
         }
 
@@ -360,8 +373,8 @@ namespace VraiPseudoSae.view.RLS_Pages
             GameCanvas.Visibility         = Visibility.Collapsed;
             MainMenu.Visibility           = Visibility.Visible;
             GoalText.Visibility           = Visibility.Collapsed;
-            explosionBaseP1.Visibility    = Visibility.Collapsed;
-            explosionBaseP2.Visibility    = Visibility.Collapsed;
+            explosionBaseP1!.Visibility    = Visibility.Collapsed;
+            explosionBaseP2!.Visibility    = Visibility.Collapsed;
             Flame1.Visibility             = Visibility.Collapsed;
             Flame2.Visibility             = Visibility.Collapsed;
         }

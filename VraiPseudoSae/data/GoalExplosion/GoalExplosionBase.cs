@@ -33,5 +33,10 @@ namespace VraiPseudoSae.data.GoalExplosion
         {
             return;
         }
+
+        public virtual GoalExplosionType ToType()
+        {
+            return GoalExplosionType.NoType;
+        }
     }
 }

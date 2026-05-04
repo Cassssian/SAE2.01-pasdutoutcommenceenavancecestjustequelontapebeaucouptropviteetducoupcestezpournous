@@ -344,6 +344,11 @@ namespace VraiPseudoSae.view.RLS_Pages.GoalExplosions
             target.BeginAnimation(Canvas.TopProperty, da);
         }
 
+        public override GoalExplosionType ToType()
+        {
+            return GoalExplosionType.B89;
+        }    
+        
         public void Dispose()
         {
             // Rien de spécial ici pour l’instant

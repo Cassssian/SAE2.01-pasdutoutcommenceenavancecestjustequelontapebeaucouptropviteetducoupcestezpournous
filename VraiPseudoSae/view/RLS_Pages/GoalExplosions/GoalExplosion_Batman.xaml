@@ -1,0 +1,240 @@
+﻿<goalExplosion:GoalExplosionBase x:Class="VraiPseudoSae.view.RLS_Pages.GoalExplosions.GoalExplosion_Batman"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:goalExplosion="clr-namespace:VraiPseudoSae.data.GoalExplosion"
+             Width="1000"
+             Height="600"
+             IsHitTestVisible="False">
+    <Canvas x:Name="Root"
+            Width="1000"
+            Height="600"
+            ClipToBounds="True"
+            Background="Transparent"
+            IsHitTestVisible="False">
+
+        <!-- FOND -->
+        <Rectangle x:Name="NightFade"
+                   Width="1000"
+                   Height="600"
+                   Opacity="0"
+                   Visibility="Collapsed">
+            <Rectangle.Fill>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <GradientStop Color="#FF0E1028" Offset="0"/>
+                    <GradientStop Color="#FF181B3D" Offset="0.55"/>
+                    <GradientStop Color="#FF090A16" Offset="1"/>
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+
+        <!-- LUNE -->
+        <Ellipse x:Name="Moon"
+                 Width="180"
+                 Height="180"
+                 Canvas.Left="710"
+                 Canvas.Top="55"
+                 Fill="#FFF4D35E"
+                 Stroke="#66FFF8D6"
+                 StrokeThickness="3"
+                 Opacity="0"
+                 Visibility="Collapsed">
+            <Ellipse.Effect>
+                <DropShadowEffect BlurRadius="35" ShadowDepth="0" Color="#FFF4D35E" Opacity="0.55"/>
+            </Ellipse.Effect>
+        </Ellipse>
+
+        <!-- SKYLINE LOIN -->
+        <Canvas x:Name="BackBuildings" Visibility="Collapsed" Opacity="0">
+            <Rectangle Width="95" Height="160" Fill="#FF1E224A" Canvas.Left="20" Canvas.Top="300"/>
+            <Rectangle Width="120" Height="210" Fill="#FF242856" Canvas.Left="95" Canvas.Top="250"/>
+            <Rectangle Width="110" Height="140" Fill="#FF202349" Canvas.Left="210" Canvas.Top="320"/>
+            <Rectangle Width="145" Height="250" Fill="#FF262B61" Canvas.Left="295" Canvas.Top="210"/>
+            <Rectangle Width="90" Height="170" Fill="#FF1C2144" Canvas.Left="430" Canvas.Top="290"/>
+            <Rectangle Width="125" Height="225" Fill="#FF242A58" Canvas.Left="510" Canvas.Top="235"/>
+            <Rectangle Width="105" Height="155" Fill="#FF1F244B" Canvas.Left="640" Canvas.Top="305"/>
+            <Rectangle Width="130" Height="240" Fill="#FF25295A" Canvas.Left="725" Canvas.Top="220"/>
+            <Rectangle Width="120" Height="175" Fill="#FF1E224A" Canvas.Left="850" Canvas.Top="285"/>
+        </Canvas>
+
+        <!-- SKYLINE AVANT -->
+        <Canvas x:Name="FrontBuildings" Visibility="Collapsed" Opacity="0">
+            <Rectangle Width="140" Height="240" Fill="#FF0C1028" Canvas.Left="0" Canvas.Top="360"/>
+            <Rectangle Width="130" Height="315" Fill="#FF0A0D21" Canvas.Left="90" Canvas.Top="285"/>
+            <Rectangle Width="110" Height="260" Fill="#FF121733" Canvas.Left="205" Canvas.Top="340"/>
+            <Rectangle Width="160" Height="350" Fill="#FF090C1E" Canvas.Left="290" Canvas.Top="250"/>
+            <Rectangle Width="105" Height="230" Fill="#FF0E1228" Canvas.Left="430" Canvas.Top="370"/>
+            <Rectangle Width="145" Height="300" Fill="#FF0A0D21" Canvas.Left="510" Canvas.Top="300"/>
+            <Rectangle Width="120" Height="250" Fill="#FF121733" Canvas.Left="650" Canvas.Top="350"/>
+            <Rectangle Width="170" Height="330" Fill="#FF090C1E" Canvas.Left="740" Canvas.Top="270"/>
+            <Rectangle Width="120" Height="265" Fill="#FF0D1126" Canvas.Left="890" Canvas.Top="335"/>
+        </Canvas>
+
+        <!-- TOIT -->
+        <Rectangle x:Name="RoofTop"
+                   Width="250"
+                   Height="22"
+                   Fill="#FF05060F"
+                   Canvas.Left="650"
+                   Canvas.Top="290"
+                   Opacity="0"
+                   Visibility="Collapsed"/>
+
+        <!-- PROJECTEUR -->
+        <Canvas x:Name="SearchLight" Width="200" Height="160" Canvas.Left="690" Canvas.Top="190" Opacity="0" Visibility="Collapsed">
+            <Ellipse Width="75" Height="50" Fill="#FF2D344F" Stroke="#FF0B0E18" StrokeThickness="4" Canvas.Left="0" Canvas.Top="56"/>
+            <Rectangle Width="42" Height="24" Fill="#FF4C5470" Stroke="#FF0B0E18" StrokeThickness="3" RadiusX="6" RadiusY="6" Canvas.Left="42" Canvas.Top="67"/>
+            <Rectangle Width="18" Height="42" Fill="#FF353C55" Stroke="#FF0B0E18" StrokeThickness="3" RadiusX="4" RadiusY="4" Canvas.Left="20" Canvas.Top="93"/>
+        </Canvas>
+
+        <!-- FAISCEAU -->
+        <Path x:Name="Beam"
+              Opacity="0"
+              Visibility="Collapsed"
+              Fill="#40FFF5B8"
+              StrokeThickness="0"
+              Data="M 740,240 L 610,20 L 920,20 Z"/>
+
+        <!-- EMBLEME STYLISÉ -->
+        <Path x:Name="BatEmblem"
+              Opacity="0"
+              Visibility="Collapsed"
+              Fill="#FF111111"
+              Stretch="Fill"
+              Width="170"
+              Height="90"
+              Canvas.Left="675"
+              Canvas.Top="55"
+              Data="M 5,55
+                    C 15,35 30,30 45,35
+                    C 48,20 58,12 70,18
+                    C 77,6 93,6 100,18
+                    C 112,12 122,20 125,35
+                    C 140,30 155,35 165,55
+                    C 152,49 142,52 132,60
+                    C 120,70 108,73 96,66
+                    C 92,78 78,84 70,72
+                    C 62,84 48,78 44,66
+                    C 32,73 20,70 8,60
+                    C -2,52 -8,49 5,55 Z">
+            <Path.Effect>
+                <DropShadowEffect BlurRadius="12" ShadowDepth="0" Color="#99000000" Opacity="0.8"/>
+            </Path.Effect>
+        </Path>
+
+        <!-- HERO SILHOUETTE -->
+        <Canvas x:Name="Hero"
+                Width="230"
+                Height="280"
+                Canvas.Left="-260"
+                Canvas.Top="215"
+                Opacity="0"
+                Visibility="Collapsed"
+                RenderTransformOrigin="0.5,0.5">
+            <Canvas.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform x:Name="HeroScale" ScaleX="1" ScaleY="1"/>
+                    <RotateTransform x:Name="HeroRotate" Angle="-8"/>
+                </TransformGroup>
+            </Canvas.RenderTransform>
+
+            <!-- cape -->
+            <Path Fill="#FF0A0A12" Stroke="#FF000000" StrokeThickness="3"
+                  Data="M 110,70
+                        C 70,95 45,135 28,230
+                        C 55,210 75,205 95,225
+                        C 112,206 130,201 150,223
+                        C 172,200 192,206 218,232
+                        C 202,137 165,93 122,70 Z"/>
+
+            <!-- head -->
+            <Path Fill="#FF111111" Stroke="#FF000000" StrokeThickness="3"
+                  Data="M 102,24 L 92,46 L 98,72 L 122,72 L 128,46 L 118,24 L 110,36 Z"/>
+
+            <!-- torso -->
+            <Path Fill="#FF151515" Stroke="#FF000000" StrokeThickness="3"
+                  Data="M 95,70 L 125,70 L 140,126 L 126,186 L 94,186 L 80,126 Z"/>
+
+            <!-- arms -->
+            <Rectangle Width="22" Height="78" Fill="#FF151515" Stroke="#FF000000" StrokeThickness="3" RadiusX="9" RadiusY="9" Canvas.Left="58" Canvas.Top="88" RenderTransformOrigin="0.5,0">
+                <Rectangle.RenderTransform>
+                    <RotateTransform Angle="18"/>
+                </Rectangle.RenderTransform>
+            </Rectangle>
+            <Rectangle Width="22" Height="84" Fill="#FF151515" Stroke="#FF000000" StrokeThickness="3" RadiusX="9" RadiusY="9" Canvas.Left="145" Canvas.Top="82" RenderTransformOrigin="0.5,0">
+                <Rectangle.RenderTransform>
+                    <RotateTransform Angle="-32"/>
+                </Rectangle.RenderTransform>
+            </Rectangle>
+
+            <!-- legs -->
+            <Rectangle Width="24" Height="92" Fill="#FF151515" Stroke="#FF000000" StrokeThickness="3" RadiusX="10" RadiusY="10" Canvas.Left="92" Canvas.Top="182" RenderTransformOrigin="0.5,0">
+                <Rectangle.RenderTransform>
+                    <RotateTransform Angle="9"/>
+                </Rectangle.RenderTransform>
+            </Rectangle>
+            <Rectangle Width="24" Height="98" Fill="#FF151515" Stroke="#FF000000" StrokeThickness="3" RadiusX="10" RadiusY="10" Canvas.Left="122" Canvas.Top="178" RenderTransformOrigin="0.5,0">
+                <Rectangle.RenderTransform>
+                    <RotateTransform Angle="-12"/>
+                </Rectangle.RenderTransform>
+            </Rectangle>
+
+            <!-- chest emblem style retro -->
+            <Ellipse Width="48" Height="28" Fill="#FFF4D35E" Stroke="#FF000000" StrokeThickness="2.5" Canvas.Left="86" Canvas.Top="92"/>
+            <Path Fill="#FF111111"
+                  Data="M 92,106
+                        C 97,98 103,98 108,102
+                        C 111,95 118,94 121,101
+                        C 125,98 131,99 136,106
+                        C 131,104 127,106 124,109
+                        C 120,112 116,113 113,110
+                        C 111,115 106,116 104,110
+                        C 100,113 96,112 92,106 Z"/>
+        </Canvas>
+
+        <!-- TRAILS HERO -->
+        <Canvas x:Name="HeroTrail2" Width="230" Height="280" Canvas.Left="-260" Canvas.Top="215" Opacity="0.10" Visibility="Collapsed">
+            <Path Fill="#99070A1A" Data="M 110,70 C 70,95 45,135 28,230 C 55,210 75,205 95,225 C 112,206 130,201 150,223 C 172,200 192,206 218,232 C 202,137 165,93 122,70 Z"/>
+        </Canvas>
+
+        <Canvas x:Name="HeroTrail1" Width="230" Height="280" Canvas.Left="-260" Canvas.Top="215" Opacity="0.18" Visibility="Collapsed">
+            <Path Fill="#CC0A0D20" Data="M 110,70 C 70,95 45,135 28,230 C 55,210 75,205 95,225 C 112,206 130,201 150,223 C 172,200 192,206 218,232 C 202,137 165,93 122,70 Z"/>
+        </Canvas>
+
+        <!-- FLASH FINAL -->
+        <Ellipse x:Name="ImpactFlash"
+                 Width="120"
+                 Height="120"
+                 Canvas.Left="440"
+                 Canvas.Top="220"
+                 Opacity="0"
+                 Visibility="Collapsed"
+                 RenderTransformOrigin="0.5,0.5">
+            <Ellipse.Fill>
+                <RadialGradientBrush>
+                    <GradientStop Color="#FFFFFFFF" Offset="0"/>
+                    <GradientStop Color="#FFFFF08A" Offset="0.45"/>
+                    <GradientStop Color="#00FFF08A" Offset="1"/>
+                </RadialGradientBrush>
+            </Ellipse.Fill>
+            <Ellipse.RenderTransform>
+                <ScaleTransform x:Name="ImpactFlashScale" ScaleX="0.2" ScaleY="0.2"/>
+            </Ellipse.RenderTransform>
+        </Ellipse>
+
+        <!-- TEXTE RETRO -->
+        <TextBlock x:Name="ComicText"
+                   Text="NIGHT STRIKE!"
+                   FontFamily="Impact"
+                   FontSize="60"
+                   FontWeight="Bold"
+                   Foreground="#FFF8E16C"
+                   Opacity="0"
+                   Visibility="Collapsed"
+                   Canvas.Left="255"
+                   Canvas.Top="82">
+            <TextBlock.Effect>
+                <DropShadowEffect BlurRadius="0" ShadowDepth="4" Color="#FF000000" Opacity="1"/>
+            </TextBlock.Effect>
+        </TextBlock>
+    </Canvas>
+</goalExplosion:GoalExplosionBase>

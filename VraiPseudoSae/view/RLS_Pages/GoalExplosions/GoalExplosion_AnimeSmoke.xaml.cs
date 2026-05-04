@@ -490,6 +490,11 @@ namespace VraiPseudoSae.view.RLS_Pages.GoalExplosions
             return colors[_rng.Next(colors.Length)];
         }
 
+        public override GoalExplosionType ToType()
+        {
+            return GoalExplosionType.AnimeSmoke;
+        }
+
         public void Dispose()
         {
             // Rien de spécial ici

@@ -1,0 +1,184 @@
+﻿<goalExplosion:GoalExplosionBase x:Class="VraiPseudoSae.view.RLS_Pages.GoalExplosions.GoalExplosion_Ballistic"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:goalExplosion="clr-namespace:VraiPseudoSae.data.GoalExplosion"
+             Width="1000"
+             Height="600"
+             IsHitTestVisible="False">
+    <Canvas x:Name="Root"
+            Width="1000"
+            Height="600"
+            ClipToBounds="True"
+            IsHitTestVisible="False">
+
+        <!-- Missiles -->
+        <Canvas x:Name="MissileA"
+                Width="64"
+                Height="24"
+                Opacity="0"
+                RenderTransformOrigin="0.5,0.5">
+            <Canvas.RenderTransform>
+                <TransformGroup>
+                    <RotateTransform x:Name="MissileARotate" Angle="0"/>
+                    <ScaleTransform x:Name="MissileAScale" ScaleX="1" ScaleY="1"/>
+                </TransformGroup>
+            </Canvas.RenderTransform>
+
+            <Rectangle Width="34" Height="10"
+                       RadiusX="3" RadiusY="3"
+                       Fill="#FF6D6D6D"
+                       Stroke="#FF111111"
+                       StrokeThickness="2"
+                       Canvas.Left="14" Canvas.Top="7"/>
+            <Polygon Points="48,7 62,12 48,17"
+                     Fill="#FFD84315"
+                     Stroke="#FF111111"
+                     StrokeThickness="2"/>
+            <Polygon Points="10,12 0,4 0,20"
+                     Fill="#FFB0BEC5"
+                     Stroke="#FF111111"
+                     StrokeThickness="2"/>
+            <Polygon Points="18,8 10,2 12,10"
+                     Fill="#FFFF7043"
+                     StrokeThickness="0"/>
+            <Polygon Points="18,16 10,22 12,14"
+                     Fill="#FFFF7043"
+                     StrokeThickness="0"/>
+        </Canvas>
+
+        <Canvas x:Name="MissileB"
+                Width="64"
+                Height="24"
+                Opacity="0"
+                RenderTransformOrigin="0.5,0.5">
+            <Canvas.RenderTransform>
+                <TransformGroup>
+                    <RotateTransform x:Name="MissileBRotate" Angle="0"/>
+                    <ScaleTransform x:Name="MissileBScale" ScaleX="1" ScaleY="1"/>
+                </TransformGroup>
+            </Canvas.RenderTransform>
+
+            <Rectangle Width="34" Height="10"
+                       RadiusX="3" RadiusY="3"
+                       Fill="#FF7A7A7A"
+                       Stroke="#FF111111"
+                       StrokeThickness="2"
+                       Canvas.Left="14" Canvas.Top="7"/>
+            <Polygon Points="48,7 62,12 48,17"
+                     Fill="#FFFF6F00"
+                     Stroke="#FF111111"
+                     StrokeThickness="2"/>
+            <Polygon Points="10,12 0,4 0,20"
+                     Fill="#FFCFD8DC"
+                     Stroke="#FF111111"
+                     StrokeThickness="2"/>
+            <Polygon Points="18,8 10,2 12,10"
+                     Fill="#FFFFA726"
+                     StrokeThickness="0"/>
+            <Polygon Points="18,16 10,22 12,14"
+                     Fill="#FFFFA726"
+                     StrokeThickness="0"/>
+        </Canvas>
+
+        <Canvas x:Name="MissileC"
+                Width="64"
+                Height="24"
+                Opacity="0"
+                RenderTransformOrigin="0.5,0.5">
+            <Canvas.RenderTransform>
+                <TransformGroup>
+                    <RotateTransform x:Name="MissileCRotate" Angle="0"/>
+                    <ScaleTransform x:Name="MissileCScale" ScaleX="1" ScaleY="1"/>
+                </TransformGroup>
+            </Canvas.RenderTransform>
+
+            <Rectangle Width="34" Height="10"
+                       RadiusX="3" RadiusY="3"
+                       Fill="#FF616161"
+                       Stroke="#FF111111"
+                       StrokeThickness="2"
+                       Canvas.Left="14" Canvas.Top="7"/>
+            <Polygon Points="48,7 62,12 48,17"
+                     Fill="#FFFF8F00"
+                     Stroke="#FF111111"
+                     StrokeThickness="2"/>
+            <Polygon Points="10,12 0,4 0,20"
+                     Fill="#FFBDBDBD"
+                     Stroke="#FF111111"
+                     StrokeThickness="2"/>
+            <Polygon Points="18,8 10,2 12,10"
+                     Fill="#FFFFCC80"
+                     StrokeThickness="0"/>
+            <Polygon Points="18,16 10,22 12,14"
+                     Fill="#FFFFCC80"
+                     StrokeThickness="0"/>
+        </Canvas>
+
+        <!-- Flash impact -->
+        <Ellipse x:Name="ImpactFlash"
+                 Width="44"
+                 Height="44"
+                 Opacity="0"
+                 RenderTransformOrigin="0.5,0.5">
+            <Ellipse.Fill>
+                <RadialGradientBrush GradientOrigin="0.35,0.35">
+                    <GradientStop Color="#FFFFFFFF" Offset="0"/>
+                    <GradientStop Color="#FFFFF59D" Offset="0.45"/>
+                    <GradientStop Color="#00FFF59D" Offset="1"/>
+                </RadialGradientBrush>
+            </Ellipse.Fill>
+            <Ellipse.RenderTransform>
+                <ScaleTransform x:Name="ImpactFlashScale" ScaleX="0.25" ScaleY="0.25"/>
+            </Ellipse.RenderTransform>
+        </Ellipse>
+
+        <!-- Anneau -->
+        <Ellipse x:Name="ShockRing"
+                 Width="90"
+                 Height="90"
+                 Stroke="#FFFFC107"
+                 StrokeThickness="8"
+                 Opacity="0"
+                 RenderTransformOrigin="0.5,0.5">
+            <Ellipse.RenderTransform>
+                <ScaleTransform x:Name="ShockRingScale" ScaleX="0.2" ScaleY="0.2"/>
+            </Ellipse.RenderTransform>
+        </Ellipse>
+
+        <!-- Fumée -->
+        <Ellipse x:Name="SmokeCloud"
+                 Width="170"
+                 Height="90"
+                 Opacity="0"
+                 RenderTransformOrigin="0.5,0.5">
+            <Ellipse.Fill>
+                <RadialGradientBrush>
+                    <GradientStop Color="#CC5D4037" Offset="0"/>
+                    <GradientStop Color="#885D4037" Offset="0.55"/>
+                    <GradientStop Color="#005D4037" Offset="1"/>
+                </RadialGradientBrush>
+            </Ellipse.Fill>
+            <Ellipse.RenderTransform>
+                <ScaleTransform x:Name="SmokeCloudScale" ScaleX="0.5" ScaleY="0.5"/>
+            </Ellipse.RenderTransform>
+        </Ellipse>
+
+        <!-- Cratère / impact sol -->
+        <Ellipse x:Name="GroundBlast"
+                 Width="130"
+                 Height="34"
+                 Fill="#66FF7043"
+                 Stroke="#AA111111"
+                 StrokeThickness="2"
+                 Opacity="0"
+                 RenderTransformOrigin="0.5,0.5">
+            <Ellipse.RenderTransform>
+                <ScaleTransform x:Name="GroundBlastScale" ScaleX="0.4" ScaleY="0.4"/>
+            </Ellipse.RenderTransform>
+        </Ellipse>
+
+        <!-- Couche dynamique -->
+        <Canvas x:Name="TrailsLayer" Width="1000" Height="600" IsHitTestVisible="False"/>
+        <Canvas x:Name="ParticlesLayer" Width="1000" Height="600" IsHitTestVisible="False"/>
+    </Canvas>
+</goalExplosion:GoalExplosionBase>

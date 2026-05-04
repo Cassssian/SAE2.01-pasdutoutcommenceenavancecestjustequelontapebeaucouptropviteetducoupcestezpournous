@@ -84,6 +84,7 @@
         Voxel,
         WallBreak_T01,
         WallBreak_T02,
-        WarpSpeed
+        WarpSpeed,
+        NoType
     }
 }
