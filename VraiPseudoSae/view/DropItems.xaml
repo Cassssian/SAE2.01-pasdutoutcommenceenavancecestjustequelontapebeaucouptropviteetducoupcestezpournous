@@ -6,11 +6,48 @@
       xmlns:local="clr-namespace:VraiPseudoSae.view"
       mc:Ignorable="d" 
       d:DesignHeight="1000" d:DesignWidth="800"
-      Title="DropItems" Background="GhostWhite">
+      Title="DropItems" Background="#1A1A2E">
 
     <Grid>
-        
-        <Image HorizontalAlignment="Stretch" Height="1000" VerticalAlignment="Stretch" Width="800" Source="/view/images_drop/decors/DecorManoir.png"/>
+        <Rectangle>
+            <Rectangle.Fill>
+                <LinearGradientBrush EndPoint="0,0" StartPoint="0,0">
+                    <GradientStop Color="#8888A6" Offset="0"/>
+                    <GradientStop Color="#6666A6" Offset="1"/>
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+
+        <Rectangle Width="40" HorizontalAlignment="Left" Fill="#000000" Stroke="#101015" StrokeThickness="2"/>
+        <StackPanel Width="40" HorizontalAlignment="Left">
+            <Rectangle Height="20" Margin="5,10" Fill="#000000"/>
+            <Rectangle Height="20" Margin="15,10" Fill="#000000"/>
+            <Rectangle Height="20" Margin="5,15" Fill="#000000"/>
+            <Rectangle Height="20" Margin="10,10" Fill="#000000"/>
+        </StackPanel>
+
+        <Rectangle Width="40" HorizontalAlignment="Right" Fill="#000000" Stroke="#101015" StrokeThickness="0"/>
+        <StackPanel Width="40" HorizontalAlignment="Right">
+            <Rectangle Height="20" Margin="15,10" Fill="#000000"/>
+            <Rectangle Height="20" Margin="5,10" Fill="#000000"/>
+            <Rectangle Height="20" Margin="15,15" Fill="#000000"/>
+            <Rectangle Height="20" Margin="5,10" Fill="#000000"/>
+        </StackPanel>
+
+        <Rectangle Height="50" VerticalAlignment="Bottom" Fill="#000000" Stroke="#000000" StrokeThickness="3"/>
+        <Rectangle Height="2" VerticalAlignment="Bottom" Margin="40,0,40,48" Fill="#444455"/>
+
+
+        <Rectangle IsHitTestVisible="False">
+            <Rectangle.Fill>
+                <RadialGradientBrush Center="0.5,1" RadiusX="1" RadiusY="1">
+                    <GradientStop Color="Transparent" Offset="0.7"/>
+                    <GradientStop Color="#AA000000" Offset="1"/>
+                </RadialGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+
+        <Canvas x:Name="GameCanvas" Margin="40,0,40,50" Background="Transparent"/>
 
     </Grid>
 </Page>
