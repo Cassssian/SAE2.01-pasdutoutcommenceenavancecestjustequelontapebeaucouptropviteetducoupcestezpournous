@@ -9,6 +9,10 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <None Remove="view\images_drop\decors\DecorManoir.png" />
+    </ItemGroup>
+
+    <ItemGroup>
       <Page Update="view\HomePage.xaml">
         <Generator>MSBuild:Compile</Generator>
         <XamlRuntime>Wpf</XamlRuntime>
@@ -47,7 +51,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="view\images_drop\decors\" />
+      <Resource Include="view\images_drop\decors\DecorManoir.png" />
     </ItemGroup>
 
 </Project>
