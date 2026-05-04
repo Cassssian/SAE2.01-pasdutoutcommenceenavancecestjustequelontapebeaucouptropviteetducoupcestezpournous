@@ -72,7 +72,7 @@ namespace VraiPseudoSae.view.RLS_Pages
                 OnBackToMenu = BackToMenu
             };
  
-            EnsureExplosionLoaded(ref explosionBaseP2, GoalExplosionType.);
+            EnsureExplosionLoaded(ref explosionBaseP2, GoalExplosionType.Batman);
             EnsureExplosionLoaded(ref explosionBaseP1, GoalExplosionType.Baseball);
 
             game.Run();
