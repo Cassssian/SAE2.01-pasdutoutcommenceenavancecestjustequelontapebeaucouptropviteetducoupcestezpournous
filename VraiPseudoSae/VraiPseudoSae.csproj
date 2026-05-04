@@ -9,6 +9,10 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <None Remove="view\images_drop\decors\DecorManoir.png" />
+    </ItemGroup>
+
+    <ItemGroup>
       <Page Update="view\HomePage.xaml">
         <Generator>MSBuild:Compile</Generator>
         <XamlRuntime>Wpf</XamlRuntime>
@@ -49,6 +53,10 @@
       <Reference Include="IUTGame">
         <HintPath>..\IUTGame.dll</HintPath>
       </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Resource Include="view\images_drop\decors\DecorManoir.png" />
     </ItemGroup>
 
 </Project>

@@ -61,7 +61,13 @@ namespace VraiPseudoSae.view.Accueil_Pages
 
         public void TranslateImage()
         {
+            // Calcul des différences
+            int diffx;
+            int diffy;
 
+            // Boucle d'animation
+            diffx = coordx - finalx;
+            diffy = coordy - finaly;
         }
 
         public void Draw()
