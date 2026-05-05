@@ -12,11 +12,67 @@
         <Rectangle>
             <Rectangle.Fill>
                 <LinearGradientBrush EndPoint="0,0" StartPoint="0,0">
-                    <GradientStop Color="#8888A6" Offset="0"/>
-                    <GradientStop Color="#6666A6" Offset="1"/>
+                    <GradientStop Color="#151515" Offset="0"/>
+                    <GradientStop Color="#151515" Offset="1"/>
                 </LinearGradientBrush>
             </Rectangle.Fill>
         </Rectangle>
+
+        <Rectangle IsHitTestVisible="False">
+            <Rectangle.Fill>
+                <LinearGradientBrush StartPoint="1, 0">
+                    <GradientStop Color="#0F0F22" Offset="0.7"/>
+                    <GradientStop Color="#191970" Offset="0"/>
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+
+        <Canvas IsHitTestVisible="False" Margin="40,0,40,50">
+            <Ellipse Canvas.Left="50" Canvas.Top="100" Width="10" Height="10">
+                <Ellipse.Fill>
+                    <RadialGradientBrush>
+                        <GradientStop Color="#FFFF00" Offset="0"/>
+                        <GradientStop Color="#00FFFF00" Offset="1"/>
+                    </RadialGradientBrush>
+                </Ellipse.Fill>
+            </Ellipse>
+
+            <Ellipse Canvas.Left="250" Canvas.Top="50" Width="8" Height="8">
+                <Ellipse.Fill>
+                    <RadialGradientBrush>
+                        <GradientStop Color="#FFFCEE" Offset="0"/>
+                        <GradientStop Color="#00FFFF00" Offset="0.8"/>
+                    </RadialGradientBrush>
+                </Ellipse.Fill>
+            </Ellipse>
+
+            <Ellipse Canvas.Left="500" Canvas.Top="180" Width="12" Height="12">
+                <Ellipse.Fill>
+                    <RadialGradientBrush>
+                        <GradientStop Color="#FFFF00" Offset="0"/>
+                        <GradientStop Color="#00FFFF00" Offset="1"/>
+                    </RadialGradientBrush>
+                </Ellipse.Fill>
+            </Ellipse>
+
+            <Ellipse Canvas.Left="120" Canvas.Top="300" Width="6" Height="6">
+                <Ellipse.Fill>
+                    <RadialGradientBrush>
+                        <GradientStop Color="#FFFF00" Offset="0"/>
+                        <GradientStop Color="#00FFFF00" Offset="1"/>
+                    </RadialGradientBrush>
+                </Ellipse.Fill>
+            </Ellipse>
+
+            <Ellipse Canvas.Left="650" Canvas.Top="120" Width="9" Height="9">
+                <Ellipse.Fill>
+                    <RadialGradientBrush>
+                        <GradientStop Color="#FFFF00" Offset="0"/>
+                        <GradientStop Color="#00FFFF00" Offset="1"/>
+                    </RadialGradientBrush>
+                </Ellipse.Fill>
+            </Ellipse>
+        </Canvas>
 
         <Rectangle Width="40" HorizontalAlignment="Left" Fill="#000000" Stroke="#101015" StrokeThickness="2"/>
         <StackPanel Width="40" HorizontalAlignment="Left">
@@ -36,16 +92,6 @@
 
         <Rectangle Height="50" VerticalAlignment="Bottom" Fill="#000000" Stroke="#000000" StrokeThickness="3"/>
         <Rectangle Height="2" VerticalAlignment="Bottom" Margin="40,0,40,48" Fill="#444455"/>
-
-
-        <Rectangle IsHitTestVisible="False">
-            <Rectangle.Fill>
-                <RadialGradientBrush Center="0.5,1" RadiusX="1" RadiusY="1">
-                    <GradientStop Color="Transparent" Offset="0.7"/>
-                    <GradientStop Color="#AA000000" Offset="1"/>
-                </RadialGradientBrush>
-            </Rectangle.Fill>
-        </Rectangle>
 
         <Canvas x:Name="GameCanvas" Margin="40,0,40,50" Background="Transparent"/>
 
