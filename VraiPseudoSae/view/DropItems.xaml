@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:VraiPseudoSae.view"
       mc:Ignorable="d" 
-      d:DesignHeight="1000" d:DesignWidth="800"
+      d:DesignHeight="800" d:DesignWidth="800"
       Title="DropItems" Background="#1A1A2E">
 
     <Grid>
@@ -28,16 +28,16 @@
         </Rectangle>
 
         <Canvas IsHitTestVisible="False" Margin="40,0,40,50">
-            <Ellipse Canvas.Left="50" Canvas.Top="100" Width="10" Height="10">
+            <Ellipse Canvas.Left="50" Canvas.Top="100" Width="20" Height="20">
                 <Ellipse.Fill>
                     <RadialGradientBrush>
-                        <GradientStop Color="#FFFF00" Offset="0"/>
+                        <GradientStop Color="#AFAF00" Offset="0"/>
                         <GradientStop Color="#00FFFF00" Offset="1"/>
                     </RadialGradientBrush>
                 </Ellipse.Fill>
             </Ellipse>
 
-            <Ellipse Canvas.Left="250" Canvas.Top="50" Width="8" Height="8">
+            <Ellipse Canvas.Left="250" Canvas.Top="50" Width="22" Height="22">
                 <Ellipse.Fill>
                     <RadialGradientBrush>
                         <GradientStop Color="#FFFCEE" Offset="0"/>
@@ -46,29 +46,83 @@
                 </Ellipse.Fill>
             </Ellipse>
 
-            <Ellipse Canvas.Left="500" Canvas.Top="180" Width="12" Height="12">
+            <Ellipse Canvas.Left="500" Canvas.Top="180" Width="16" Height="16">
                 <Ellipse.Fill>
                     <RadialGradientBrush>
-                        <GradientStop Color="#FFFF00" Offset="0"/>
+                        <GradientStop Color="#FFBF00" Offset="0"/>
                         <GradientStop Color="#00FFFF00" Offset="1"/>
                     </RadialGradientBrush>
                 </Ellipse.Fill>
             </Ellipse>
 
-            <Ellipse Canvas.Left="120" Canvas.Top="300" Width="6" Height="6">
+            <Ellipse Canvas.Left="120" Canvas.Top="300" Width="30" Height="30">
                 <Ellipse.Fill>
                     <RadialGradientBrush>
-                        <GradientStop Color="#FFFF00" Offset="0"/>
+                        <GradientStop Color="#FFFEEE" Offset="0"/>
                         <GradientStop Color="#00FFFF00" Offset="1"/>
                     </RadialGradientBrush>
                 </Ellipse.Fill>
             </Ellipse>
 
-            <Ellipse Canvas.Left="650" Canvas.Top="120" Width="9" Height="9">
+            <Ellipse Canvas.Left="650" Canvas.Top="120" Width="19" Height="19">
                 <Ellipse.Fill>
                     <RadialGradientBrush>
-                        <GradientStop Color="#FFFF00" Offset="0"/>
+                        <GradientStop Color="#FEFF00" Offset="0"/>
                         <GradientStop Color="#00FFFF00" Offset="1"/>
+                    </RadialGradientBrush>
+                </Ellipse.Fill>
+            </Ellipse>
+
+            <Ellipse Canvas.Left="300" Canvas.Top="290" Width="19" Height="19">
+                <Ellipse.Fill>
+                    <RadialGradientBrush>
+                        <GradientStop Color="#FEEF00" Offset="0"/>
+                        <GradientStop Color="#00FFFF00" Offset="1"/>
+                    </RadialGradientBrush>
+                </Ellipse.Fill>
+            </Ellipse>
+
+            <Ellipse Canvas.Left="500" Canvas.Top="-75" Width="150" Height="150">
+                <Ellipse.Fill>
+                    <RadialGradientBrush>
+                        <GradientStop Color="#555555" Offset="0.8"/>
+                        <GradientStop Color="#404040" Offset="1"/>
+                    </RadialGradientBrush>
+                </Ellipse.Fill>
+            </Ellipse>
+
+            <Ellipse Canvas.Left="550" Canvas.Top="5" Width="15" Height="15">
+                <Ellipse.Fill>
+                    <RadialGradientBrush>
+                        <GradientStop Color="#555555" Offset="0.75"/>
+                        <GradientStop Color="#444444" Offset="1"/>
+                    </RadialGradientBrush>
+                </Ellipse.Fill>
+            </Ellipse>
+
+            <Ellipse Canvas.Left="590" Canvas.Top="25" Width="20" Height="20">
+                <Ellipse.Fill>
+                    <RadialGradientBrush>
+                        <GradientStop Color="#555555" Offset="0.75"/>
+                        <GradientStop Color="#444444" Offset="1"/>
+                    </RadialGradientBrush>
+                </Ellipse.Fill>
+            </Ellipse>
+
+            <Ellipse Canvas.Left="538" Canvas.Top="35" Width="20" Height="20">
+                <Ellipse.Fill>
+                    <RadialGradientBrush>
+                        <GradientStop Color="#555555" Offset="0.75"/>
+                        <GradientStop Color="#444444" Offset="1"/>
+                    </RadialGradientBrush>
+                </Ellipse.Fill>
+            </Ellipse>
+
+            <Ellipse Canvas.Left="595" Canvas.Top="-20" Width="30" Height="30">
+                <Ellipse.Fill>
+                    <RadialGradientBrush>
+                        <GradientStop Color="#555555" Offset="0.75"/>
+                        <GradientStop Color="#444444" Offset="1"/>
                     </RadialGradientBrush>
                 </Ellipse.Fill>
             </Ellipse>
