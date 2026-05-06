@@ -20,4 +20,5 @@ public partial class Menu : UserControl
     
     private void Btn2P_Click(object sender, RoutedEventArgs e) => ParentWindow?.StartGame(false);
     private void Btn1P_Click(object sender, RoutedEventArgs e) => ParentWindow?.StartGame(true);
+    private void CustomCar(object sender, RoutedEventArgs e) => throw new NotImplementedException();
 }
