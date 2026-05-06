@@ -9,9 +9,9 @@
     <Grid>
         <Canvas x:Name="MenuCanvas" Width="1000" Height="600" Background="#16213e">
             <TextBlock Text="⚽ ROCKET LEAGUE 2D 🚗" FontSize="60" FontWeight="Bold" Foreground="#e94560" 
-                       Canvas.Left="130" Canvas.Top="100"/>
+                       Canvas.Top="100" Canvas.Left="120" HorizontalAlignment="Center"/>
             <TextBlock Text="SIDESWIPE EDITION" FontSize="24" Foreground="White" Opacity="0.7"
-                       Canvas.Left="360" Canvas.Top="185"/>
+                       Canvas.Left="400" Canvas.Top="185"/>
             
             <Button x:Name="Btn2P" Content="👥  2 JOUEURS" Width="300" Height="70" FontSize="24" FontWeight="Bold"
                     Canvas.Left="350" Canvas.Top="280" Background="#e94560" Foreground="White" 
@@ -21,12 +21,9 @@
                     Canvas.Left="350" Canvas.Top="370" Background="#0f9d58" Foreground="White"
                     BorderBrush="White" BorderThickness="2" Cursor="Hand" Click="Btn1P_Click"/>
             
-            <TextBlock Text="P1: A/D déplacer  •  W sauter  •  S boost  •  W+S = vol !"
-                       Foreground="White" Opacity="0.8" FontSize="14" Canvas.Left="280" Canvas.Top="480"/>
-            <TextBlock Text="P2: ←/→ déplacer  •  ↑ sauter  •  ↓ boost  •  ↑+↓ = vol !"
-                       Foreground="White" Opacity="0.8" FontSize="14" Canvas.Left="280" Canvas.Top="505"/>
-            <TextBlock Text="R: Reset  •  ESC: Retour menu"
-                       Foreground="White" Opacity="0.6" FontSize="13" Canvas.Left="370" Canvas.Top="540"/>
+            <Button x:Name="Custom" Content="🛠️ Custom tes voitures" Width="300" Height="70" FontSize="24" FontWeight="Bold"
+                    Canvas.Left="350" Canvas.Top="460" Background="Indigo" Foreground="White"
+                    BorderBrush="White" BorderThickness="2" Cursor="Hand" Click="CustomCar"></Button>
         </Canvas>
     </Grid>
 </UserControl>

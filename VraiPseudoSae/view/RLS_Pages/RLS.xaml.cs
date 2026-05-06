@@ -72,8 +72,8 @@ namespace VraiPseudoSae.view.RLS_Pages
                 OnBackToMenu = BackToMenu
             };
  
-            EnsureExplosionLoaded(ref explosionBaseP2, GoalExplosionType.Batman);
-            EnsureExplosionLoaded(ref explosionBaseP1, GoalExplosionType.Baseball);
+            EnsureExplosionLoaded(ref explosionBaseP2, GoalExplosionType.BeachBalls);
+            EnsureExplosionLoaded(ref explosionBaseP1, GoalExplosionType.Bats);
 
             game.Run();
             Focus();
@@ -133,8 +133,12 @@ namespace VraiPseudoSae.view.RLS_Pages
                     explosionPlayer = goalExplosionBatman;
                     break;
                 case GoalExplosionType.Bats:
+                    GoalExplosion_Bats goalExplosionBats = new GoalExplosion_Bats(GameCanvas, audio);
+                    explosionPlayer = goalExplosionBats;
                     break;
                 case GoalExplosionType.BeachBalls:
+                    GoalExplosion_Beachballs goalExplosionBeachBalls = new GoalExplosion_Beachballs(GameCanvas, audio);
+                    explosionPlayer = goalExplosionBeachBalls;
                     break;
                 case GoalExplosionType.Blade_T01:
                     break;
