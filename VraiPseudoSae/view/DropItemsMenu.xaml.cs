@@ -8,18 +8,40 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace VraiPseudoSae.view
 {
     /// <summary>
-    /// Logique d'interaction pour DropItemsMenu.xaml
+    /// Logique d'interaction pour MainDropItems.xaml
     /// </summary>
-    public partial class DropItemsMenu : Window
+    public partial class DropItemsMenu : Page
     {
         public DropItemsMenu()
         {
             InitializeComponent();
         }
+
+        void Jouer(object sender, RoutedEventArgs e)
+        {
+            DropItems pagejeu = new DropItems();
+
+            // On récupère la Window qui contient cette page
+            var parentWindow = Window.GetWindow(this) as MainDropItems;
+
+            // Si on l'a trouvée, on accède à son MainFrame
+            if (parentWindow != null)
+            {
+                parentWindow.MainFrame.Navigate(pagejeu);
+            }
+        }
+
+        void Quitter(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
+
     }
 }

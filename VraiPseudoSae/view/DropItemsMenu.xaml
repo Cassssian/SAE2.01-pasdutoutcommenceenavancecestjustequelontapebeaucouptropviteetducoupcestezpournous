@@ -1,12 +1,39 @@
-﻿<Window x:Class="VraiPseudoSae.view.DropItemsMenu"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:VraiPseudoSae.view"
-        mc:Ignorable="d"
-        Title="DropItemsMenu" Height="810" Width="800" Background="#00002A">
+﻿<Page x:Class="VraiPseudoSae.view.DropItemsMenu"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:VraiPseudoSae.view"
+      mc:Ignorable="d" 
+      d:DesignHeight="810" d:DesignWidth="800"
+      Title="DropItemsMenu">
+
     <Grid>
+        <Grid.Resources>
+            <Style x:Key="MonBoutonRond" TargetType="Button">
+                <Setter Property="Background" Value="#FF4444"/>
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="FontSize" Value="30"/>
+                <Setter Property="FontWeight" Value="Bold"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="border" 
+                        Background="{TemplateBinding Background}" 
+                        CornerRadius="30">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="border" Property="Background" Value="#FF6666"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </Grid.Resources>
+
         <Grid.RowDefinitions>
             <RowDefinition Height="10*"/>
             <RowDefinition Height="30*"/>
@@ -16,6 +43,7 @@
             <RowDefinition Height="10*"/>
             <RowDefinition Height="20*"/>
         </Grid.RowDefinitions>
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="5*"/>
             <ColumnDefinition Width="15*"/>
@@ -25,42 +53,18 @@
         </Grid.ColumnDefinitions>
 
 
-        <Button Content="JOUER" FontSize="30" FontWeight="Bold" Foreground="White" 
-                Cursor="Hand" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Row="3" Grid.Column="2">
-            <Button.Template>
-                <ControlTemplate TargetType="Button">
-                    <Border x:Name="border" Background="#FF4444" CornerRadius="30" BorderBrush="#FF4444" BorderThickness="1">
-                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="border" Property="Background" Value="#EE4C4C"/>
-                        </Trigger>
-                        <Trigger Property="IsEnabled" Value="True">
-                            <Setter TargetName="border" Property="Background" Value="#FF5C5C"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Button.Template>
-        </Button>
+        <Button Style="{StaticResource MonBoutonRond}"
+        Content="JOUER" 
+        Click="Jouer"
+        Grid.Row="3" Grid.Column="2"
+        VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+        Cursor="Hand"/>
 
-        <Button Content="QUITTER LE JEU" FontSize="30" FontWeight="Bold" Foreground="White" 
-                Cursor="Hand" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Row="5" Grid.Column="2">
-            <Button.Template>
-                <ControlTemplate TargetType="Button">
-                    <Border x:Name="border" Background="#FF3333" CornerRadius="30" BorderBrush="#EE4444" BorderThickness="4">
-                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="border" Property="Background" Value="#EE4C4C"/>
-                        </Trigger>
-                        <Trigger Property="IsEnabled" Value="True">
-                            <Setter TargetName="border" Property="Background" Value="#FF4C4C"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Button.Template>
-        </Button>
+        <Button Style="{StaticResource MonBoutonRond}"
+        Content="QUITTER LE JEU" 
+        Click="Quitter"
+        Grid.Row="5" Grid.Column="2"
+        VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+        Cursor="Hand"/>
     </Grid>
-</Window>
+</Page>

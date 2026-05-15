@@ -14,13 +14,14 @@ using System.Windows.Shapes;
 namespace VraiPseudoSae.view
 {
     /// <summary>
-    /// Logique d'interaction pour DropItems.xaml
+    /// Logique d'interaction pour DropItemsMenu.xaml
     /// </summary>
-    public partial class DropItems : Page
+    public partial class MainDropItems : Window
     {
-        public DropItems()
+        public MainDropItems()
         {
             InitializeComponent();
+            MainFrame.Navigate(new DropItemsMenu());
         }
     }
 }
