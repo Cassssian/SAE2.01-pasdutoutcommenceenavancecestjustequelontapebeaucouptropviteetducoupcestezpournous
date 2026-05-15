@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using IUTGame;
 using System.Collections.Generic;
 using System.Windows.Media;
+using VraiPseudoSae.view.Pinball;
 using VraiPseudoSae.view.RLS_Pages;
 
 namespace VraiPseudoSae.view.hub
@@ -14,6 +15,7 @@ namespace VraiPseudoSae.view.hub
         private readonly Canvas footballZone;
         private readonly Canvas mazeZone;
         private readonly Canvas rlsZone;
+        private readonly Canvas pinZone;
 
         private HubPlayer player = null!;
 
@@ -24,13 +26,15 @@ namespace VraiPseudoSae.view.hub
             HomePage homePage,
             Canvas footballZone,
             Canvas mazeZone,
-            Canvas rlsZone)
+            Canvas rlsZone,
+            Canvas pinZone)
             : base(screen, spritesFolder, soundsFolder, 60)
         {
             this.homePage = homePage;
             this.footballZone = footballZone;
             this.mazeZone = mazeZone;
             this.rlsZone = rlsZone;
+            this.pinZone = pinZone;
         }
 
         protected override void InitItems()
@@ -41,6 +45,7 @@ namespace VraiPseudoSae.view.hub
             Panel.SetZIndex(footballZone, (int)Canvas.GetTop(footballZone));
             Panel.SetZIndex(mazeZone, (int)Canvas.GetTop(mazeZone));
             Panel.SetZIndex(rlsZone, (int)Canvas.GetTop(rlsZone));
+            Panel.SetZIndex(pinZone, (int)Canvas.GetTop(pinZone));
         }
 
         public Point PlayerCenter => player.Center;
@@ -60,10 +65,15 @@ namespace VraiPseudoSae.view.hub
             Point rlsCenter = new Point(
                 Canvas.GetLeft(rlsZone) + 85,
                 Canvas.GetTop(rlsZone) + 30);
+            
+            Point pinCenter = new Point(
+                Canvas.GetLeft(pinZone) + 85,
+                Canvas.GetTop(pinZone) + 30);
 
             double footballDist = Distance(playerCenter, footballCenter);
             double mazeDist = Distance(playerCenter, mazeCenter);
             double rlsDist = Distance(playerCenter, rlsCenter);
+            double pinDist = Distance(playerCenter, pinCenter);
 
             if (footballDist < 90)
                 homePage.SetInfoText("Appuie sur E pour lancer le mini-jeu FOOT");
@@ -71,6 +81,8 @@ namespace VraiPseudoSae.view.hub
                 homePage.SetInfoText("Appuie sur E pour lancer le mini-jeu LABYRINTHE");
             else if (rlsDist < 90)
                 homePage.SetInfoText("Appuie sur E pour lancer le mini-jeu RLS");
+            else if (pinDist < 90)
+                homePage.SetInfoText("Appuie sur E pour lancer le mini-jeu Pinball");
             else
                 homePage.SetInfoText("Va vers une zone");
         }
@@ -90,6 +102,10 @@ namespace VraiPseudoSae.view.hub
             Point rlsCenter = new Point(
                 Canvas.GetLeft(rlsZone) + 85,
                 Canvas.GetTop(rlsZone) + 30);
+            
+            Point pinCenter = new Point(
+                Canvas.GetLeft(pinZone) + 85,
+                Canvas.GetTop(pinZone) + 30);
 
             if (Distance(playerCenter, footballCenter) < 90)
             {
@@ -106,6 +122,12 @@ namespace VraiPseudoSae.view.hub
             if (Distance(playerCenter, rlsCenter) < 90)
             {
                 LaunchRls();
+                return;
+            }
+
+            if (Distance(playerCenter, pinCenter) < 90)
+            {
+                LaunchPin();
                 return;
             }
         }
@@ -126,6 +148,11 @@ namespace VraiPseudoSae.view.hub
         {
             RLS display = new RLS();
             display.Show();
+        }
+
+        private void LaunchPin()
+        {
+            PinballGame display = new PinballGame();
         }
 
         private double Distance(Point a, Point b)

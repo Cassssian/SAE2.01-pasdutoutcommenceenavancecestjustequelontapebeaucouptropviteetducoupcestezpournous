@@ -50,6 +50,20 @@
                            Canvas.Top="15"/>
             </Canvas>
 
+            <!-- Zone Pinball -->
+            <Canvas Name="PinZone" Width="170" Height="120"
+                    Canvas.Left="850" Canvas.Top="550"
+                    IsHitTestVisible="False">
+                <Polygon Points="85,0 170,30 85,60 0,30"
+                         Fill="DarkSlateGray"/>
+                <TextBlock Text="Pinball"
+                           FontSize="20"
+                           FontWeight="Bold"
+                           Foreground="Black"
+                           Canvas.Left="52"
+                           Canvas.Top="15"/>
+            </Canvas>
+            
             <!-- Zone labyrinthe -->
             <Canvas Name="MazeZone" Width="170" Height="120"
                     Canvas.Left="120" Canvas.Top="330"

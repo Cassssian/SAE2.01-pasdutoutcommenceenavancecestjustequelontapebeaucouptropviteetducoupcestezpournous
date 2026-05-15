@@ -35,7 +35,8 @@ namespace VraiPseudoSae.view
                 this,
                 FootballZone,
                 MazeZone,
-                RLSZone);
+                RLSZone,
+                PinZone);
 
             hubGame.Run();
 
