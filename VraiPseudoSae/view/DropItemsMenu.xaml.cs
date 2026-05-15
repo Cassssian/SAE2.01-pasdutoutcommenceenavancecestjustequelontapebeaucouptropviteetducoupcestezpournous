@@ -8,17 +8,16 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace VraiPseudoSae.view
 {
     /// <summary>
-    /// Logique d'interaction pour DropItems.xaml
+    /// Logique d'interaction pour DropItemsMenu.xaml
     /// </summary>
-    public partial class DropItems : Window
+    public partial class DropItemsMenu : Window
     {
-        public DropItems()
+        public DropItemsMenu()
         {
             InitializeComponent();
         }
