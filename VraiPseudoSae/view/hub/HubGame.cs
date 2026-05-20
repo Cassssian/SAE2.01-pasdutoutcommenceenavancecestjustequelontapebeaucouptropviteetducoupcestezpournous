@@ -4,7 +4,6 @@ using System.Windows.Controls;
 using IUTGame;
 using System.Collections.Generic;
 using System.Windows.Media;
-using VraiPseudoSae.view.Pinball;
 using VraiPseudoSae.view.RLS_Pages;
 
 namespace VraiPseudoSae.view.hub
@@ -152,7 +151,9 @@ namespace VraiPseudoSae.view.hub
 
         private void LaunchPin()
         {
-            PinballGame display = new PinballGame();
+            // Pinball.Pinball display = new Pinball.Pinball();
+            //display.Show();
+            throw new NotImplementedException();
         }
 
         private double Distance(Point a, Point b)
