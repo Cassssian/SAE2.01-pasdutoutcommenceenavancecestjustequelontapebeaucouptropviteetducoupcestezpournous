@@ -364,7 +364,7 @@ namespace VraiPseudoSae.view
 
             player.DrawPlayer(MazeCanvas);
 
-            InfoText.Text = $"R = recommencer | Pourcentage {1- Math.Round(pourcentage, 2) * 100}%";
+            InfoText.Text = $"R = recommencer | Pourcentage {(1 - Math.Round(pourcentage, 2)) * 100}%";
         }
 
         // Timer dédié aux particules (~60 FPS) — indépendant du mouvement
