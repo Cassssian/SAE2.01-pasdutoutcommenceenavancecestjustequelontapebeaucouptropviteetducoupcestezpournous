@@ -8,6 +8,7 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Controls;
 using System.Windows.Threading;
+using System.Windows.Media.Animation;
 
 namespace VraiPseudoSae.view
 {
@@ -17,10 +18,12 @@ namespace VraiPseudoSae.view
         private const int Rows = 21;
         private const int Cols = 31;
         private const int LightRadius = 4;
+        private const int TeleportCooldownTicks = 20; // 20 ticks x 100ms = 2s
 
         private readonly Random random = new Random();
         private readonly DispatcherTimer moveTimer = new DispatcherTimer();
         private readonly DispatcherTimer particleTimer = new DispatcherTimer();
+        private readonly DispatcherTimer countdownTimer = new DispatcherTimer();
 
         private int[,] grid = new int[Rows, Cols];
         private (int x, int y) exitCell = (Cols - 2, Rows - 2);
@@ -33,6 +36,9 @@ namespace VraiPseudoSae.view
         private bool moveRight;
 
         private double Timer;
+        private double _timeRemaining;
+        private bool _gameOver;
+        private bool _wasReadyLastTick = true;
         private Player player;
 
         private Particles startParticles;
@@ -86,12 +92,146 @@ namespace VraiPseudoSae.view
             particleTimer.Tick += ParticleTimer_Tick;
             particleTimer.Start();
 
+            countdownTimer.Interval = TimeSpan.FromSeconds(1);
+            countdownTimer.Tick += CountdownTimer_Tick;
+
             Timer = HoldTimer(pourcentage);
 
             player = new Player(1, 1);
 
             InitializeMaze();
+            StartCountdown();
+            UpdateTeleportUI();
             DrawScene();
+        }
+
+        private void StartCountdown()
+        {
+            _timeRemaining = Timer;
+            _gameOver = false;
+            countdownTimer.Start();
+            UpdateTimerUI();
+        }
+
+        private void CountdownTimer_Tick(object? sender, EventArgs e)
+        {
+            if (_gameOver) return;
+
+            _timeRemaining--;
+            UpdateTimerUI();
+
+            if (_timeRemaining <= 0)
+            {
+                countdownTimer.Stop();
+                _gameOver = true;
+                moveUp = moveDown = moveLeft = moveRight = false;
+
+                // Affiche le message game over sur le canvas
+                DrawScene();
+
+                var overlay = new Rectangle
+                {
+                    Width = MazeCanvas.Width,
+                    Height = MazeCanvas.Height,
+                    Fill = new SolidColorBrush(Color.FromArgb(160, 0, 0, 0))
+                };
+                Canvas.SetLeft(overlay, 0);
+                Canvas.SetTop(overlay, 0);
+                MazeCanvas.Children.Add(overlay);
+
+                var gameOverText = new TextBlock
+                {
+                    Text = "⏰  Temps écoulé !  Appuie sur R",
+                    Foreground = Brushes.OrangeRed,
+                    FontSize = 28,
+                    FontWeight = FontWeights.Bold,
+                    TextAlignment = TextAlignment.Center
+                };
+                gameOverText.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                Canvas.SetLeft(gameOverText, (MazeCanvas.Width - 420) / 2);
+                Canvas.SetTop(gameOverText, (MazeCanvas.Height - 40) / 2);
+                MazeCanvas.Children.Add(gameOverText);
+
+                TimerText.Text = "00";
+                TimerBorder.Background = new SolidColorBrush(Colors.DarkRed);
+            }
+        }
+
+        private void UpdateTimerUI()
+        {
+            TimerText.Text = ((int)_timeRemaining).ToString();
+
+            double ratio = _timeRemaining / Timer;
+
+            if (ratio > 0.5)
+            {
+                // Vert
+                TimerBorder.Background = new SolidColorBrush(Color.FromRgb(34, 170, 34));
+            }
+            else if (ratio > 0.25)
+            {
+                // Orange
+                TimerBorder.Background = new SolidColorBrush(Color.FromRgb(210, 120, 0));
+            }
+            else
+            {
+                // Rouge — clignote quand il reste moins de 10 secondes
+                TimerBorder.Background = new SolidColorBrush(
+                    (_timeRemaining % 2 < 1) ? Color.FromRgb(200, 30, 30) : Color.FromRgb(255, 80, 80));
+            }
+        }
+
+        private void UpdateTeleportUI()
+        {
+            bool ready = player.canTeleport;
+
+            // --- Barre de progression ---
+            double fillRatio = ready
+                ? 1.0
+                : 1.0 - (player.teleportTimer / (double)TeleportCooldownTicks);
+            TeleportCooldownBar.Width = Math.Max(0, 100 * fillRatio);
+
+            // --- Couleurs selon état ---
+            if (ready)
+            {
+                BarColorStart.Color = Color.FromRgb(92, 92, 255);   // bleu
+                BarColorEnd.Color   = Color.FromRgb(170, 85, 255);  // violet
+                TeleportIcon.Foreground     = Brushes.White;
+                TeleportStatusText.Text     = "PRÊTE";
+                TeleportStatusText.Foreground = new SolidColorBrush(Color.FromRgb(120, 220, 120));
+                TeleportBorder.BorderBrush  = new SolidColorBrush(Color.FromRgb(92, 92, 255));
+                TeleportBorder.Opacity      = 1.0;
+            }
+            else
+            {
+                BarColorStart.Color = Color.FromRgb(80, 80, 80);
+                BarColorEnd.Color   = Color.FromRgb(140, 100, 200);
+                TeleportIcon.Foreground     = new SolidColorBrush(Color.FromRgb(100, 100, 100));
+                TeleportStatusText.Text     = "recharge...";
+                TeleportStatusText.Foreground = new SolidColorBrush(Color.FromRgb(160, 100, 100));
+                TeleportBorder.BorderBrush  = new SolidColorBrush(Color.FromRgb(80, 80, 120));
+                TeleportBorder.Opacity      = 0.75;
+            }
+
+            // --- Animations au changement d'état ---
+            if (ready && !_wasReadyLastTick)
+            {
+                // Vient juste de se recharger : spin + pulse
+                var spinStory = (Storyboard)TeleportBorder.Resources["SpinIcon"];
+                spinStory.Begin(this);
+
+                var pulseStory = (Storyboard)TeleportBorder.Resources["PulseReady"];
+                pulseStory.Begin(this);
+            }
+            else if (!ready && _wasReadyLastTick)
+            {
+                // Vient d'être utilisé : arrête le pulse
+                var pulseStory = (Storyboard)TeleportBorder.Resources["PulseReady"];
+                pulseStory.Stop(this);
+                TeleportBorder.Opacity = 0.75;
+            }
+
+            _wasReadyLastTick = ready;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -224,7 +364,7 @@ namespace VraiPseudoSae.view
 
             player.DrawPlayer(MazeCanvas);
 
-            InfoText.Text = $"Joueur : ({player.x}, {player.y}) | Sortie : ({exitCell.x}, {exitCell.y}) | R = recommencer | Pourcentage {pourcentage}";
+            InfoText.Text = $"R = recommencer | Pourcentage {1- Math.Round(pourcentage, 2) * 100}%";
         }
 
         // Timer dédié aux particules (~60 FPS) — indépendant du mouvement
@@ -262,8 +402,10 @@ namespace VraiPseudoSae.view
                 case Key.Left:  moveLeft = true;  break;
                 case Key.Right: moveRight = true; break;
                 case Key.R:
+                    countdownTimer.Stop();
                     player.Reset();
                     InitializeMaze();
+                    StartCountdown();
                     DrawScene();
                     break;
             }
@@ -296,6 +438,8 @@ namespace VraiPseudoSae.view
                 }
             }
 
+            UpdateTeleportUI();
+
             int newX = player.x;
             int newY = player.y;
 
@@ -314,17 +458,18 @@ namespace VraiPseudoSae.view
             }
 
             // Ne redessine que si pas de particules actives (sinon ParticleTimer_Tick gère le rendu)
-            if (startParticles is null && endParticles is null)
+            if (!_gameOver && startParticles is null && endParticles is null)
                 DrawScene();
 
             if (moved && (player.x, player.y) == exitCell)
             {
                 moveUp = moveDown = moveLeft = moveRight = false;
-                MessageBox.Show("Bravo, tu as trouvé la sortie !");
                 pourcentage = Math.Max(pourcentage - 0.075, 0.001);
                 Timer = HoldTimer(pourcentage);
+                countdownTimer.Stop();
                 player.Reset();
                 InitializeMaze();
+                StartCountdown();
                 DrawScene();
             }
         }
@@ -377,7 +522,7 @@ namespace VraiPseudoSae.view
 
         private double HoldTimer(double pourcentageTimer)
         {
-            double temp = 30;
+            double temp = 3;
             if (pourcentageTimer >= 0.5)      temp *= 50;
             else if (pourcentageTimer >= 0.4) temp *= 45;
             else if (pourcentageTimer >= 0.3) temp *= 60;
