@@ -98,6 +98,17 @@
             </Border>
         </Grid>
 
+        <!-- Sources XAML pour les sprites injectés dans IUTGame -->
+        <Canvas x:Name="PlayerSpriteSource" Width="24" Height="24" Visibility="Collapsed">
+            <Ellipse Width="24" Height="24" Fill="OrangeRed" Stroke="White" StrokeThickness="2"/>
+        </Canvas>
+        <Canvas x:Name="BotSpriteSource" Width="24" Height="24" Visibility="Collapsed">
+            <Ellipse Width="24" Height="24" Fill="DodgerBlue" Stroke="White" StrokeThickness="2"/>
+        </Canvas>
+        <Canvas x:Name="BallSpriteSource" Width="14" Height="14" Visibility="Collapsed">
+            <Ellipse Width="14" Height="14" Fill="WhiteSmoke" Stroke="Black" StrokeThickness="1.2"/>
+        </Canvas>
+
         <!-- HUD principal -->
         <Border x:Name="HudPanel"
                 HorizontalAlignment="Right"
