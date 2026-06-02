@@ -29,6 +29,6 @@ public sealed class FireballSpell : CooldownSpell
         WizardPlayer player = game.Player;
         double x = player.Facing == Core.FacingDirection.Right ? player.CenterX + 8 : player.CenterX - 26;
         double y = player.CenterY - 9;
-        game.AddProjectile(new FireballProjectile(game, x, y, player.Facing, ProjectileSpeed, Damage));
+        game.AddProjectile(new FireballProjectile(game, x, y, player.Facing, ProjectileSpeed, Damage, player.RangeMultiplier));
     }
 }

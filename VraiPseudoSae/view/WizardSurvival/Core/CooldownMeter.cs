@@ -16,7 +16,7 @@ public sealed class CooldownMeter
 
     public bool IsReady => Remaining <= 0;
 
-    public double Progress => Duration <= 0 ? 1 : 1 - Remaining / Duration;
+    public double Progress => Duration <= 0 ? 1 : System.Math.Clamp(1 - Remaining / Duration, 0, 1);
 
     public void Restart() => Remaining = Duration;
 

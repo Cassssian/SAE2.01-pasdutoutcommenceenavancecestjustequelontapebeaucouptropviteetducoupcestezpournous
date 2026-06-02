@@ -11,6 +11,7 @@ public abstract class WorldItem : GameItem, IWorldObject
 {
     private readonly double spriteWidth;
     private readonly double spriteHeight;
+    private Rect localCollisionBounds;
 
     protected WorldItem(
         double worldX,
@@ -28,6 +29,7 @@ public abstract class WorldItem : GameItem, IWorldObject
         CollisionRadius = collisionRadius;
         WorldX = worldX;
         WorldY = worldY;
+        localCollisionBounds = new Rect(0, 0, spriteWidth, spriteHeight);
         IsActive = true;
         Collidable = false;
         SyncScreenPosition();
@@ -53,12 +55,25 @@ public abstract class WorldItem : GameItem, IWorldObject
 
     public Rect Bounds => new(WorldX, WorldY, Width, Height);
 
+    public Rect CollisionBounds =>
+        new(
+            WorldX + localCollisionBounds.X,
+            WorldY + localCollisionBounds.Y,
+            localCollisionBounds.Width,
+            localCollisionBounds.Height);
+
+    protected void SetLocalCollisionBounds(double x, double y, double width, double height) =>
+        localCollisionBounds = new Rect(x, y, width, height);
+
     public void SetWorldPosition(double worldX, double worldY)
     {
         WorldX = worldX;
         WorldY = worldY;
         SyncScreenPosition();
     }
+
+    public void SetWorldPositionFromCollisionBounds(Rect collisionBounds) =>
+        SetWorldPosition(collisionBounds.X - localCollisionBounds.X, collisionBounds.Y - localCollisionBounds.Y);
 
     public void MoveWorld(double dx, double dy) => SetWorldPosition(WorldX + dx, WorldY + dy);
 

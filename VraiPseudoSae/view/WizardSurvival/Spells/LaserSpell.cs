@@ -40,6 +40,8 @@ public sealed class LaserSpell : CooldownSpell
 
     public double Width { get; }
 
+    public double BaseBeamLength { get; } = 520;
+
     public int Damage { get; private set; }
 
     public FacingDirection Direction => direction;
@@ -74,7 +76,7 @@ public sealed class LaserSpell : CooldownSpell
         beamRemaining = System.Math.Max(0, beamRemaining - seconds);
         WizardPlayer player = game.Player;
         double startX = player.CenterX;
-        double endX = startX + (int)direction * 520;
+        double endX = startX + (int)direction * BaseBeamLength * player.RangeMultiplier;
         double minX = System.Math.Min(startX, endX);
         double maxX = System.Math.Max(startX, endX);
 

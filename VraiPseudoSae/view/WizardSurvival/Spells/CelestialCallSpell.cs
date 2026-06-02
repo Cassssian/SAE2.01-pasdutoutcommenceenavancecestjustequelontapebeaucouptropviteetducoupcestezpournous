@@ -29,7 +29,7 @@ public sealed class CelestialCallSpell : CooldownSpell
         game.AddEffect(new CelestialStrikeEffect(
             game.Player.CenterX,
             game.Player.CenterY,
-            StartRadius,
-            MaxRadius));
+            StartRadius * game.Player.RangeMultiplier,
+            MaxRadius * game.Player.RangeMultiplier));
     }
 }

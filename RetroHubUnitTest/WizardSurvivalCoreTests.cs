@@ -34,6 +34,31 @@ public sealed class WizardSurvivalCoreTests
     }
 
     [Fact]
+    public void Arena_uses_solid_obstacle_bounds_instead_of_full_visual_bounds()
+    {
+        WizardArenaMap map = new(
+            100,
+            80,
+            new[] { new ArenaObstacle(new Rect(10, 10, 50, 40), "house", new Rect(22, 30, 30, 18)) });
+
+        Assert.True(map.CanOccupy(new Rect(12, 14, 8, 8)));
+        Assert.False(map.CanOccupy(new Rect(30, 34, 8, 8)));
+    }
+
+    [Fact]
+    public void Lake_speed_multiplier_only_applies_inside_lake_shape()
+    {
+        WizardArenaMap map = new(
+            100,
+            80,
+            Array.Empty<ArenaObstacle>(),
+            new[] { new NormalLake(new Rect(20, 20, 40, 24)) });
+
+        Assert.Equal(0.55, map.ZombieLakeSpeedMultiplier(40, 32), 2);
+        Assert.Equal(1, map.ZombieLakeSpeedMultiplier(5, 5), 2);
+    }
+
+    [Fact]
     public void Movement_resolver_keeps_axis_that_hits_obstacle_and_applies_free_axis()
     {
         WizardArenaMap map = new(

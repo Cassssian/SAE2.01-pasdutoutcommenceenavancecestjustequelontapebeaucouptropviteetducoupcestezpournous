@@ -14,4 +14,6 @@ public sealed record WizardHudSnapshot(
     double ShieldProgress,
     double LaserProgress,
     bool ShieldActive,
-    bool LaserActive);
+    bool LaserActive,
+    LakeStatusKind LakeStatus,
+    double LakeStatusRemaining);

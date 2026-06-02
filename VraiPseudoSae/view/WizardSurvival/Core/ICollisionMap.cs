@@ -14,5 +14,7 @@ public interface ICollisionMap
 
     IReadOnlyList<ArenaObstacle> Obstacles { get; }
 
+    IReadOnlyList<ArenaLake> Lakes { get; }
+
     bool CanOccupy(Rect bounds);
 }
