@@ -39,16 +39,12 @@ public sealed class WizardEffectsRenderer
     {
         foreach (Particle particle in effect.Particles)
         {
-            Ellipse dot = new()
-            {
-                Width = particle.Size,
-                Height = particle.Size,
-                Fill = PickBrush(particle.Palette),
-                Opacity = System.Math.Max(0.15, particle.Life)
-            };
-            Canvas.SetLeft(dot, particle.X - camera.X);
-            Canvas.SetTop(dot, particle.Y - camera.Y);
-            layer.Children.Add(dot);
+            AddPixel(
+                particle.X - camera.X,
+                particle.Y - camera.Y,
+                particle.Size,
+                PickBrush(particle.Palette),
+                System.Math.Max(0.2, particle.Life));
         }
     }
 
@@ -57,44 +53,59 @@ public sealed class WizardEffectsRenderer
         double x = strike.CenterX - camera.X;
         double y = strike.CenterY - camera.Y;
 
-        Line lightning = new()
-        {
-            X1 = x,
-            X2 = x + 18 * (1 - strike.LightningProgress),
-            Y1 = -40,
-            Y2 = -40 + (y + 40) * strike.LightningProgress,
-            Stroke = Brushes.White,
-            StrokeThickness = 4,
-            Opacity = 0.9
-        };
-        layer.Children.Add(lightning);
+        DrawJaggedLightning(x, y, strike.LightningProgress);
 
         if (!strike.CircleStarted)
             return;
 
-        Ellipse circle = new()
-        {
-            Width = strike.Radius * 2,
-            Height = strike.Radius * 2,
-            Stroke = Brushes.MediumPurple,
-            StrokeThickness = 3,
-            Fill = new SolidColorBrush(Color.FromArgb(35, 160, 110, 255))
-        };
-        Canvas.SetLeft(circle, x - strike.Radius);
-        Canvas.SetTop(circle, y - strike.Radius);
-        layer.Children.Add(circle);
+        DrawPixelCircle(x, y, strike.Radius, Brushes.MediumPurple, 4, 0);
+        DrawPixelCircle(x, y, strike.Radius * 0.62, Brushes.DeepSkyBlue, 3, strike.Age * 3.5);
+        DrawPixelCircle(x, y, strike.Radius * 0.34, Brushes.White, 2, -strike.Age * 4);
 
-        Ellipse inner = new()
+        for (int i = 0; i < 14; i++)
         {
-            Width = strike.Radius,
-            Height = strike.Radius,
-            Stroke = Brushes.DeepSkyBlue,
-            StrokeThickness = 1,
-            Opacity = 0.8
-        };
-        Canvas.SetLeft(inner, x - strike.Radius / 2.0);
-        Canvas.SetTop(inner, y - strike.Radius / 2.0);
-        layer.Children.Add(inner);
+            double angle = strike.Age * 5 + i * System.Math.PI * 2 / 14;
+            double radius = strike.Radius + 8 + (i % 3) * 4;
+            AddPixel(
+                x + System.Math.Cos(angle) * radius,
+                y + System.Math.Sin(angle) * radius,
+                4,
+                i % 2 == 0 ? Brushes.MediumPurple : Brushes.White,
+                0.85);
+        }
+    }
+
+    private void DrawJaggedLightning(double x, double targetY, double progress)
+    {
+        double endY = -36 + (targetY + 36) * progress;
+        double previousX = x;
+        double previousY = -36;
+
+        for (int i = 1; i <= 12; i++)
+        {
+            double t = i / 12.0;
+            double nextY = -36 + (endY + 36) * t;
+            double nextX = x + ((i % 2 == 0 ? -1 : 1) * (14 - i));
+            DrawPixelLine(previousX, previousY, nextX, nextY, Brushes.White, 4);
+            DrawPixelLine(previousX + 3, previousY, nextX + 3, nextY, Brushes.Gold, 2);
+            previousX = nextX;
+            previousY = nextY;
+        }
+    }
+
+    private void DrawPixelCircle(double x, double y, double radius, Brush brush, double size, double phase)
+    {
+        int count = System.Math.Max(20, (int)(radius / 2.5));
+        for (int i = 0; i < count; i++)
+        {
+            double angle = phase + i * System.Math.PI * 2 / count;
+            AddPixel(
+                x + System.Math.Cos(angle) * radius,
+                y + System.Math.Sin(angle) * radius,
+                size,
+                brush,
+                0.85);
+        }
     }
 
     private void DrawShield(WizardSurvivalGame game)
@@ -105,18 +116,20 @@ public sealed class WizardEffectsRenderer
 
         double x = game.Player.CenterX - game.Camera.X;
         double y = game.Player.CenterY - game.Camera.Y;
-        Ellipse shell = new()
+        double radius = shield.EffectiveRadius(game.Player);
+        DrawPixelCircle(x, y, radius, Brushes.Cyan, 4, shield.ActiveRemaining * 3);
+        DrawPixelCircle(x, y, radius * 0.76, Brushes.DeepSkyBlue, 3, -shield.ActiveRemaining * 4);
+
+        for (int i = 0; i < 10; i++)
         {
-            Width = shield.Radius * 2,
-            Height = shield.Radius * 2,
-            Stroke = Brushes.Cyan,
-            StrokeThickness = 3,
-            Fill = new SolidColorBrush(Color.FromArgb(28, 0, 210, 255)),
-            Opacity = 0.85
-        };
-        Canvas.SetLeft(shell, x - shield.Radius);
-        Canvas.SetTop(shell, y - shield.Radius);
-        layer.Children.Add(shell);
+            double angle = shield.ActiveRemaining * 5 + i * System.Math.PI * 2 / 10;
+            AddPixel(
+                x + System.Math.Cos(angle) * (radius - 10),
+                y + System.Math.Sin(angle) * (radius - 10),
+                5,
+                Brushes.White,
+                0.65);
+        }
     }
 
     private void DrawLaser(WizardSurvivalGame game)
@@ -131,49 +144,65 @@ public sealed class WizardEffectsRenderer
         if (laser.IsCharging)
         {
             double size = 34 + 28 * laser.ChargeProgress;
-            Ellipse charge = new()
+            for (int i = 0; i < 16; i++)
             {
-                Width = size,
-                Height = size,
-                Stroke = Brushes.Orange,
-                StrokeThickness = 2,
-                Fill = new SolidColorBrush(Color.FromArgb(40, 255, 180, 0))
-            };
-            Canvas.SetLeft(charge, x - size / 2);
-            Canvas.SetTop(charge, y - size / 2);
-            layer.Children.Add(charge);
+                double angle = i * System.Math.PI * 2 / 16 + laser.ChargeProgress * 4;
+                AddPixel(
+                    x + System.Math.Cos(angle) * size / 2,
+                    y + System.Math.Sin(angle) * size / 2,
+                    5,
+                    i % 2 == 0 ? Brushes.OrangeRed : Brushes.Gold,
+                    0.9);
+            }
             return;
         }
 
         if (!laser.IsFiring)
             return;
 
-        double beamLength = 520;
+        double beamLength = laser.BaseBeamLength * game.Player.RangeMultiplier;
         double left = laser.Direction == FacingDirection.Right ? x : x - beamLength;
-        Rectangle beam = new()
-        {
-            Width = beamLength,
-            Height = laser.Width * 2,
-            Fill = new LinearGradientBrush(
-                Color.FromArgb(220, 255, 70, 20),
-                Color.FromArgb(180, 255, 230, 40),
-                0),
-            Opacity = 0.9
-        };
-        Canvas.SetLeft(beam, left);
-        Canvas.SetTop(beam, y - laser.Width);
-        layer.Children.Add(beam);
+        AddRect(left, y - laser.Width, beamLength, laser.Width * 2, Brushes.OrangeRed, 0.75);
+        AddRect(left, y - 10, beamLength, 20, Brushes.Gold, 0.85);
+        AddRect(left, y - 4, beamLength, 8, Brushes.White, 0.8);
 
-        Rectangle core = new()
+        for (int i = 0; i < 34; i++)
         {
-            Width = beamLength,
-            Height = 8,
-            Fill = Brushes.White,
-            Opacity = 0.75
+            double px = left + i * 16;
+            AddPixel(px, y - laser.Width - 4, 4, Brushes.Gold, 0.9);
+            AddPixel(px + 8, y + laser.Width, 4, Brushes.OrangeRed, 0.9);
+        }
+    }
+
+    private void DrawPixelLine(double x1, double y1, double x2, double y2, Brush brush, double size)
+    {
+        double dx = x2 - x1;
+        double dy = y2 - y1;
+        int steps = System.Math.Max(1, (int)(System.Math.Sqrt(dx * dx + dy * dy) / size));
+        for (int i = 0; i <= steps; i++)
+        {
+            double t = i / (double)steps;
+            AddPixel(x1 + dx * t, y1 + dy * t, size, brush, 0.95);
+        }
+    }
+
+    private void AddPixel(double x, double y, double size, Brush brush, double opacity) =>
+        AddRect(System.Math.Round(x), System.Math.Round(y), size, size, brush, opacity);
+
+    private void AddRect(double x, double y, double width, double height, Brush brush, double opacity)
+    {
+        Rectangle rectangle = new()
+        {
+            Width = width,
+            Height = height,
+            Fill = brush,
+            Opacity = opacity,
+            SnapsToDevicePixels = true
         };
-        Canvas.SetLeft(core, left);
-        Canvas.SetTop(core, y - 4);
-        layer.Children.Add(core);
+        RenderOptions.SetEdgeMode(rectangle, EdgeMode.Aliased);
+        Canvas.SetLeft(rectangle, x);
+        Canvas.SetTop(rectangle, y);
+        layer.Children.Add(rectangle);
     }
 
     private static Brush PickBrush(string palette) =>
@@ -184,6 +213,8 @@ public sealed class WizardEffectsRenderer
             "celestial" => Brushes.MediumPurple,
             "death" => Brushes.LimeGreen,
             "hurt" => Brushes.Red,
+            "lake_buff" => Brushes.SpringGreen,
+            "lake_nerf" => Brushes.IndianRed,
             _ => Brushes.White
         };
 }

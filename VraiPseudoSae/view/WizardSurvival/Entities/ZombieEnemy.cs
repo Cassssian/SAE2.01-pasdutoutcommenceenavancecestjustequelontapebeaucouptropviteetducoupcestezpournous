@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Windows;
 using VraiPseudoSae.view.WizardSurvival.Abstractions;
 using VraiPseudoSae.view.WizardSurvival.Core;
@@ -10,18 +11,19 @@ namespace VraiPseudoSae.view.WizardSurvival.Entities;
 /// </summary>
 public sealed class ZombieEnemy : LivingWorldItem
 {
-    private const double SpriteW = 34;
-    private const double SpriteH = 38;
+    private const double SpriteW = 40;
+    private const double SpriteH = 36;
 
     private DoubleVector wanderDirection;
     private double wanderTimer;
+    private FacingDirection renderedFacing;
 
     public ZombieEnemy(double worldX, double worldY, WizardSurvivalGame game, ZombieKind kind)
         : base(
             worldX,
             worldY,
             game,
-            kind == ZombieKind.Normal ? "wizard_zombie.png" : "wizard_zombie_evolved.png",
+            kind == ZombieKind.Normal ? "wizard_zombie_left.png" : "wizard_zombie_evolved_left.png",
             SpriteW,
             SpriteH,
             16,
@@ -34,6 +36,8 @@ public sealed class ZombieEnemy : LivingWorldItem
         ScoreValue = kind == ZombieKind.Normal ? 10 : 30;
         SpawnChancePenalty = kind == ZombieKind.Normal ? 0.05 : 0.15;
         Facing = FacingDirection.Left;
+        renderedFacing = FacingDirection.Left;
+        SetLocalCollisionBounds(11, 18, 18, 16);
     }
 
     public override string TypeName => "ZombieEnemy";
@@ -75,13 +79,30 @@ public sealed class ZombieEnemy : LivingWorldItem
         }
 
         if (desired.X < -0.01)
-            Facing = FacingDirection.Left;
+            SetFacing(FacingDirection.Left);
         else if (desired.X > 0.01)
-            Facing = FacingDirection.Right;
+            SetFacing(FacingDirection.Right);
 
-        Rect moved = MovementResolver.Move(Bounds, desired * (Speed * seconds), map);
-        SetWorldPosition(moved.X, moved.Y);
-        ChangeScale(Facing == FacingDirection.Right ? 1 : -1, 1);
+        double lakeMultiplier = map.Lakes
+            .Where(lake => lake.Contains(CenterX, CenterY))
+            .Select(lake => lake.ZombieSlowMultiplier)
+            .DefaultIfEmpty(1)
+            .Min();
+
+        Rect moved = MovementResolver.Move(CollisionBounds, desired * (Speed * lakeMultiplier * seconds), map);
+        SetWorldPositionFromCollisionBounds(moved);
+        SyncScreenPosition();
+    }
+
+    private void SetFacing(FacingDirection facing)
+    {
+        Facing = facing;
+        if (renderedFacing == facing)
+            return;
+
+        renderedFacing = facing;
+        string prefix = Kind == ZombieKind.Normal ? "wizard_zombie" : "wizard_zombie_evolved";
+        ChangeSprite(facing == FacingDirection.Right ? $"{prefix}_right.png" : $"{prefix}_left.png");
         SyncScreenPosition();
     }
 

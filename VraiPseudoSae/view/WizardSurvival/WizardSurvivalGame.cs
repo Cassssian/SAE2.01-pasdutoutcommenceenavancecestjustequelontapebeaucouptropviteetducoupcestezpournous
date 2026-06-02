@@ -18,7 +18,7 @@ public sealed class WizardSurvivalGame : Game
     public const double ViewportWidth = 800;
     public const double ViewportHeight = 600;
     private const int InitialZombieCount = 10;
-    private const int StartingScore = 1000;
+    private const int StartingScore = 0;
 
     private readonly List<WorldItem> worldItems = new();
     private readonly List<ZombieEnemy> zombies = new();
@@ -86,6 +86,8 @@ public sealed class WizardSurvivalGame : Game
 
     public Action<Camera2D>? CameraChanged { get; set; }
 
+    public Action<ICollisionMap>? MapChanged { get; set; }
+
     protected override void InitItems()
     {
         Controller = new WizardInputController(this);
@@ -108,8 +110,13 @@ public sealed class WizardSurvivalGame : Game
         CelestialCall = new CelestialCallSpell();
         Shield = new ShieldSpell();
         Laser = new LaserSpell();
+        if (Map is WizardArenaMap arenaMap)
+        {
+            arenaMap.RegenerateLakes();
+            MapChanged?.Invoke(Map);
+        }
 
-        Player = new WizardPlayer(90, 90, this);
+        Player = new WizardPlayer(40, 430, this);
         RegisterWorldItem(Player);
 
         for (int i = 0; i < InitialZombieCount; i++)
@@ -135,6 +142,14 @@ public sealed class WizardSurvivalGame : Game
             Player.Move(movementInput, seconds, Map);
 
         Player.TickLiving(seconds);
+        TickLakes(seconds);
+        if (State != WizardGameState.Playing)
+        {
+            UpdateCameraAndSprites();
+            PublishHud();
+            return;
+        }
+
         HealPlayerFromScore();
 
         foreach (FireballProjectile projectile in projectiles.ToArray())
@@ -166,7 +181,25 @@ public sealed class WizardSurvivalGame : Game
     public void AddEffect(IVisualEffect effect) => effects.Add(effect);
 
     public void CreateBurst(double worldX, double worldY, string palette) =>
-        effects.Add(new ParticleEffect(worldX, worldY, palette, 16, random));
+        CreateParticles(worldX, worldY, palette, 16);
+
+    public void CreateParticles(double worldX, double worldY, string palette, int count) =>
+        effects.Add(new ParticleEffect(worldX, worldY, palette, count, random));
+
+    public void DamagePlayerFromLake(int amount)
+    {
+        if (Player.Health <= 0)
+            return;
+
+        if (Player.TakeEnvironmentalDamage(new DamageRequest(amount, "NerfLake")))
+            CreateBurst(Player.CenterX, Player.CenterY, "lake_nerf");
+
+        if (Player.Health <= 0)
+        {
+            FinalScore = Score;
+            ChangeState(WizardGameState.GameOver);
+        }
+    }
 
     public void AddScore(int amount)
     {
@@ -367,6 +400,12 @@ public sealed class WizardSurvivalGame : Game
         }
     }
 
+    private void TickLakes(double seconds)
+    {
+        foreach (ArenaLake lake in Map.Lakes)
+            lake.Tick(this, seconds);
+    }
+
     private void UpdateCameraAndSprites()
     {
         Camera.CenterOn(Player.CenterX, Player.CenterY);
@@ -398,6 +437,8 @@ public sealed class WizardSurvivalGame : Game
             Shield.Cooldown.Progress,
             Laser.Cooldown.Progress,
             Shield.IsActive,
-            Laser.IsActive));
+            Laser.IsActive,
+            Player?.LakeStatus ?? LakeStatusKind.None,
+            Player?.LakeStatusRemaining ?? 0));
     }
 }

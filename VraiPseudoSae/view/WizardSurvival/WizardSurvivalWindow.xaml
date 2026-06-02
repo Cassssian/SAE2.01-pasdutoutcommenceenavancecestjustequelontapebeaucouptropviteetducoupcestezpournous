@@ -8,6 +8,10 @@
         ResizeMode="CanMinimize"
         WindowStartupLocation="CenterScreen"
         Background="#121820"
+        FontFamily="Consolas"
+        SnapsToDevicePixels="True"
+        UseLayoutRounding="True"
+        RenderOptions.EdgeMode="Aliased"
         Loaded="Window_Loaded"
         Closed="Window_Closed">
     <Window.Resources>
@@ -16,17 +20,38 @@
             <Setter Property="Height" Value="38"/>
             <Setter Property="Margin" Value="0,8,0,0"/>
             <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Background" Value="#43516A"/>
-            <Setter Property="BorderBrush" Value="#91A4C7"/>
-            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="#6A3B7C"/>
+            <Setter Property="BorderBrush" Value="#99D9D7"/>
+            <Setter Property="BorderThickness" Value="2"/>
             <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontFamily" Value="Consolas"/>
             <Setter Property="Cursor" Value="Hand"/>
         </Style>
         <Style x:Key="UpgradeButtonStyle" TargetType="Button" BasedOn="{StaticResource MenuButtonStyle}">
             <Setter Property="Width" Value="120"/>
             <Setter Property="Height" Value="28"/>
             <Setter Property="Margin" Value="12,0,0,0"/>
-            <Setter Property="Background" Value="#6A4D8B"/>
+            <Setter Property="Background" Value="#8D5A3A"/>
+        </Style>
+        <Style x:Key="HudPanelStyle" TargetType="Border">
+            <Setter Property="Background" Value="#EA111825"/>
+            <Setter Property="BorderBrush" Value="#8EF4FF"/>
+            <Setter Property="BorderThickness" Value="3"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+        </Style>
+        <Style x:Key="HudValueTextStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontFamily" Value="Consolas"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
+        <Style x:Key="CooldownLabelStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontFamily" Value="Consolas"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Margin" Value="0,10,0,2"/>
         </Style>
     </Window.Resources>
 
@@ -45,23 +70,33 @@
                 <Canvas x:Name="WorldLayer"
                         Width="1200"
                         Height="900"
+                        RenderOptions.EdgeMode="Aliased"
                         IsHitTestVisible="False">
                     <Canvas.RenderTransform>
                         <TranslateTransform x:Name="WorldTransform"/>
                     </Canvas.RenderTransform>
                 </Canvas>
 
+                <Canvas x:Name="LakeLayer"
+                        Width="800"
+                        Height="600"
+                        IsHitTestVisible="False"
+                        RenderOptions.EdgeMode="Aliased"
+                        Panel.ZIndex="12"/>
+
                 <Canvas x:Name="SpriteCanvas"
                         Width="800"
                         Height="600"
                         Background="Transparent"
                         Focusable="True"
+                        RenderOptions.EdgeMode="Aliased"
                         Panel.ZIndex="20"/>
 
                 <Canvas x:Name="EffectLayer"
                         Width="800"
                         Height="600"
                         IsHitTestVisible="False"
+                        RenderOptions.EdgeMode="Aliased"
                         Panel.ZIndex="30"/>
 
                 <Canvas x:Name="HudLayer"
@@ -71,58 +106,83 @@
                         Panel.ZIndex="40">
                     <Border Canvas.Left="12"
                             Canvas.Top="12"
-                            Padding="10"
-                            Background="#AA111923"
-                            BorderBrush="#53627A"
-                            BorderThickness="1">
+                            Width="164"
+                            Style="{StaticResource HudPanelStyle}">
                         <StackPanel>
-                            <TextBlock x:Name="ScoreText"
-                                       Foreground="White"
-                                       FontSize="16"
+                            <TextBlock Text="[ NDC-OS ]"
+                                       Foreground="#8EF4FF"
+                                       FontSize="12"
                                        FontWeight="Bold"
+                                       Margin="0,0,0,6"/>
+                            <TextBlock x:Name="ScoreText"
+                                       Style="{StaticResource HudValueTextStyle}"
                                        Text="Score: 0"/>
                             <TextBlock x:Name="LivesText"
                                        Foreground="#FF6B6B"
-                                       FontSize="14"
+                                       FontSize="15"
                                        FontWeight="Bold"
                                        Text="Vie: 4/4"/>
                             <TextBlock x:Name="KillsText"
                                        Foreground="#C7D3E6"
-                                       FontSize="13"
+                                       FontSize="14"
+                                       FontWeight="Bold"
                                        Text="Zombies: 0"/>
+                            <TextBlock x:Name="LakeStatusText"
+                                       Foreground="#65FFA4"
+                                       FontSize="12"
+                                       FontWeight="Bold"
+                                       Margin="0,6,0,0"
+                                       Text="Lac: --"/>
                         </StackPanel>
                     </Border>
 
                     <StackPanel Canvas.Left="12"
-                                Canvas.Top="96"
-                                Width="210">
-                        <TextBlock Text="Fireball [F]" Foreground="White" FontSize="12"/>
-                        <Border Height="10" Background="#253041" BorderBrush="#52617A" BorderThickness="1">
-                            <Rectangle x:Name="FireballCooldownFill" Fill="#EF6A3A" HorizontalAlignment="Left" Width="120"/>
-                        </Border>
-                        <TextBlock Text="Appel celeste [Espace]" Foreground="White" FontSize="12" Margin="0,7,0,0"/>
-                        <Border Height="10" Background="#253041" BorderBrush="#52617A" BorderThickness="1">
-                            <Rectangle x:Name="CelestialCooldownFill" Fill="#A46DE7" HorizontalAlignment="Left" Width="120"/>
-                        </Border>
-                        <TextBlock Text="Bouclier [B]" Foreground="White" FontSize="12" Margin="0,7,0,0"/>
-                        <Border Height="10" Background="#253041" BorderBrush="#52617A" BorderThickness="1">
-                            <Rectangle x:Name="ShieldCooldownFill" Fill="#23C7D9" HorizontalAlignment="Left" Width="120"/>
-                        </Border>
-                        <TextBlock Text="Laser [L]" Foreground="White" FontSize="12" Margin="0,7,0,0"/>
-                        <Border Height="10" Background="#253041" BorderBrush="#52617A" BorderThickness="1">
-                            <Rectangle x:Name="LaserCooldownFill" Fill="#F6C343" HorizontalAlignment="Left" Width="120"/>
+                                Canvas.Top="136"
+                                Width="226">
+                        <Border Style="{StaticResource HudPanelStyle}" Padding="8">
+                            <StackPanel>
+                                <TextBlock Text="SORTS"
+                                           Foreground="#8EF4FF"
+                                           FontSize="12"
+                                           FontWeight="Bold"/>
+                                <TextBlock Text="Fireball [F]" Style="{StaticResource CooldownLabelStyle}" Margin="0,6,0,2"/>
+                                <Grid Width="210" Height="14" ClipToBounds="True">
+                                    <Rectangle Fill="#130A1D"/>
+                                    <Rectangle x:Name="FireballCooldownFill" Fill="#EF6A3A" HorizontalAlignment="Left" VerticalAlignment="Center" Height="10" Width="206" Margin="2,0,0,0"/>
+                                    <Rectangle Stroke="#7D8EAD" StrokeThickness="2"/>
+                                </Grid>
+                                <TextBlock Text="Appel celeste [Espace]" Style="{StaticResource CooldownLabelStyle}"/>
+                                <Grid Width="210" Height="14" ClipToBounds="True">
+                                    <Rectangle Fill="#130A1D"/>
+                                    <Rectangle x:Name="CelestialCooldownFill" Fill="#A46DE7" HorizontalAlignment="Left" VerticalAlignment="Center" Height="10" Width="206" Margin="2,0,0,0"/>
+                                    <Rectangle Stroke="#7D8EAD" StrokeThickness="2"/>
+                                </Grid>
+                                <TextBlock Text="Bouclier [B]" Style="{StaticResource CooldownLabelStyle}"/>
+                                <Grid Width="210" Height="14" ClipToBounds="True">
+                                    <Rectangle Fill="#130A1D"/>
+                                    <Rectangle x:Name="ShieldCooldownFill" Fill="#23C7D9" HorizontalAlignment="Left" VerticalAlignment="Center" Height="10" Width="206" Margin="2,0,0,0"/>
+                                    <Rectangle Stroke="#7D8EAD" StrokeThickness="2"/>
+                                </Grid>
+                                <TextBlock Text="Laser [L]" Style="{StaticResource CooldownLabelStyle}"/>
+                                <Grid Width="210" Height="14" ClipToBounds="True">
+                                    <Rectangle Fill="#130A1D"/>
+                                    <Rectangle x:Name="LaserCooldownFill" Fill="#F6C343" HorizontalAlignment="Left" VerticalAlignment="Center" Height="10" Width="206" Margin="2,0,0,0"/>
+                                    <Rectangle Stroke="#7D8EAD" StrokeThickness="2"/>
+                                </Grid>
+                            </StackPanel>
                         </Border>
                     </StackPanel>
 
                     <Border Canvas.Right="12"
                             Canvas.Top="12"
                             Padding="8"
-                            Background="#AA111923"
-                            BorderBrush="#53627A"
-                            BorderThickness="1">
+                            Background="#EA111825"
+                            BorderBrush="#7D8EAD"
+                            BorderThickness="2">
                         <TextBlock x:Name="StateHintText"
-                                   Foreground="#DDE6F5"
-                                   FontSize="13"
+                                   Foreground="#F7F7FF"
+                                   FontSize="14"
+                                   FontWeight="Bold"
                                    Text="A: ameliorations | ESC: pause"/>
                     </Border>
                 </Canvas>
@@ -130,7 +190,7 @@
                 <Grid x:Name="MenuOverlay"
                       Width="800"
                       Height="600"
-                      Background="#DD0D1219"
+                      Background="#EE2B1742"
                       Panel.ZIndex="80">
                     <StackPanel HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
@@ -141,7 +201,7 @@
                                    FontWeight="Bold"
                                    TextAlignment="Center"/>
                         <TextBlock Text="Survie du magicien"
-                                   Foreground="#C5D3EA"
+                                   Foreground="#99D9D7"
                                    FontSize="16"
                                    TextAlignment="Center"
                                    Margin="0,4,0,18"/>
@@ -157,7 +217,7 @@
                 <Grid x:Name="PauseOverlay"
                       Width="800"
                       Height="600"
-                      Background="#CC05070B"
+                      Background="#DD1F102D"
                       Panel.ZIndex="81"
                       Visibility="Collapsed">
                     <StackPanel HorizontalAlignment="Center"
@@ -184,8 +244,8 @@
                       Visibility="Collapsed">
                     <Border Width="560"
                             Padding="18"
-                            Background="#172131"
-                            BorderBrush="#7281A1"
+                            Background="#1F3443"
+                            BorderBrush="#99D9D7"
                             BorderThickness="2"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center">
@@ -290,7 +350,7 @@
                 <Grid x:Name="GameOverOverlay"
                       Width="800"
                       Height="600"
-                      Background="#DD05070B"
+                      Background="#EE1F102D"
                       Panel.ZIndex="83"
                       Visibility="Collapsed">
                     <StackPanel HorizontalAlignment="Center"

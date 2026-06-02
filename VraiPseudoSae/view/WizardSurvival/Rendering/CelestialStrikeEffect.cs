@@ -28,6 +28,8 @@ public sealed class CelestialStrikeEffect : IVisualEffect
 
     public double Radius { get; private set; }
 
+    public double Age => timer;
+
     public double LightningProgress => System.Math.Min(1, timer / 0.28);
 
     public bool CircleStarted => timer >= 0.28;

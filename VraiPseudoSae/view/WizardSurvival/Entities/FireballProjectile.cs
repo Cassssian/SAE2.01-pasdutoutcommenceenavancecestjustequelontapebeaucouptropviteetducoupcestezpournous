@@ -9,9 +9,10 @@ namespace VraiPseudoSae.view.WizardSurvival.Entities;
 /// </summary>
 public sealed class FireballProjectile : WorldItem
 {
-    private const double SpriteW = 18;
-    private const double SpriteH = 18;
+    private const double SpriteW = 28;
+    private const double SpriteH = 20;
     private double lifetime = 1.65;
+    private double trailTimer;
 
     public FireballProjectile(
         WizardSurvivalGame game,
@@ -19,13 +20,22 @@ public sealed class FireballProjectile : WorldItem
         double worldY,
         FacingDirection direction,
         double speed,
-        int damage)
-        : base(worldX, worldY, game, "wizard_fireball.png", SpriteW, SpriteH, 10, 28)
+        int damage,
+        double rangeMultiplier)
+        : base(
+            worldX,
+            worldY,
+            game,
+            direction == FacingDirection.Right ? "wizard_fireball_right.png" : "wizard_fireball_left.png",
+            SpriteW,
+            SpriteH,
+            10,
+            28)
     {
         Direction = direction;
         Speed = speed;
         Damage = damage;
-        ChangeScale(direction == FacingDirection.Right ? 1 : -1, 1);
+        lifetime *= rangeMultiplier;
     }
 
     public override string TypeName => "FireballProjectile";
@@ -39,8 +49,16 @@ public sealed class FireballProjectile : WorldItem
     public void Tick(double seconds)
     {
         lifetime -= seconds;
+        trailTimer -= seconds;
         MoveWorld((int)Direction * Speed * seconds, 0);
         SyncScreenPosition();
+
+        if (trailTimer <= 0)
+        {
+            trailTimer = 0.045;
+            double offset = Direction == FacingDirection.Right ? -8 : 8;
+            Game.CreateParticles(CenterX + offset, CenterY, "fire", 4);
+        }
 
         if (lifetime <= 0 || !Game.Map.CanOccupy(Bounds))
         {
