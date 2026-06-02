@@ -7,7 +7,6 @@
         Background="#1B1B1B"
         Loaded="Window_Loaded"
         KeyDown="Window_KeyDown"
-        KeyUp="Window_KeyUp"
         WindowStartupLocation="CenterScreen">
 
     <Grid>

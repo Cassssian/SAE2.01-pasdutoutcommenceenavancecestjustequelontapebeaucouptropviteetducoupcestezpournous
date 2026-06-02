@@ -155,13 +155,13 @@ namespace VraiPseudoSae.view
 
         public void ResetPositions(bool preserveScore)
         {
-            Human.PutXY(150, FieldHeight / 2 - 12);
+            Human.PutPosition(150, FieldHeight / 2 - 12);
             Human.VX = 0; Human.VY = 0;
 
-            Bot.PutXY(FieldWidth - 150 - 24, FieldHeight / 2 - 12);
+            Bot.PutPosition(FieldWidth - 150 - 24, FieldHeight / 2 - 12);
             Bot.VX = 0; Bot.VY = 0;
 
-            Ball.PutXY(FieldWidth / 2 - 7, FieldHeight / 2 - 7);
+            Ball.PutPosition( FieldWidth / 2 - 7, FieldHeight / 2 - 7);
             Ball.VX = 0; Ball.VY = 0;
 
             Ball.DribbleActive = false;
@@ -565,6 +565,11 @@ namespace VraiPseudoSae.view
             MoveXY(VX, VY);
         }
 
+        public void PutPosition(double x, double y)
+        {
+            PutXY(x, y);
+        }
+
         private void KeepInsideField()
         {
             if (Left < 0) PutXY(0, Top); if (Top < 0) PutXY(Left, 0);
@@ -650,6 +655,7 @@ namespace VraiPseudoSae.view
 
         public double DistanceTo(FootPlayer p) { double dx = (Left + Width / 2) - (p.Left + p.Width / 2), dy = (Top + Height / 2) - (p.Top + p.Height / 2); return Math.Sqrt(dx * dx + dy * dy); }
         public override void CollideEffect(GameItem other) { }
+        public void PutPosition(double x, double y) { PutXY(x, y); }
     }
 
     public class FootController : GameItem, IAnimable, IKeyboardInteract

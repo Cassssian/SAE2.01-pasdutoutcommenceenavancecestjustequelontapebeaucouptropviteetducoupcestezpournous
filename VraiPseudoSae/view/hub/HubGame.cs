@@ -5,6 +5,7 @@ using IUTGame;
 using System.Collections.Generic;
 using System.Windows.Media;
 using VraiPseudoSae.view.RLS_Pages;
+using VraiPseudoSae.view.WizardSurvival;
 
 namespace VraiPseudoSae.view.hub
 {
@@ -81,7 +82,7 @@ namespace VraiPseudoSae.view.hub
             else if (rlsDist < 90)
                 homePage.SetInfoText("Appuie sur E pour lancer le mini-jeu RLS");
             else if (pinDist < 90)
-                homePage.SetInfoText("Appuie sur E pour lancer le mini-jeu Pinball");
+                homePage.SetInfoText("Appuie sur E pour lancer NUIT DU CODE");
             else
                 homePage.SetInfoText("Va vers une zone");
         }
@@ -151,9 +152,8 @@ namespace VraiPseudoSae.view.hub
 
         private void LaunchPin()
         {
-            // Pinball.Pinball display = new Pinball.Pinball();
-            //display.Show();
-            throw new NotImplementedException();
+            WizardSurvivalWindow display = new WizardSurvivalWindow();
+            display.Show();
         }
 
         private double Distance(Point a, Point b)
