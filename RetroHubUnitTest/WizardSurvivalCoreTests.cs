@@ -2,7 +2,7 @@ using System.Windows;
 using VraiPseudoSae.view.WizardSurvival.Core;
 using VraiPseudoSae.view.WizardSurvival.Spells;
 
-namespace VraiPseudoSae.Tests;
+namespace RetroHubUnitTest;
 
 public sealed class WizardSurvivalCoreTests
 {
