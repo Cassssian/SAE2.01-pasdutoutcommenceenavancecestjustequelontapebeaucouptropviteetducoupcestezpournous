@@ -1,10 +1,31 @@
 version: "1.0"
-linter: jetbrains/qodana-cdnet:2026.1
+
+linter: jetbrains/qodana-cdnet:2026.1-eap
 
 profile:
   name: qodana.recommended
 
-solution: VraiPseudoSae.sln
+dotnet:
+  solution: VraiPseudoSae.sln
+  configuration: Release
+  platform: "Any CPU"
+
+bootstrap: |
+  set -eux
+  dotnet --info
+  dotnet restore VraiPseudoSae.sln /p:EnableWindowsTargeting=true
+  dotnet build VraiPseudoSae.sln --configuration Release --no-restore /p:EnableWindowsTargeting=true
+  dotnet test RetroHubUnitTest/RetroHubUnitTest.csproj --configuration Release --no-build /p:EnableWindowsTargeting=true /p:CollectCoverage=true /p:CoverletOutput=$(pwd)/.qodana/code-coverage/ /p:CoverletOutputFormat=lcov
 
 include:
   - name: CheckDependencyLicenses
+  - name: VulnerableLibrariesGlobal
+
+exclude:
+  - name: All
+    paths:
+      - IUTGameDLL
+      - "**/bin"
+      - "**/obj"
+      - "**/.qodana"
+      - "**/TestResults"

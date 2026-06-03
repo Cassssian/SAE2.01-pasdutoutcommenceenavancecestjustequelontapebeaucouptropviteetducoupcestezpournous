@@ -102,6 +102,7 @@ Generated_Code/
 # Tests / couverture
 # =========================
 TestResults/
+.qodana/
 *.trx
 *.coverage
 *.coveragexml
