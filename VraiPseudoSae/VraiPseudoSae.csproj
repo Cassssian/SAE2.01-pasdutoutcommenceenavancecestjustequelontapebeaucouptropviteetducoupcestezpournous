@@ -10,6 +10,7 @@
 
     <ItemGroup>
       <None Remove="view\images_drop\decors\DecorManoir.png" />
+      <None Remove="data\Wizard\AnimationSheet_Character.png" />
     </ItemGroup>
 
     <ItemGroup>
@@ -57,6 +58,7 @@
 
     <ItemGroup>
       <Resource Include="view\images_drop\decors\DecorManoir.png" />
+      <Resource Include="data\Wizard\AnimationSheet_Character.png" />
     </ItemGroup>
 
 </Project>

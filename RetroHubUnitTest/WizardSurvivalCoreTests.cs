@@ -46,7 +46,7 @@ public sealed class WizardSurvivalCoreTests
     }
 
     [Fact]
-    public void Lake_speed_multiplier_only_applies_inside_lake_shape()
+    public void Terrain_speed_multiplier_only_applies_inside_lake_shape()
     {
         WizardArenaMap map = new(
             100,
@@ -54,8 +54,8 @@ public sealed class WizardSurvivalCoreTests
             Array.Empty<ArenaObstacle>(),
             new[] { new NormalLake(new Rect(20, 20, 40, 24)) });
 
-        Assert.Equal(0.55, map.ZombieLakeSpeedMultiplier(40, 32), 2);
-        Assert.Equal(1, map.ZombieLakeSpeedMultiplier(5, 5), 2);
+        Assert.Equal(0.55, map.TerrainSpeedMultiplier(40, 32), 2);
+        Assert.Equal(1, map.TerrainSpeedMultiplier(5, 5), 2);
     }
 
     [Fact]

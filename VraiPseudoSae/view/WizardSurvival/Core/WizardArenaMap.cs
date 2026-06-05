@@ -38,12 +38,15 @@ public sealed class WizardArenaMap : ICollisionMap
         return Obstacles.All(obstacle => !obstacle.SolidBounds.IntersectsWith(bounds));
     }
 
-    public double ZombieLakeSpeedMultiplier(double worldX, double worldY) =>
+    public double TerrainSpeedMultiplier(double worldX, double worldY) =>
         Lakes
             .Where(lake => lake.Contains(worldX, worldY))
             .Select(lake => lake.ZombieSlowMultiplier)
             .DefaultIfEmpty(1)
             .Min();
+
+    public double ZombieLakeSpeedMultiplier(double worldX, double worldY) =>
+        TerrainSpeedMultiplier(worldX, worldY);
 
     public void RegenerateLakes() =>
         Lakes = CreateRandomLakes(Width, Height, Obstacles);

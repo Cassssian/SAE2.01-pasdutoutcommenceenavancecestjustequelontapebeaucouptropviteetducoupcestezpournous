@@ -29,9 +29,9 @@ public partial class WizardSurvivalWindow : Window
     private void Window_Loaded(object sender, RoutedEventArgs e)
     {
         var screen = new WPFScreen(SpriteCanvas);
-        InjectSprites(screen);
+        WizardPlayerSpriteSet wizardSprites = InjectSprites(screen);
 
-        game = new WizardSurvivalGame(screen, "Resources/Sprites", "Resources/Sounds")
+        game = new WizardSurvivalGame(screen, "Resources/Sprites", "Resources/Sounds", wizardSprites)
         {
             StateChanged = UpdateState,
             HudChanged = UpdateHud,
@@ -48,16 +48,16 @@ public partial class WizardSurvivalWindow : Window
 
     private void Window_Closed(object? sender, EventArgs e) => game?.Pause();
 
-    private void InjectSprites(WPFScreen screen)
+    private WizardPlayerSpriteSet InjectSprites(WPFScreen screen)
     {
-        SpriteInjector.PreRegister(screen, "wizard_player_right.png", PixelSpriteFactory.WizardFrame(0));
-        SpriteInjector.PreRegister(screen, "wizard_player_left.png", PixelSpriteFactory.WizardFrame(0, mirrored: true));
+        WizardPlayerSpriteSet wizardSprites = WizardSpriteSheetFactory.Register(screen);
         SpriteInjector.PreRegister(screen, "wizard_zombie_right.png", PixelSpriteFactory.Zombie(evolved: false));
         SpriteInjector.PreRegister(screen, "wizard_zombie_left.png", PixelSpriteFactory.Zombie(evolved: false, mirrored: true));
         SpriteInjector.PreRegister(screen, "wizard_zombie_evolved_right.png", PixelSpriteFactory.Zombie(evolved: true));
         SpriteInjector.PreRegister(screen, "wizard_zombie_evolved_left.png", PixelSpriteFactory.Zombie(evolved: true, mirrored: true));
         SpriteInjector.PreRegister(screen, "wizard_fireball_right.png", PixelSpriteFactory.Fireball());
         SpriteInjector.PreRegister(screen, "wizard_fireball_left.png", PixelSpriteFactory.Fireball(mirrored: true));
+        return wizardSprites;
     }
 
     private void DrawArenaBackground(ICollisionMap map)
@@ -455,6 +455,7 @@ public partial class WizardSurvivalWindow : Window
             StateHintText.Text = state switch
             {
                 WizardGameState.Playing => "A: ameliorations | ESC: pause",
+                WizardGameState.Dying => "Le sorcier s'effondre...",
                 WizardGameState.Paused => "Pause",
                 WizardGameState.Upgrade => "ESC ou X: retour",
                 WizardGameState.GameOver => "R: recommencer",

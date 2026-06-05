@@ -7,6 +7,7 @@ public enum WizardGameState
 {
     Menu,
     Playing,
+    Dying,
     Paused,
     Upgrade,
     GameOver

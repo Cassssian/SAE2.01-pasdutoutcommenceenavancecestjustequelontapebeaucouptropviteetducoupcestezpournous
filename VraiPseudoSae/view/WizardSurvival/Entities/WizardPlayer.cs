@@ -1,6 +1,8 @@
 using System.Windows;
+using VraiPseudoSae.Utils.Sprite;
 using VraiPseudoSae.view.WizardSurvival.Abstractions;
 using VraiPseudoSae.view.WizardSurvival.Core;
+using VraiPseudoSae.view.WizardSurvival.Rendering;
 
 namespace VraiPseudoSae.view.WizardSurvival.Entities;
 
@@ -9,21 +11,43 @@ namespace VraiPseudoSae.view.WizardSurvival.Entities;
 /// </summary>
 public sealed class WizardPlayer : LivingWorldItem
 {
-    private const double SpriteW = 40;
-    private const double SpriteH = 48;
+    private enum AnimationMode
+    {
+        Idle,
+        Walk,
+        Death
+    }
+
+    private const double SpriteW = 32;
+    private const double SpriteH = 32;
     private const double NormalSpeed = 210;
     private const double ImmuneSpeedBonus = 90;
-    private FacingDirection renderedFacing;
+    private const double IdleFrameDuration = 0.16;
+    private const double WalkFrameDuration = 0.09;
+    private const double DeathFrameDuration = 0.14;
+
+    private readonly WizardPlayerSpriteSet sprites;
+    private IReadOnlyList<string> currentFrames;
+    private IReadOnlyList<string> deathFrames;
+    private string renderedSprite;
+    private AnimationMode animationMode;
+    private double animationTimer;
+    private int animationFrame;
+    private bool isMoving;
     private double lakeSpeedMultiplier = 1;
     private double lakeRangeMultiplier = 1;
     private double lakeStatusRemaining;
 
     public WizardPlayer(double worldX, double worldY, WizardSurvivalGame game)
-        : base(worldX, worldY, game, "wizard_player_right.png", SpriteW, SpriteH, 17, 4, 30)
+        : base(worldX, worldY, game, game.WizardSprites.InitialSprite, SpriteW, SpriteH, 13, 4, 30)
     {
+        sprites = game.WizardSprites;
+        currentFrames = sprites.IdleRight;
+        deathFrames = sprites.DeathRightA;
+        renderedSprite = sprites.InitialSprite;
+        animationMode = AnimationMode.Idle;
         Facing = FacingDirection.Right;
-        renderedFacing = FacingDirection.Right;
-        SetLocalCollisionBounds(12, 25, 16, 18);
+        SetLocalCollisionBounds(7, 13, 16, 18);
     }
 
     public override string TypeName => "WizardPlayer";
@@ -38,26 +62,39 @@ public sealed class WizardPlayer : LivingWorldItem
 
     public double LakeStatusRemaining => lakeStatusRemaining;
 
+    public bool DeathAnimationFinished { get; private set; }
+
     public void Move(DoubleVector input, double seconds, ICollisionMap map)
     {
+        isMoving = input.Length > 0.01;
+
         if (input.X < 0)
             SetFacing(FacingDirection.Left);
         else if (input.X > 0)
             SetFacing(FacingDirection.Right);
 
         DoubleVector direction = input.Normalize();
-        DoubleVector delta = direction * (CurrentSpeed * seconds);
+        double terrainMultiplier = map.TerrainSpeedMultiplier(TerrainX, TerrainY);
+        DoubleVector delta = direction * (CurrentSpeed * terrainMultiplier * seconds);
         Rect moved = MovementResolver.Move(CollisionBounds, delta, map);
         SetWorldPositionFromCollisionBounds(moved);
     }
 
+    public void SetMovementIntent(bool moving)
+    {
+        isMoving = moving;
+    }
+
     public override bool TakeDamage(DamageRequest damage)
     {
-        bool applied = base.TakeDamage(damage);
-        if (applied)
+        if (!CanTakeDamage)
+            return false;
+
+        Health = System.Math.Max(0, Health - System.Math.Max(0, damage.Amount));
+        if (Health > 0)
             InvulnerabilityRemaining = 2.0;
 
-        return applied;
+        return true;
     }
 
     public void HealOne() => Heal(1);
@@ -83,10 +120,23 @@ public sealed class WizardPlayer : LivingWorldItem
 
         Health = System.Math.Max(0, Health - System.Math.Max(0, damage.Amount));
         InvulnerabilityRemaining = System.Math.Max(InvulnerabilityRemaining, 0.7);
-        if (Health <= 0)
-            Deactivate();
-
         return true;
+    }
+
+    public void StartDeathAnimation(bool alternateRow)
+    {
+        if (animationMode == AnimationMode.Death)
+            return;
+
+        animationMode = AnimationMode.Death;
+        deathFrames = alternateRow
+            ? (Facing == FacingDirection.Right ? sprites.DeathRightB : sprites.DeathLeftB)
+            : (Facing == FacingDirection.Right ? sprites.DeathRightA : sprites.DeathLeftA);
+        animationFrame = 0;
+        animationTimer = 0;
+        isMoving = false;
+        DeathAnimationFinished = false;
+        ApplyFrame(deathFrames[animationFrame], force: true);
     }
 
     public override void TickLiving(double seconds)
@@ -103,18 +153,99 @@ public sealed class WizardPlayer : LivingWorldItem
             }
         }
 
+        TickAnimation(seconds);
         SyncScreenPosition();
     }
 
     private void SetFacing(FacingDirection facing)
     {
-        Facing = facing;
-        if (renderedFacing == facing)
+        if (animationMode == AnimationMode.Death)
             return;
 
-        renderedFacing = facing;
-        ChangeSprite(facing == FacingDirection.Right ? "wizard_player_right.png" : "wizard_player_left.png");
-        SyncScreenPosition();
+        if (Facing == facing)
+            return;
+
+        Facing = facing;
+        ForceAnimationFrame();
+    }
+
+    private void TickAnimation(double seconds)
+    {
+        if (animationMode == AnimationMode.Death)
+        {
+            TickDeathAnimation(seconds);
+            return;
+        }
+
+        AnimationMode nextMode = isMoving ? AnimationMode.Walk : AnimationMode.Idle;
+        IReadOnlyList<string> nextFrames = GetCurrentDirectionalFrames(nextMode);
+        double frameDuration = nextMode == AnimationMode.Walk ? WalkFrameDuration : IdleFrameDuration;
+
+        if (animationMode != nextMode || !ReferenceEquals(currentFrames, nextFrames))
+        {
+            animationMode = nextMode;
+            currentFrames = nextFrames;
+            animationFrame = 0;
+            animationTimer = 0;
+            ApplyFrame(currentFrames[animationFrame], force: true);
+            return;
+        }
+
+        animationTimer += seconds;
+        while (animationTimer >= frameDuration)
+        {
+            animationTimer -= frameDuration;
+            animationFrame = (animationFrame + 1) % currentFrames.Count;
+            ApplyFrame(currentFrames[animationFrame]);
+        }
+    }
+
+    private void TickDeathAnimation(double seconds)
+    {
+        if (DeathAnimationFinished)
+            return;
+
+        animationTimer += seconds;
+        while (animationTimer >= DeathFrameDuration && !DeathAnimationFinished)
+        {
+            animationTimer -= DeathFrameDuration;
+            if (animationFrame < deathFrames.Count - 1)
+            {
+                animationFrame++;
+                ApplyFrame(deathFrames[animationFrame]);
+            }
+            else
+            {
+                DeathAnimationFinished = true;
+            }
+        }
+    }
+
+    private IReadOnlyList<string> GetCurrentDirectionalFrames(AnimationMode mode)
+    {
+        bool right = Facing == FacingDirection.Right;
+        return mode == AnimationMode.Walk
+            ? right ? sprites.WalkRight : sprites.WalkLeft
+            : right ? sprites.IdleRight : sprites.IdleLeft;
+    }
+
+    private void ForceAnimationFrame()
+    {
+        if (animationMode == AnimationMode.Death)
+            return;
+
+        currentFrames = GetCurrentDirectionalFrames(animationMode);
+        animationFrame = System.Math.Min(animationFrame, currentFrames.Count - 1);
+        ApplyFrame(currentFrames[animationFrame], force: true);
+    }
+
+    private void ApplyFrame(string spriteName, bool force = false)
+    {
+        if (!force && renderedSprite == spriteName)
+            return;
+
+        renderedSprite = spriteName;
+        SpriteFrameSwitcher.SwitchFrame(this, spriteName);
     }
 
     public override void CollideEffect(IUTGame.GameItem other)

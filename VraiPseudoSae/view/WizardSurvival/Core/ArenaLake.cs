@@ -9,6 +9,8 @@ namespace VraiPseudoSae.view.WizardSurvival.Core;
 /// </summary>
 public abstract class ArenaLake
 {
+    private const double EdgeTolerance = 6;
+
     protected ArenaLake(Rect bounds, string kind, double zombieSlowMultiplier)
     {
         Bounds = bounds;
@@ -30,8 +32,8 @@ public abstract class ArenaLake
 
     public bool Contains(double worldX, double worldY)
     {
-        double rx = Bounds.Width / 2;
-        double ry = Bounds.Height / 2;
+        double rx = Bounds.Width / 2 + EdgeTolerance;
+        double ry = Bounds.Height / 2 + EdgeTolerance;
         if (rx <= 0 || ry <= 0)
             return false;
 
@@ -86,7 +88,7 @@ public abstract class CooldownLake : ArenaLake
         if (cooldownRemaining > 0)
             cooldownRemaining = Math.Max(0, cooldownRemaining - seconds);
 
-        if (!IsReady || game.Player is null || !Contains(game.Player.CenterX, game.Player.CenterY))
+        if (!IsReady || game.Player is null || !Contains(game.Player.TerrainX, game.Player.TerrainY))
             return;
 
         ApplyReadyEffect(game);

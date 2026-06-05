@@ -24,4 +24,10 @@ public interface IWorldObject
     double CenterY { get; }
 
     Rect Bounds { get; }
+
+    Rect CollisionBounds { get; }
+
+    double TerrainX { get; }
+
+    double TerrainY { get; }
 }

@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Windows;
 using VraiPseudoSae.view.WizardSurvival.Abstractions;
 using VraiPseudoSae.view.WizardSurvival.Core;
@@ -83,11 +82,7 @@ public sealed class ZombieEnemy : LivingWorldItem
         else if (desired.X > 0.01)
             SetFacing(FacingDirection.Right);
 
-        double lakeMultiplier = map.Lakes
-            .Where(lake => lake.Contains(CenterX, CenterY))
-            .Select(lake => lake.ZombieSlowMultiplier)
-            .DefaultIfEmpty(1)
-            .Min();
+        double lakeMultiplier = map.TerrainSpeedMultiplier(TerrainX, TerrainY);
 
         Rect moved = MovementResolver.Move(CollisionBounds, desired * (Speed * lakeMultiplier * seconds), map);
         SetWorldPositionFromCollisionBounds(moved);

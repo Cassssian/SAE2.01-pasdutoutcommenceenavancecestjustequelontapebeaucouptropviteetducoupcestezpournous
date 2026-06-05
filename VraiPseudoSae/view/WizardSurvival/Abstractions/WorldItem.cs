@@ -62,6 +62,14 @@ public abstract class WorldItem : GameItem, IWorldObject
             localCollisionBounds.Width,
             localCollisionBounds.Height);
 
+    public double CollisionCenterX => CollisionBounds.Left + CollisionBounds.Width / 2.0;
+
+    public double CollisionCenterY => CollisionBounds.Top + CollisionBounds.Height / 2.0;
+
+    public double TerrainX => CollisionBounds.Left + CollisionBounds.Width / 2.0;
+
+    public double TerrainY => CollisionBounds.Bottom - 1;
+
     protected void SetLocalCollisionBounds(double x, double y, double width, double height) =>
         localCollisionBounds = new Rect(x, y, width, height);
 
@@ -81,8 +89,12 @@ public abstract class WorldItem : GameItem, IWorldObject
 
     public double DistanceTo(IWorldObject other)
     {
-        double dx = CenterX - other.CenterX;
-        double dy = CenterY - other.CenterY;
+        double thisX = CollisionCenterX;
+        double thisY = CollisionCenterY;
+        double otherX = other.CollisionBounds.Left + other.CollisionBounds.Width / 2.0;
+        double otherY = other.CollisionBounds.Top + other.CollisionBounds.Height / 2.0;
+        double dx = thisX - otherX;
+        double dy = thisY - otherY;
         return System.Math.Sqrt(dx * dx + dy * dy);
     }
 

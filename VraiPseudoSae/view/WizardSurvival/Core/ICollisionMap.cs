@@ -17,4 +17,6 @@ public interface ICollisionMap
     IReadOnlyList<ArenaLake> Lakes { get; }
 
     bool CanOccupy(Rect bounds);
+
+    double TerrainSpeedMultiplier(double worldX, double worldY);
 }

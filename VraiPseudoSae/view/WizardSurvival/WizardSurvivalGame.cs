@@ -34,11 +34,13 @@ public sealed class WizardSurvivalGame : Game
         IScreen screen,
         string spritesFolder,
         string soundsFolder,
+        WizardPlayerSpriteSet? wizardSprites = null,
         ICollisionMap? map = null,
         IRandomSource? random = null)
         : base(screen, spritesFolder, soundsFolder, 60)
     {
         Map = map ?? WizardArenaMap.CreateDefault();
+        WizardSprites = wizardSprites ?? WizardPlayerSpriteSet.SingleFrameFallback;
         this.random = random ?? new SystemRandomSource();
         Camera = new Camera2D(ViewportWidth, ViewportHeight, Map.Width, Map.Height);
         Fireball = new FireballSpell();
@@ -53,6 +55,8 @@ public sealed class WizardSurvivalGame : Game
     public ICollisionMap Map { get; }
 
     public Camera2D Camera { get; }
+
+    public WizardPlayerSpriteSet WizardSprites { get; }
 
     public WizardInputController Controller { get; private set; } = null!;
 
@@ -130,6 +134,17 @@ public sealed class WizardSurvivalGame : Game
 
     public void Tick(double seconds, DoubleVector movementInput)
     {
+        if (State == WizardGameState.Dying)
+        {
+            Player.TickLiving(seconds);
+            UpdateCameraAndSprites();
+            if (Player.DeathAnimationFinished)
+                ChangeState(WizardGameState.GameOver);
+
+            PublishHud();
+            return;
+        }
+
         if (State != WizardGameState.Playing)
             return;
 
@@ -140,6 +155,8 @@ public sealed class WizardSurvivalGame : Game
 
         if (!Laser.LocksMovement)
             Player.Move(movementInput, seconds, Map);
+        else
+            Player.SetMovementIntent(false);
 
         Player.TickLiving(seconds);
         TickLakes(seconds);
@@ -166,6 +183,13 @@ public sealed class WizardSurvivalGame : Game
             zombie.Tick(Player, seconds, Map, random);
 
         HandleContactDamage();
+        if (State != WizardGameState.Playing)
+        {
+            UpdateCameraAndSprites();
+            PublishHud();
+            return;
+        }
+
         RemoveDeadZombies();
         HandleSpawning(seconds);
         UpdateCameraAndSprites();
@@ -196,8 +220,7 @@ public sealed class WizardSurvivalGame : Game
 
         if (Player.Health <= 0)
         {
-            FinalScore = Score;
-            ChangeState(WizardGameState.GameOver);
+            BeginPlayerDeath();
         }
     }
 
@@ -361,8 +384,7 @@ public sealed class WizardSurvivalGame : Game
 
             if (Player.Health <= 0)
             {
-                FinalScore = Score;
-                ChangeState(WizardGameState.GameOver);
+                BeginPlayerDeath();
             }
 
             return;
@@ -404,6 +426,16 @@ public sealed class WizardSurvivalGame : Game
     {
         foreach (ArenaLake lake in Map.Lakes)
             lake.Tick(this, seconds);
+    }
+
+    private void BeginPlayerDeath()
+    {
+        if (State is WizardGameState.Dying or WizardGameState.GameOver)
+            return;
+
+        FinalScore = Score;
+        Player.StartDeathAnimation(random.Next(0, 2) == 0);
+        ChangeState(WizardGameState.Dying);
     }
 
     private void UpdateCameraAndSprites()
