@@ -8,11 +8,11 @@ using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace VraiPseudoSae.view
+namespace VraiPseudoSae.view.intro
 {
     public partial class IntroWindow : UserControl
     {
-        private const string DecorationAssetBaseUri = "pack://application:,,,/view/intro_anim/elements/";
+        private const string DecorationAssetBaseUri = "pack://application:,,,/view/intro/elements/";
         private bool transitionStarted;
         public event EventHandler? StartRequested;
 

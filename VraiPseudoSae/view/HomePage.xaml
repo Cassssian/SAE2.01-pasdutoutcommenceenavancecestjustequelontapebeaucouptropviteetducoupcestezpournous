@@ -5,8 +5,15 @@
         Width="1280"
         Height="720"
         Focusable="True"
+        KeyboardNavigation.DirectionalNavigation="None"
+        KeyboardNavigation.TabNavigation="None"
         Loaded="Window_Loaded"
         Unloaded="Window_Unloaded">
+    <UserControl.Resources>
+        <Style TargetType="{x:Type TextBlock}">
+            <Setter Property="FontFamily" Value="{StaticResource PixelFont}"/>
+        </Style>
+    </UserControl.Resources>
 
     <Grid Background="#101820">
 
@@ -54,11 +61,11 @@
                     IsHitTestVisible="False">
                 <Polygon Points="85,0 170,30 85,60 0,30"
                          Fill="#334B5F"/>
-                <TextBlock Text="NDC"
+                <TextBlock Text="Wizard"
                            FontSize="20"
                            FontWeight="Bold"
                            Foreground="Black"
-                           Canvas.Left="62"
+                           Canvas.Left="46"
                            Canvas.Top="15"/>
             </Canvas>
             

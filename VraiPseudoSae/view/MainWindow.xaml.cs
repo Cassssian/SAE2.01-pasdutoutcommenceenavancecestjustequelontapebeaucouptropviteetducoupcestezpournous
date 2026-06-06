@@ -1,4 +1,5 @@
 using System.Windows;
+using VraiPseudoSae.view.intro;
 using VraiPseudoSae.view.WizardSurvival;
 
 namespace VraiPseudoSae.view

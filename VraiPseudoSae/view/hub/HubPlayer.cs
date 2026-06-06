@@ -71,10 +71,10 @@ namespace VraiPseudoSae.view.hub
 
         public void KeyUp(Key key)
         {
-            if (key == Key.Z || key == Key.W || key == Key.Up) goUp = false;
-            if (key == Key.S || key == Key.Down) goDown = false;
-            if (key == Key.Q || key == Key.A || key == Key.Left) goLeft = false;
-            if (key == Key.D || key == Key.Right) goRight = false;
+            if (key == Key.Z || key == Key.W) goUp = false;
+            if (key == Key.S) goDown = false;
+            if (key == Key.Q || key == Key.A) goLeft = false;
+            if (key == Key.D) goRight = false;
         }
 
         public override void CollideEffect(GameItem other) { }
