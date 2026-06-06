@@ -39,7 +39,16 @@ namespace VraiPseudoSae.view
 
         public void Options(object sender, RoutedEventArgs e)
         {
+            DropItemsOptions pageopt = new DropItemsOptions();
 
+            // On récupère la Window qui contient cette page
+            var parentWindow = Window.GetWindow(this) as MainDropItems;
+
+            // Si on l'a trouvée, on accède à son MainFrame
+            if (parentWindow != null)
+            {
+                parentWindow.MainFrame.Navigate(pageopt);
+            }
         }
 
         public void Quitter(object sender, RoutedEventArgs e)
