@@ -1,13 +1,18 @@
+using System;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Threading;
 using IUTGame.WPF;
 using VraiPseudoSae.view.hub;
 using VraiPseudoSae.Utils.Sprite;
 
 namespace VraiPseudoSae.view
 {
-    public partial class HomePage : Window
+    public partial class HomePage : UserControl
     {
-        private HubGame hubGame = null!;
+        private HubGame? hubGame;
+        public event EventHandler? WizardSurvivalRequested;
 
         public HomePage()
         {
@@ -40,13 +45,31 @@ namespace VraiPseudoSae.view
 
             hubGame.Run();
 
-            GameCanvas.Focus();
-            Focus();
+            FocusGameCanvas();
+        }
+
+        private void Window_Unloaded(object sender, RoutedEventArgs e)
+        {
+            hubGame?.Pause();
+        }
+
+        private void FocusGameCanvas()
+        {
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                GameCanvas.Focus();
+                Keyboard.Focus(GameCanvas);
+            }), DispatcherPriority.Input);
         }
 
         public void SetInfoText(string message)
         {
             InfoText.Text = message;
+        }
+
+        public void OpenWizardSurvival()
+        {
+            WizardSurvivalRequested?.Invoke(this, EventArgs.Empty);
         }
     }
 }

@@ -1,0 +1,20 @@
+<Window x:Class="VraiPseudoSae.view.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Retro Hub"
+        Width="1280"
+        Height="720"
+        MinWidth="960"
+        MinHeight="540"
+        WindowStartupLocation="CenterScreen"
+        Background="#00040A"
+        UseLayoutRounding="True">
+
+    <Grid Background="#00040A">
+        <Viewbox Stretch="Uniform">
+            <ContentControl x:Name="ScreenHost"
+                            Width="1280"
+                            Height="720"/>
+        </Viewbox>
+    </Grid>
+</Window>

@@ -14,12 +14,13 @@ namespace VraiPseudoSae.view.WizardSurvival;
 /// <summary>
 /// WPF host for the IUTGame-powered wizard survival mini-game.
 /// </summary>
-public partial class WizardSurvivalWindow : Window
+public partial class WizardSurvivalWindow : UserControl
 {
     private const double CooldownBarWidth = 206;
 
     private WizardSurvivalGame? game;
     private WizardEffectsRenderer? effectsRenderer;
+    public event EventHandler? ExitRequested;
 
     public WizardSurvivalWindow()
     {
@@ -46,7 +47,7 @@ public partial class WizardSurvivalWindow : Window
         FocusGame();
     }
 
-    private void Window_Closed(object? sender, EventArgs e) => game?.Pause();
+    private void Window_Unloaded(object sender, RoutedEventArgs e) => game?.Pause();
 
     private WizardPlayerSpriteSet InjectSprites(WPFScreen screen)
     {
@@ -549,7 +550,11 @@ public partial class WizardSurvivalWindow : Window
         FocusGame();
     }
 
-    private void QuitButton_Click(object sender, RoutedEventArgs e) => Close();
+    private void QuitButton_Click(object sender, RoutedEventArgs e)
+    {
+        game?.Pause();
+        ExitRequested?.Invoke(this, EventArgs.Empty);
+    }
 
     private void FocusGame()
     {

@@ -5,7 +5,6 @@ using IUTGame;
 using System.Collections.Generic;
 using System.Windows.Media;
 using VraiPseudoSae.view.RLS_Pages;
-using VraiPseudoSae.view.WizardSurvival;
 
 namespace VraiPseudoSae.view.hub
 {
@@ -152,8 +151,7 @@ namespace VraiPseudoSae.view.hub
 
         private void LaunchPin()
         {
-            WizardSurvivalWindow display = new WizardSurvivalWindow();
-            display.Show();
+            homePage.OpenWizardSurvival();
         }
 
         private double Distance(Point a, Point b)
