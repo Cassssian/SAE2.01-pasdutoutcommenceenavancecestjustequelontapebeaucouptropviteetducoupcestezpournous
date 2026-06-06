@@ -37,11 +37,13 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="10*"/>
             <RowDefinition Height="30*"/>
+            <RowDefinition Height="7*"/>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="4*"/>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="4*"/>
+            <RowDefinition Height="10*"/>
             <RowDefinition Height="15*"/>
-            <RowDefinition Height="10*"/>
-            <RowDefinition Height="5*"/>
-            <RowDefinition Height="10*"/>
-            <RowDefinition Height="20*"/>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -61,9 +63,16 @@
         Cursor="Hand"/>
 
         <Button Style="{StaticResource MonBoutonRond}"
+        Content="OPTIONS" 
+        Click="Options"
+        Grid.Row="5" Grid.Column="2"
+        VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+        Cursor="Hand"/>
+
+        <Button Style="{StaticResource MonBoutonRond}"
         Content="QUITTER LE JEU" 
         Click="Quitter"
-        Grid.Row="5" Grid.Column="2"
+        Grid.Row="7" Grid.Column="2"
         VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
         Cursor="Hand"/>
     </Grid>

@@ -23,7 +23,7 @@ namespace VraiPseudoSae.view
             InitializeComponent();
         }
 
-        void Jouer(object sender, RoutedEventArgs e)
+        public void Jouer(object sender, RoutedEventArgs e)
         {
             DropItems pagejeu = new DropItems();
 
@@ -37,7 +37,12 @@ namespace VraiPseudoSae.view
             }
         }
 
-        void Quitter(object sender, RoutedEventArgs e)
+        public void Options(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        public void Quitter(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
         }
