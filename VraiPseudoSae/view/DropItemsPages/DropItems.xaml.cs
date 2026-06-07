@@ -43,7 +43,7 @@ namespace VraiPseudoSae.view
                     ConteneurDecor.Content = new DecorJour();
                     break;
                 case DropItemsMapsEnum.AUBE:
-                    // ConteneurDecor.Content = new DecorAube();
+                    ConteneurDecor.Content = new DecorAube();
                     break;
                 default:
                     ConteneurDecor.Content = new DecorNuit(); // Sécurité

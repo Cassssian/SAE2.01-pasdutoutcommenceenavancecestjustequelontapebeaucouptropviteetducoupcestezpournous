@@ -67,7 +67,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Resource Include="view\images_drop\decors\DecorManoir.png" />
       <Resource Include="data\Wizard\AnimationSheet_Character.png" />
       <Resource Include="view\intro\**\*.png" />
       <Resource Include="..\Tilemap\Map Intro.png">
