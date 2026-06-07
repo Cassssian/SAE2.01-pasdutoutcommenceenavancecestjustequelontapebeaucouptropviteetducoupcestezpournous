@@ -10,6 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using VraiPseudoSae.view.DropItemsPages;
 
 namespace VraiPseudoSae.view
 {
@@ -18,14 +19,24 @@ namespace VraiPseudoSae.view
     /// </summary>
     public partial class DropItemsMenu : Page
     {
+        private DropItemsSettings settings;
+
+        public DropItemsSettings Settings
+        {
+            get { return settings; }
+            set { settings = value; }
+        }
+
         public DropItemsMenu()
         {
             InitializeComponent();
+
+            settings = new DropItemsSettings(DropItemsMapsEnum.NUIT);
         }
 
         public void Jouer(object sender, RoutedEventArgs e)
         {
-            DropItems pagejeu = new DropItems();
+            DropItems pagejeu = new DropItems(settings);
 
             // On récupère la Window qui contient cette page
             var parentWindow = Window.GetWindow(this) as MainDropItems;
