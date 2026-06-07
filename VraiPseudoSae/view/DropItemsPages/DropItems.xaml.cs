@@ -22,14 +22,19 @@ namespace VraiPseudoSae.view
     {
         private DropItemsSettings settings;
 
-        public DropItems(DropItemsSettings settings)
+        private DropItemsMenu menu;
+
+        public DropItems(DropItemsMenu menu)
         {
             InitializeComponent();
 
-            this.settings = settings;
+            this.menu = menu;
+
+            this.settings = menu.Settings;
 
             AppliquerDecor(settings.Decor);
 
+            this.Focus();
         }
 
         private void AppliquerDecor(DropItemsMapsEnum typeDecor)
@@ -48,6 +53,21 @@ namespace VraiPseudoSae.view
                 default:
                     ConteneurDecor.Content = new DecorNuit(); // Sécurité
                     break;
+            }
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+            {
+                // On récupère la Window qui contient cette page
+                var parentWindow = Window.GetWindow(this) as MainDropItems;
+
+                // Si on l'a trouvée, on accède à son MainFrame
+                if (parentWindow != null)
+                {
+                    parentWindow.MainFrame.Navigate(menu);
+                }
             }
         }
     }

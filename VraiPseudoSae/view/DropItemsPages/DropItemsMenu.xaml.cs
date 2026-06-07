@@ -36,7 +36,7 @@ namespace VraiPseudoSae.view
 
         public void Jouer(object sender, RoutedEventArgs e)
         {
-            DropItems pagejeu = new DropItems(settings);
+            DropItems pagejeu = new DropItems(this);
 
             // On récupère la Window qui contient cette page
             var parentWindow = Window.GetWindow(this) as MainDropItems;

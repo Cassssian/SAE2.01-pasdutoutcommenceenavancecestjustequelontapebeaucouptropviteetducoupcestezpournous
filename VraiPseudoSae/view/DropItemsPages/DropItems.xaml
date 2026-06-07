@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:VraiPseudoSae.view"
       mc:Ignorable="d" 
       d:DesignHeight="810" d:DesignWidth="800"
-      Title="DropItems" Background="#1A1A2E">
+      Title="DropItems" Background="#1A1A2E" KeyDown="Window_KeyDown">
 
     <Grid>
         <Grid.ColumnDefinitions>
