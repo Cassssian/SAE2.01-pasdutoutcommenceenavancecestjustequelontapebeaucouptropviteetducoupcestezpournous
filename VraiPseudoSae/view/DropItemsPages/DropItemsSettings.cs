@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace VraiPseudoSae.view.DropItemsPages
+namespace VraiPseudoSae.view
 {
     public class DropItemsSettings
     {
@@ -12,8 +12,18 @@ namespace VraiPseudoSae.view.DropItemsPages
         private DropItemsMapsEnum decor;
 
         /// <summary>
-        /// La langue du jeu, elle est comme le décor, définie dans les options.
+        /// Propriété qui permet de voir le décor sélectionné et de le modifier.
         /// </summary>
-        private DropItemsLanguagesEnum langue;
+        public DropItemsMapsEnum Decor
+        {
+            get { return decor; }
+            set { decor = value; }
+        }
+
+
+        public DropItemsSettings(DropItemsMapsEnum decor)
+        {
+            this.decor = decor;
+        }
     }
 }

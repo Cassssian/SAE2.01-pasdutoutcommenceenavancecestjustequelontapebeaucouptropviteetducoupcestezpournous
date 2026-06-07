@@ -97,15 +97,15 @@
                          Style="{StaticResource BigOptionButtonStyle}" 
                          GroupName="Decors" 
                          FontSize="20" 
-                         IsChecked="True"/>
+                         IsChecked="True" Checked="DecorNuitChoisi"/>
             <RadioButton Content="AUBE" 
                          Style="{StaticResource BigOptionButtonStyle}" 
                          GroupName="Decors" 
-                         FontSize="20"/>
+                         FontSize="20" Checked="DecorAubeChoisi"/>
             <RadioButton Content="JOUR" 
                          Style="{StaticResource BigOptionButtonStyle}" 
                          GroupName="Decors" 
-                         FontSize="20"/>
+                         FontSize="20" Checked="DecorJourChoisi"/>
         </UniformGrid>
 
         <Button Style="{StaticResource MonBoutonRond}" Content="ENREGISTRER" Click="Retour_Menu" Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="3" 

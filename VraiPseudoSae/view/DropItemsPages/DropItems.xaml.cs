@@ -10,6 +10,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using VraiPseudoSae.view.DropItemsPages;
+using VraiPseudoSae.view.DropItemsPages.Decors;
 
 namespace VraiPseudoSae.view
 {
@@ -18,9 +20,35 @@ namespace VraiPseudoSae.view
     /// </summary>
     public partial class DropItems : Page
     {
-        public DropItems()
+        private DropItemsSettings settings;
+
+        public DropItems(DropItemsSettings settings)
         {
             InitializeComponent();
+
+            this.settings = settings;
+
+            AppliquerDecor(settings.Decor);
+
+        }
+
+        private void AppliquerDecor(DropItemsMapsEnum typeDecor)
+        {
+            switch (typeDecor)
+            {
+                case DropItemsMapsEnum.NUIT:
+                    ConteneurDecor.Content = new DecorNuit();
+                    break;
+                case DropItemsMapsEnum.JOUR:
+                    ConteneurDecor.Content = new DecorJour();
+                    break;
+                case DropItemsMapsEnum.AUBE:
+                    // ConteneurDecor.Content = new DecorAube();
+                    break;
+                default:
+                    ConteneurDecor.Content = new DecorNuit(); // Sécurité
+                    break;
+            }
         }
     }
 }

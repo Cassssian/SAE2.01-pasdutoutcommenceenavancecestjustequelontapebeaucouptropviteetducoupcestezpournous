@@ -23,6 +23,8 @@ namespace VraiPseudoSae.view
         /// </summary>
         private DropItemsMenu menu;
 
+        private DropItemsMapsEnum decor;
+
 
         public DropItemsOptions(DropItemsMenu menu)
         {
@@ -33,6 +35,8 @@ namespace VraiPseudoSae.view
 
         public void Retour_Menu(object sender, RoutedEventArgs e)
         {
+            menu.Settings = new DropItemsSettings(decor);
+
             // On récupère la Window qui contient cette page
             var parentWindow = Window.GetWindow(this) as MainDropItems;
 
@@ -41,6 +45,21 @@ namespace VraiPseudoSae.view
             {
                 parentWindow.MainFrame.Navigate(menu);
             }
+        }
+
+        private void DecorNuitChoisi(object sender, RoutedEventArgs e)
+        {
+            decor = DropItemsMapsEnum.NUIT;
+        }
+
+        private void DecorAubeChoisi(object sender, RoutedEventArgs e)
+        {
+            decor = DropItemsMapsEnum.AUBE;
+        }
+
+        private void DecorJourChoisi(object sender, RoutedEventArgs e)
+        {
+            decor = DropItemsMapsEnum.JOUR;
         }
     }
 }
