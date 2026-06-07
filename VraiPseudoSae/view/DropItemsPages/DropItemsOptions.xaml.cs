@@ -18,9 +18,26 @@ namespace VraiPseudoSae.view
     /// </summary>
     public partial class DropItemsOptions : Page
     {
-        public DropItemsOptions()
+        private DropItemsMenu menu;
+
+
+        public DropItemsOptions(DropItemsMenu menu)
         {
             InitializeComponent();
+
+            this.menu = menu;
+        }
+
+        public void Retour_Menu(object sender, RoutedEventArgs e)
+        {
+            // On récupère la Window qui contient cette page
+            var parentWindow = Window.GetWindow(this) as MainDropItems;
+
+            // Si on l'a trouvée, on accède à son MainFrame
+            if (parentWindow != null)
+            {
+                parentWindow.MainFrame.Navigate(menu);
+            }
         }
     }
 }
