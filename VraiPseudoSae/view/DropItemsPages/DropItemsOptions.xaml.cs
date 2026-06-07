@@ -31,6 +31,20 @@ namespace VraiPseudoSae.view
             InitializeComponent();
 
             this.menu = menu;
+
+            switch (menu.Settings.Decor)
+            {
+                case (DropItemsMapsEnum.JOUR):
+                    ButtonNuit.IsChecked = false;
+                    ButtonJour.IsChecked = true;
+                    break;
+                case (DropItemsMapsEnum.AUBE):
+                    ButtonNuit.IsChecked = false;
+                    ButtonAube.IsChecked = true;
+                    break;
+                case (DropItemsMapsEnum.NUIT):
+                    break;
+            }
         }
 
         public void Retour_Menu(object sender, RoutedEventArgs e)

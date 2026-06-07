@@ -93,16 +93,16 @@
                HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="White"/>
 
         <UniformGrid Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="2" Columns="3" VerticalAlignment="Center" Height="120">
-            <RadioButton Content="NUIT" 
+            <RadioButton Name="ButtonNuit" Content="NUIT" 
                          Style="{StaticResource BigOptionButtonStyle}" 
                          GroupName="Decors" 
                          FontSize="20" 
                          IsChecked="True" Checked="DecorNuitChoisi"/>
-            <RadioButton Content="AUBE" 
+            <RadioButton Name="ButtonAube" Content="AUBE" 
                          Style="{StaticResource BigOptionButtonStyle}" 
                          GroupName="Decors" 
                          FontSize="20" Checked="DecorAubeChoisi"/>
-            <RadioButton Content="JOUR" 
+            <RadioButton Name="ButtonJour" Content="JOUR" 
                          Style="{StaticResource BigOptionButtonStyle}" 
                          GroupName="Decors" 
                          FontSize="20" Checked="DecorJourChoisi"/>

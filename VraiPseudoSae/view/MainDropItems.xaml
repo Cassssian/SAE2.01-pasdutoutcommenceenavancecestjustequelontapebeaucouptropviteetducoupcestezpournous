@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:VraiPseudoSae.view"
         mc:Ignorable="d"
-        Title="MainDropItems" Height="810" Width="800" Background="#00002A">
+        Title="MainDropItems" Height="810" Width="800" Background="#00002A" KeyDown="MainDropItems_PreviewKeyDown">
     <Grid>
         <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden"/>
     </Grid>
