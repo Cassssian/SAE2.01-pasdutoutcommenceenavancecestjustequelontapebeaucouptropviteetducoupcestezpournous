@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -28,6 +29,7 @@ namespace VraiPseudoSae.view.intro
             StartIntroAnimation();
             Focus();
             Keyboard.Focus(this);
+            _ = AutoStartNextScreenAsync();
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
@@ -37,6 +39,12 @@ namespace VraiPseudoSae.view.intro
                 BeginTransitionToHome();
                 e.Handled = true;
             }
+        }
+
+        private async Task AutoStartNextScreenAsync()
+        {
+            await Task.Delay(5200);
+            BeginTransitionToHome();
         }
 
         private void CreateBackgroundStars()

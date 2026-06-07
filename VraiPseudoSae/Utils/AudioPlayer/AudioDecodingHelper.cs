@@ -101,6 +101,43 @@ public static class AudioDecodingHelper
     }
 
     /// <summary>
+    /// Décode un fichier audio local et retourne un son mis en cache sous forme de
+    /// <see cref="CachedSound"/>.
+    /// </summary>
+    /// <param name="filePath">
+    /// Le chemin du fichier audio à charger.
+    /// </param>
+    /// <returns>
+    /// Une instance de <see cref="CachedSound"/> contenant les données audio décodées.
+    /// </returns>
+    /// <exception cref="ArgumentException">
+    /// Levée si <paramref name="filePath"/> est vide ou composé uniquement d’espaces.
+    /// </exception>
+    /// <exception cref="FileNotFoundException">
+    /// Levée si le fichier demandé n’existe pas.
+    /// </exception>
+    /// <exception cref="NotSupportedException">
+    /// Levée si l’extension du fichier ne correspond à aucun format audio pris en charge.
+    /// </exception>
+    /// <remarks>
+    /// Cette méthode ouvre le fichier en lecture, puis délègue le décodage à
+    /// <see cref="FromStream(Stream, string)"/> afin de conserver la même logique de prise
+    /// en charge des formats <c>.mp3</c> et <c>.wav</c>.
+    /// </remarks>
+    public static CachedSound FromFile(string filePath)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(filePath);
+
+        string fullPath = Path.GetFullPath(filePath);
+
+        if (!File.Exists(fullPath))
+            throw new FileNotFoundException($"Fichier audio introuvable : {filePath}", fullPath);
+
+        using var stream = File.OpenRead(fullPath);
+        return FromStream(stream, fullPath);
+    }
+
+    /// <summary>
     /// Décode un flux audio en sélectionnant automatiquement le lecteur approprié
     /// à partir de l’extension du fichier fourni.
     /// </summary>

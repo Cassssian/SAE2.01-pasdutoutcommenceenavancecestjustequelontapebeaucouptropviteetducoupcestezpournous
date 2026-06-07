@@ -70,6 +70,22 @@
       <Resource Include="view\images_drop\decors\DecorManoir.png" />
       <Resource Include="data\Wizard\AnimationSheet_Character.png" />
       <Resource Include="view\intro\**\*.png" />
+      <Resource Include="..\Tilemap\Map Intro.png">
+        <Link>Tilemap\MapIntro.png</Link>
+      </Resource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Utils\SaveManager\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="Assets\woosh.mp3">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Assets\bip.wav">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>

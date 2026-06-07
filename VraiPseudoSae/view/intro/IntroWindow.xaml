@@ -128,7 +128,7 @@
                 <TranslateTransform x:Name="PressPromptTranslate" Y="12"/>
             </Border.RenderTransform>
             <TextBlock x:Name="PressPromptText"
-                       Text="Appuyez sur la touche espace pour accéder au jeu"
+                       Text="Chargement..."
                        Foreground="#B8FFD6"
                        FontFamily="{StaticResource PixelFont}"
                        FontSize="20"

@@ -1,4 +1,6 @@
 using System.Windows;
+using VraiPseudoSae.Utils.GestionnaireSauvegarde;
+using VraiPseudoSae.view.gameintro;
 using VraiPseudoSae.view.intro;
 using VraiPseudoSae.view.WizardSurvival;
 
@@ -15,8 +17,24 @@ namespace VraiPseudoSae.view
         private void ShowIntro()
         {
             IntroWindow intro = new();
-            intro.StartRequested += (_, _) => ShowHomePage();
+            intro.StartRequested += (_, _) => ShowScreenAfterSplashIntro();
             ScreenHost.Content = intro;
+        }
+
+        private void ShowScreenAfterSplashIntro()
+        {
+            if (ProgressionJeuSauvegardeDepot.IntroductionTerminee())
+            {
+                ShowHomePage();
+                return;
+            }
+
+            ShowGameIntroduction();
+        }
+
+        private void ShowGameIntroduction()
+        {
+            ScreenHost.Content = new GameIntroWindow();
         }
 
         private void ShowHomePage()

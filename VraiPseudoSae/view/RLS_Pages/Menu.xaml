@@ -6,6 +6,11 @@
              xmlns:local="clr-namespace:VraiPseudoSae.view.RLS_Pages"
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="1000">
+    <UserControl.Resources>
+        <Style TargetType="{x:Type TextBlock}">
+            <Setter Property="FontFamily" Value="{StaticResource PixelFont}"></Setter>
+        </Style>
+    </UserControl.Resources>
     <Grid>
         <Canvas x:Name="MenuCanvas" Width="1000" Height="600" Background="#16213e">
             <TextBlock Text="⚽ ROCKET LEAGUE 2D 🚗" FontSize="60" FontWeight="Bold" Foreground="#e94560" 
