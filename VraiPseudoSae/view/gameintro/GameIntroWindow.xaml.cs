@@ -7,7 +7,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
-using Microsoft.VisualBasic.Devices;
 using VraiPseudoSae.Utils.GestionnaireSauvegarde;
 using VraiPseudoSae.Utils.AudioPlayer;
 using Keyboard = System.Windows.Input.Keyboard;
@@ -22,26 +21,42 @@ namespace VraiPseudoSae.view.gameintro
         private const double OverviewScale = 5.625;
         private const double FocusScale = 14;
         private const double PlayerSpeed = 30;
+        private const double PanelInteractionRadius = 32;
+        private const double PanelAutoMoveTargetRadius = 23;
         private const int NormalTextDelayMilliseconds = 34;
         private const int RainbowTextDelayMilliseconds = 24;
         private const int DialogueEndPauseMilliseconds = 2600;
+        private const string ForwardBindingId = "forward";
+        private const string BackwardBindingId = "backward";
+        private const string LeftBindingId = "left";
+        private const string RightBindingId = "right";
+        private const string InteractionBindingId = "interaction";
 
         private readonly Point panelCenter = new(64, 53);
         private readonly DispatcherTimer keyPulseTimer = new();
         private readonly DispatcherTimer rainbowTimer = new();
         private readonly DispatcherTimer movementTimer = new();
         private readonly List<RainbowGlyph> rainbowGlyphs = new();
+        private readonly Dictionary<string, TextBlock> bindingKeyTexts = new();
+        private readonly Dictionary<string, Border> bindingKeyBoxes = new();
+        private readonly Dictionary<string, string> bindingValues = new();
 
         private EllipseGeometry revealHole = null!;
         private TaskCompletionSource<GameIntroLanguage>? languageChoiceCompletion;
         private DateTime animationStartUtc;
         private DateTime lastMovementTickUtc;
+        private ParametresJeuSauvegarde settings = ParametresJeuSauvegardeDepot.ChargerOuDefaut();
         private GameIntroLanguage selectedLanguage = GameIntroLanguage.French;
         private GameIntroLanguage highlightedLanguage = GameIntroLanguage.French;
+        private string? listeningBindingId;
         private bool waitingForSpace = true;
         private bool choosingLanguage;
         private bool inputsLocked = true;
         private bool movementEnabled;
+        private bool settingsIntroStarted;
+        private bool settingsOverlayVisible;
+        private bool settingsTutorialPlaying;
+        private bool applyingSettingsToUi;
         private bool moveUp;
         private bool moveDown;
         private bool moveLeft;
@@ -53,6 +68,8 @@ namespace VraiPseudoSae.view.gameintro
             InitializeComponent();
             ConfigureRevealOverlay();
             ConfigureTimers();
+            ConfigureSettingsControls();
+            ApplySavedSettingsToControls();
             audio.LoadFromPath("Assets/woosh.mp3", "woosh");
             audio.LoadFromPath("Assets/bip.wav", "bip");
         }
@@ -80,6 +97,13 @@ namespace VraiPseudoSae.view.gameintro
 
         private void GameIntroWindow_KeyDown(object sender, KeyEventArgs e)
         {
+            if (listeningBindingId is not null)
+            {
+                CompleteBindingKeyCapture(e.Key);
+                e.Handled = true;
+                return;
+            }
+
             if (choosingLanguage)
             {
                 HandleLanguageChoiceKey(e.Key);
@@ -95,19 +119,40 @@ namespace VraiPseudoSae.view.gameintro
                 return;
             }
 
+            if (settingsOverlayVisible)
+            {
+                if (e.Key == Key.Escape)
+                    CloseSettingsOverlayTemporarily();
+
+                e.Handled = true;
+                return;
+            }
+
+            if (movementEnabled && e.Key == InteractionKey && IsPlayerInPanelInteractionRange())
+            {
+                e.Handled = true;
+
+                if (!settingsIntroStarted)
+                    _ = StartSettingsIntroSceneAsync();
+                else
+                    OpenSettingsOverlay();
+
+                return;
+            }
+
             if (inputsLocked || !movementEnabled)
             {
                 e.Handled = true;
                 return;
             }
 
-            if (e.Key == Key.Z || e.Key == Key.W || e.Key == Key.Up)
+            if (e.Key == ForwardKey)
                 moveUp = true;
-            if (e.Key == Key.S || e.Key == Key.Down)
+            if (e.Key == BackwardKey)
                 moveDown = true;
-            if (e.Key == Key.Q || e.Key == Key.A || e.Key == Key.Left)
+            if (e.Key == LeftKey)
                 moveLeft = true;
-            if (e.Key == Key.D || e.Key == Key.Right)
+            if (e.Key == RightKey)
                 moveRight = true;
 
             e.Handled = true;
@@ -115,13 +160,13 @@ namespace VraiPseudoSae.view.gameintro
 
         private void GameIntroWindow_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Z || e.Key == Key.W || e.Key == Key.Up)
+            if (e.Key == ForwardKey)
                 moveUp = false;
-            if (e.Key == Key.S || e.Key == Key.Down)
+            if (e.Key == BackwardKey)
                 moveDown = false;
-            if (e.Key == Key.Q || e.Key == Key.A || e.Key == Key.Left)
+            if (e.Key == LeftKey)
                 moveLeft = false;
-            if (e.Key == Key.D || e.Key == Key.Right)
+            if (e.Key == RightKey)
                 moveRight = false;
         }
 
@@ -134,7 +179,7 @@ namespace VraiPseudoSae.view.gameintro
             await PlayRevealAsync();
 
             await Task.Delay(1800);
-            audio.Play("woosh");
+            PlaySfx("woosh");
             await FocusCameraAsync(PlayerCenter, FocusScale, 1100);
 
             foreach (IReadOnlyList<DialogueSegment> block in GameIntroScript.OpeningBlocks(selectedLanguage))
@@ -142,19 +187,19 @@ namespace VraiPseudoSae.view.gameintro
 
             await Task.Delay(900);
             DialoguePanel.Visibility = Visibility.Collapsed;
-            audio.Play("woosh");
+            PlaySfx("woosh");
             await FocusCameraAsync(panelCenter, OverviewScale, 900, centerTarget: false);
             inputsLocked = true;
             await Task.Delay(4200);
-            audio.Play("woosh");
+            PlaySfx("woosh");
             await FocusCameraAsync(PlayerCenter, FocusScale, 950);
             await ShowDialogueAsync(GameIntroScript.PrankExplanation(selectedLanguage));
 
             await Task.Delay(550);
-            audio.Play("woosh");
+            PlaySfx("woosh");
             await FocusCameraAsync(panelCenter, FocusScale, 700);
             await Task.Delay(1000);
-            audio.Play("woosh");
+            PlaySfx("woosh");
             await FocusCameraAsync(PlayerCenter, FocusScale, 700);
 
             await ShowDialogueAsync(GameIntroScript.MagicPanelReveal(selectedLanguage));
@@ -163,7 +208,8 @@ namespace VraiPseudoSae.view.gameintro
 
             await Task.Delay(600);
             DialoguePanel.Visibility = Visibility.Collapsed;
-            audio.Play("woosh");
+            await EnsurePlayerCloseToPanelAsync();
+            PlaySfx("woosh");
             await FocusCameraAsync(panelCenter, OverviewScale, 900, centerTarget: false);
             ShowPanelKeyHint();
             movementEnabled = true;
@@ -171,6 +217,603 @@ namespace VraiPseudoSae.view.gameintro
             movementTimer.Start();
             //ProgressionJeuSauvegardeDepot.MarquerIntroductionTerminee();
             FocusIntroInput();
+        }
+
+        private async Task StartSettingsIntroSceneAsync()
+        {
+            if (settingsIntroStarted && settingsOverlayVisible)
+                return;
+
+            settingsIntroStarted = true;
+            settingsTutorialPlaying = true;
+            OpenSettingsOverlay();
+            SelectSettingsCategory(SettingsIntroCategory.General);
+
+            DialogueSpeakerPortrait.Visibility = Visibility.Visible;
+            await Task.Delay(420);
+
+            foreach (SettingsIntroStep step in GameIntroScript.SettingsTutorial(selectedLanguage))
+            {
+                SelectSettingsCategory(step.Category);
+                await Task.Delay(90);
+                ShowSettingsHighlight(step.HighlightTarget);
+                await ShowDialogueAsync(step.Segments);
+                await Task.Delay(320);
+            }
+
+            HideSettingsHighlight();
+            settingsTutorialPlaying = false;
+            UpdateSettingsCloseAvailability();
+            DialoguePanel.Visibility = Visibility.Collapsed;
+            DialogueSpeakerPortrait.Visibility = Visibility.Collapsed;
+            FocusIntroInput();
+        }
+
+        private void OpenSettingsOverlay()
+        {
+            settingsOverlayVisible = true;
+            inputsLocked = true;
+            movementEnabled = false;
+            movementTimer.Stop();
+            ResetMovementInput();
+            HidePanelKeyHint();
+            ApplySettingsIntroText();
+            UpdateSettingsCloseAvailability();
+
+            SettingsIntroOverlay.Opacity = 0;
+            SettingsIntroOverlay.Visibility = Visibility.Visible;
+            SettingsIntroOverlay.BeginAnimation(OpacityProperty, new DoubleAnimation
+            {
+                To = 1,
+                Duration = TimeSpan.FromMilliseconds(260),
+                EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut }
+            });
+
+            FocusIntroInput();
+        }
+
+        private void CloseSettingsOverlayTemporarily()
+        {
+            if (!settingsOverlayVisible || settingsTutorialPlaying)
+                return;
+
+            CancelBindingKeyCapture();
+            HideSettingsHighlight();
+            DialoguePanel.Visibility = Visibility.Collapsed;
+            DialogueSpeakerPortrait.Visibility = Visibility.Collapsed;
+            SettingsIntroOverlay.Visibility = Visibility.Collapsed;
+            settingsOverlayVisible = false;
+            inputsLocked = false;
+            movementEnabled = true;
+            lastMovementTickUtc = DateTime.UtcNow;
+            movementTimer.Start();
+            ShowPanelKeyHint();
+            FocusIntroInput();
+        }
+
+        private void UpdateSettingsCloseAvailability()
+        {
+            SettingsCloseButton.Opacity = settingsTutorialPlaying ? 0.35 : 1;
+            SettingsTemporaryCloseText.Opacity = settingsTutorialPlaying ? 0.35 : 0.72;
+        }
+
+        private void ConfigureSettingsControls()
+        {
+            bindingKeyTexts[ForwardBindingId] = ForwardKeyText;
+            bindingKeyTexts[BackwardBindingId] = BackwardKeyText;
+            bindingKeyTexts[LeftBindingId] = LeftKeyText;
+            bindingKeyTexts[RightBindingId] = RightKeyText;
+            bindingKeyTexts[InteractionBindingId] = InteractionKeyText;
+
+            bindingKeyBoxes[ForwardBindingId] = ForwardKeyBox;
+            bindingKeyBoxes[BackwardBindingId] = BackwardKeyBox;
+            bindingKeyBoxes[LeftBindingId] = LeftKeyBox;
+            bindingKeyBoxes[RightBindingId] = RightKeyBox;
+            bindingKeyBoxes[InteractionBindingId] = InteractionKeyBox;
+
+            MasterVolumeSlider.ValueChanged += SettingsSlider_ValueChanged;
+            DialogueVolumeSlider.ValueChanged += SettingsSlider_ValueChanged;
+            SfxVolumeSlider.ValueChanged += SettingsSlider_ValueChanged;
+            TextSpeedSlider.ValueChanged += SettingsSlider_ValueChanged;
+        }
+
+        private void ApplySettingsIntroText()
+        {
+            SettingsIntroUiText ui = GameIntroScript.SettingsUi(selectedLanguage);
+
+            SettingsCategoriesTitleText.Text = ui.CategoriesTitle;
+            GeneralCategoryText.Text = ui.GeneralCategory;
+            MainMenuCategoryText.Text = ui.MainMenuCategory;
+
+            GeneralSettingsTitleText.Text = ui.GeneralTitle;
+            MasterVolumeText.Text = ui.MasterVolume;
+            DialogueVolumeText.Text = ui.DialogueVolume;
+            SfxVolumeText.Text = ui.SfxVolume;
+            TextSpeedText.Text = ui.TextSpeed;
+            UpdateSettingsValueTexts();
+
+            MainMenuSettingsTitleText.Text = ui.MainMenuTitle;
+            ActionHeaderText.Text = ui.ActionHeader;
+            KeyHeaderText.Text = ui.KeyHeader;
+            ForwardActionText.Text = ui.ForwardAction;
+            BackwardActionText.Text = ui.BackwardAction;
+            LeftActionText.Text = ui.LeftAction;
+            RightActionText.Text = ui.RightAction;
+            InteractionActionText.Text = ui.InteractionAction;
+            RefreshBindingDisplays();
+
+            ForwardChangeButtonText.Text = ui.ChangeKey;
+            BackwardChangeButtonText.Text = ui.ChangeKey;
+            LeftChangeButtonText.Text = ui.ChangeKey;
+            RightChangeButtonText.Text = ui.ChangeKey;
+            InteractionChangeButtonText.Text = ui.ChangeKey;
+            SettingsTemporaryCloseText.Text = ui.CloseTemporary;
+        }
+
+        private void SelectSettingsCategory(SettingsIntroCategory category)
+        {
+            GeneralSettingsPanel.Visibility = category == SettingsIntroCategory.General ? Visibility.Visible : Visibility.Collapsed;
+            MainMenuSettingsPanel.Visibility = category == SettingsIntroCategory.Controls ? Visibility.Visible : Visibility.Collapsed;
+
+            ApplyCategoryButtonState(GeneralCategoryButton, category == SettingsIntroCategory.General);
+            ApplyCategoryButtonState(MainMenuCategoryButton, category == SettingsIntroCategory.Controls);
+        }
+
+        private static void ApplyCategoryButtonState(Border button, bool selected)
+        {
+            button.Background = new SolidColorBrush(selected ? Color.FromRgb(45, 32, 12) : Color.FromRgb(17, 20, 28));
+            button.BorderBrush = new SolidColorBrush(selected ? Color.FromRgb(255, 155, 47) : Color.FromRgb(79, 91, 105));
+            button.Opacity = selected ? 1 : 0.78;
+
+            if (button.Child is TextBlock text)
+                text.Foreground = new SolidColorBrush(selected ? Colors.White : Color.FromRgb(230, 240, 247));
+        }
+
+        private void GeneralCategoryButton_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            SelectSettingsCategory(SettingsIntroCategory.General);
+            e.Handled = true;
+        }
+
+        private void MainMenuCategoryButton_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            SelectSettingsCategory(SettingsIntroCategory.Controls);
+            e.Handled = true;
+        }
+
+        private void ForwardChangeButton_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            BeginBindingKeyCapture(ForwardBindingId);
+            e.Handled = true;
+        }
+
+        private void BackwardChangeButton_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            BeginBindingKeyCapture(BackwardBindingId);
+            e.Handled = true;
+        }
+
+        private void LeftChangeButton_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            BeginBindingKeyCapture(LeftBindingId);
+            e.Handled = true;
+        }
+
+        private void RightChangeButton_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            BeginBindingKeyCapture(RightBindingId);
+            e.Handled = true;
+        }
+
+        private void InteractionChangeButton_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            BeginBindingKeyCapture(InteractionBindingId);
+            e.Handled = true;
+        }
+
+        private void ForwardResetButton_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            ResetBindingKey(ForwardBindingId);
+            e.Handled = true;
+        }
+
+        private void BackwardResetButton_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            ResetBindingKey(BackwardBindingId);
+            e.Handled = true;
+        }
+
+        private void LeftResetButton_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            ResetBindingKey(LeftBindingId);
+            e.Handled = true;
+        }
+
+        private void RightResetButton_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            ResetBindingKey(RightBindingId);
+            e.Handled = true;
+        }
+
+        private void InteractionResetButton_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            ResetBindingKey(InteractionBindingId);
+            e.Handled = true;
+        }
+
+        private void SettingsCloseButton_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            CloseSettingsOverlayTemporarily();
+            e.Handled = true;
+        }
+
+        private void BeginBindingKeyCapture(string bindingId)
+        {
+            if (listeningBindingId is not null)
+            {
+                if (bindingValues.TryGetValue(listeningBindingId, out string? previousValue) &&
+                    bindingKeyTexts.TryGetValue(listeningBindingId, out TextBlock? previousText) &&
+                    previousText is not null)
+                {
+                    previousText.Text = previousValue;
+                }
+
+                ApplyBindingBoxState(listeningBindingId, listening: false);
+            }
+
+            listeningBindingId = bindingId;
+            SettingsIntroUiText ui = GameIntroScript.SettingsUi(selectedLanguage);
+
+            if (bindingKeyTexts.TryGetValue(bindingId, out TextBlock? text) && text is not null)
+                text.Text = ui.PressKey;
+
+            ApplyBindingBoxState(bindingId, listening: true);
+            FocusIntroInput();
+        }
+
+        private void CompleteBindingKeyCapture(Key key)
+        {
+            if (listeningBindingId is null)
+                return;
+
+            string bindingId = listeningBindingId;
+            SetBindingKey(bindingId, key, save: true);
+            ApplyBindingBoxState(bindingId, listening: false);
+            listeningBindingId = null;
+        }
+
+        private void ResetBindingKey(string bindingId)
+        {
+            if (listeningBindingId == bindingId)
+                listeningBindingId = null;
+
+            SetBindingKey(bindingId, GetDefaultBindingKey(bindingId), save: true);
+            ApplyBindingBoxState(bindingId, listening: false);
+        }
+
+        private void CancelBindingKeyCapture()
+        {
+            if (listeningBindingId is null)
+                return;
+
+            if (bindingValues.TryGetValue(listeningBindingId, out string? previousValue) &&
+                bindingKeyTexts.TryGetValue(listeningBindingId, out TextBlock? previousText) &&
+                previousText is not null)
+            {
+                previousText.Text = previousValue;
+            }
+
+            ApplyBindingBoxState(listeningBindingId, listening: false);
+            listeningBindingId = null;
+        }
+
+        private void SetBindingKey(string bindingId, Key key, bool save)
+        {
+            settings = bindingId switch
+            {
+                ForwardBindingId => settings with { ToucheAvancer = key.ToString() },
+                BackwardBindingId => settings with { ToucheReculer = key.ToString() },
+                LeftBindingId => settings with { ToucheGauche = key.ToString() },
+                RightBindingId => settings with { ToucheDroite = key.ToString() },
+                InteractionBindingId => settings with { ToucheInteraction = key.ToString() },
+                _ => settings
+            };
+
+            SetBindingValue(bindingId, FormatKey(key));
+            ApplyPanelKeyHintText();
+
+            if (save)
+                SaveCurrentSettings();
+        }
+
+        private void SetBindingValue(string bindingId, string value)
+        {
+            bindingValues[bindingId] = value;
+
+            if (bindingKeyTexts.TryGetValue(bindingId, out TextBlock? text) && text is not null)
+                text.Text = value;
+        }
+
+        private void ApplyBindingBoxState(string bindingId, bool listening)
+        {
+            if (!bindingKeyBoxes.TryGetValue(bindingId, out Border? keyBox) || keyBox is null)
+                return;
+
+            keyBox.Background = new SolidColorBrush(listening ? Colors.White : Colors.Black);
+            keyBox.BorderBrush = new SolidColorBrush(Colors.White);
+
+            if (bindingKeyTexts.TryGetValue(bindingId, out TextBlock? text) && text is not null)
+                text.Foreground = new SolidColorBrush(listening ? Colors.Black : Colors.White);
+        }
+
+        private Key GetDefaultBindingKey(string bindingId)
+        {
+            ParametresJeuSauvegarde defaults = ParametresJeuSauvegarde.ParDefaut;
+
+            return bindingId switch
+            {
+                ForwardBindingId => ParseSavedKey(defaults.ToucheAvancer, Key.Z),
+                BackwardBindingId => ParseSavedKey(defaults.ToucheReculer, Key.S),
+                LeftBindingId => ParseSavedKey(defaults.ToucheGauche, Key.Q),
+                RightBindingId => ParseSavedKey(defaults.ToucheDroite, Key.D),
+                InteractionBindingId => ParseSavedKey(defaults.ToucheInteraction, Key.E),
+                _ => Key.None
+            };
+        }
+
+        private string FormatKey(Key key)
+        {
+            if (key == Key.None)
+                return string.Empty;
+
+            if (key == Key.Return)
+                return selectedLanguage == GameIntroLanguage.French ? "Entrée" : "Enter";
+
+            if (key == Key.Escape)
+                return selectedLanguage == GameIntroLanguage.French ? "Échap" : "Esc";
+
+            if (key == Key.Space)
+                return selectedLanguage == GameIntroLanguage.French ? "Espace" : "Space";
+
+            if (key >= Key.D0 && key <= Key.D9)
+                return ((int)(key - Key.D0)).ToString();
+
+            if (key >= Key.NumPad0 && key <= Key.NumPad9)
+                return "Num " + (int)(key - Key.NumPad0);
+
+            return key.ToString().ToUpperInvariant();
+        }
+
+        private void ApplySavedSettingsToControls()
+        {
+            applyingSettingsToUi = true;
+
+            MasterVolumeSlider.Value = settings.VolumeGeneral;
+            DialogueVolumeSlider.Value = settings.VolumeDialogues;
+            SfxVolumeSlider.Value = settings.VolumeSfx;
+            TextSpeedSlider.Value = settings.VitesseTexte;
+            UpdateSettingsValueTexts();
+            RefreshBindingDisplays();
+            ApplyPanelKeyHintText();
+
+            applyingSettingsToUi = false;
+        }
+
+        private void SettingsSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (applyingSettingsToUi)
+                return;
+
+            settings = settings with
+            {
+                VolumeGeneral = ToPercent(MasterVolumeSlider.Value),
+                VolumeDialogues = ToPercent(DialogueVolumeSlider.Value),
+                VolumeSfx = ToPercent(SfxVolumeSlider.Value),
+                VitesseTexte = ToPercent(TextSpeedSlider.Value)
+            };
+
+            UpdateSettingsValueTexts();
+            SaveCurrentSettings();
+        }
+
+        private void UpdateSettingsValueTexts()
+        {
+            MasterVolumeValueText.Text = settings.VolumeGeneral + "%";
+            DialogueVolumeValueText.Text = settings.VolumeDialogues + "%";
+            SfxVolumeValueText.Text = settings.VolumeSfx + "%";
+            TextSpeedValueText.Text = settings.VitesseTexte + "%";
+        }
+
+        private void RefreshBindingDisplays()
+        {
+            SetBindingValue(ForwardBindingId, FormatKey(ForwardKey));
+            SetBindingValue(BackwardBindingId, FormatKey(BackwardKey));
+            SetBindingValue(LeftBindingId, FormatKey(LeftKey));
+            SetBindingValue(RightBindingId, FormatKey(RightKey));
+            SetBindingValue(InteractionBindingId, FormatKey(InteractionKey));
+        }
+
+        private void ApplyPanelKeyHintText()
+        {
+            PanelKeyHintText.Text = FormatKey(InteractionKey);
+        }
+
+        private void SaveCurrentSettings()
+        {
+            settings = settings.Normaliser();
+            ParametresJeuSauvegardeDepot.Sauvegarder(settings);
+        }
+
+        private void PlaySfx(string alias)
+        {
+            audio.Play(alias, EffectiveSfxVolume);
+        }
+
+        private void PlayDialogueTick()
+        {
+            audio.Play("bip", EffectiveDialogueVolume);
+        }
+
+        private float EffectiveSfxVolume =>
+            (float)(settings.VolumeGeneral / 100.0 * settings.VolumeSfx / 100.0);
+
+        private float EffectiveDialogueVolume =>
+            (float)(settings.VolumeGeneral / 100.0 * settings.VolumeDialogues / 100.0);
+
+        private Key ForwardKey => ParseSavedKey(settings.ToucheAvancer, Key.Z);
+
+        private Key BackwardKey => ParseSavedKey(settings.ToucheReculer, Key.S);
+
+        private Key LeftKey => ParseSavedKey(settings.ToucheGauche, Key.Q);
+
+        private Key RightKey => ParseSavedKey(settings.ToucheDroite, Key.D);
+
+        private Key InteractionKey => ParseSavedKey(settings.ToucheInteraction, Key.E);
+
+        private static int ToPercent(double value)
+        {
+            return (int)Math.Round(Clamp(value, 0, 100));
+        }
+
+        private static Key ParseSavedKey(string savedKey, Key fallback)
+        {
+            return Enum.TryParse(savedKey, ignoreCase: true, out Key key) && key != Key.None
+                ? key
+                : fallback;
+        }
+
+        private void ShowSettingsHighlight(SettingsIntroHighlightTarget target)
+        {
+            FrameworkElement? element = GetSettingsHighlightElement(target);
+
+            if (element is null)
+            {
+                HideSettingsHighlight();
+                return;
+            }
+
+            SettingsIntroOverlay.UpdateLayout();
+            Rect bounds = element.TransformToAncestor(SettingsIntroOverlay).TransformBounds(
+                new Rect(0, 0, element.ActualWidth, element.ActualHeight));
+            bounds.Inflate(8, 8);
+
+            SettingsTutorialHighlight.Width = bounds.Width;
+            SettingsTutorialHighlight.Height = bounds.Height;
+            Canvas.SetLeft(SettingsTutorialHighlight, bounds.Left);
+            Canvas.SetTop(SettingsTutorialHighlight, bounds.Top);
+
+            SettingsTutorialHighlight.Visibility = Visibility.Visible;
+            SettingsTutorialHighlight.BeginAnimation(OpacityProperty, new DoubleAnimation
+            {
+                To = 1,
+                Duration = TimeSpan.FromMilliseconds(180),
+                EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut }
+            });
+        }
+
+        private void HideSettingsHighlight()
+        {
+            SettingsTutorialHighlight.BeginAnimation(OpacityProperty, null);
+            SettingsTutorialHighlight.Opacity = 0;
+            SettingsTutorialHighlight.Visibility = Visibility.Collapsed;
+        }
+
+        private FrameworkElement? GetSettingsHighlightElement(SettingsIntroHighlightTarget target)
+        {
+            return target switch
+            {
+                SettingsIntroHighlightTarget.Interface => SettingsWindowFrame,
+                SettingsIntroHighlightTarget.CategoryPanel => SettingsCategoryPanel,
+                SettingsIntroHighlightTarget.GeneralCategory => GeneralCategoryButton,
+                SettingsIntroHighlightTarget.GeneralSettings => GeneralSettingsContent,
+                SettingsIntroHighlightTarget.MasterVolume => MasterVolumeSettingRow,
+                SettingsIntroHighlightTarget.DialogueVolume => DialogueVolumeSettingRow,
+                SettingsIntroHighlightTarget.SfxVolume => SfxVolumeSettingRow,
+                SettingsIntroHighlightTarget.TextSpeed => TextSpeedSettingRow,
+                SettingsIntroHighlightTarget.MainMenuCategory => MainMenuCategoryButton,
+                SettingsIntroHighlightTarget.KeyBindings => MainMenuBindingsList,
+                SettingsIntroHighlightTarget.KeyBox => InteractionKeyBox,
+                SettingsIntroHighlightTarget.ChangeButton => InteractionChangeButton,
+                SettingsIntroHighlightTarget.ResetButton => InteractionResetButton,
+                _ => null
+            };
+        }
+
+        private void HidePanelKeyHint()
+        {
+            PanelHintTranslate.BeginAnimation(TranslateTransform.YProperty, null);
+            PanelHintRotate.BeginAnimation(RotateTransform.AngleProperty, null);
+            PanelKeyHint.Visibility = Visibility.Collapsed;
+        }
+
+        private void ResetMovementInput()
+        {
+            moveUp = false;
+            moveDown = false;
+            moveLeft = false;
+            moveRight = false;
+        }
+
+        private bool IsPlayerInPanelInteractionRange()
+        {
+            return Distance(PlayerCenter, panelCenter) <= PanelInteractionRadius;
+        }
+
+        private void UpdatePanelKeyHintVisibility()
+        {
+            if (settingsOverlayVisible || !movementEnabled || !IsPlayerInPanelInteractionRange())
+            {
+                HidePanelKeyHint();
+                return;
+            }
+
+            ShowPanelKeyHint();
+        }
+
+        private Task EnsurePlayerCloseToPanelAsync()
+        {
+            if (IsPlayerInPanelInteractionRange())
+                return Task.CompletedTask;
+
+            Point startCenter = PlayerCenter;
+            Vector direction = startCenter - panelCenter;
+
+            if (direction.LengthSquared < 0.001)
+                direction = new Vector(0, 1);
+
+            direction.Normalize();
+            Point targetCenter = panelCenter + direction * PanelAutoMoveTargetRadius;
+            double targetLeft = Clamp(targetCenter.X - PlayerSquare.Width / 2.0, 0, MapSize - PlayerSquare.Width);
+            double targetTop = Clamp(targetCenter.Y - PlayerSquare.Height / 2.0, 0, MapSize - PlayerSquare.Height);
+            double distance = Distance(startCenter, new Point(targetLeft + PlayerSquare.Width / 2.0, targetTop + PlayerSquare.Height / 2.0));
+            int durationMilliseconds = (int)Clamp(distance / PlayerSpeed * 1000, 550, 1450);
+
+            TaskCompletionSource completion = new();
+            DoubleAnimation leftAnimation = new()
+            {
+                From = Canvas.GetLeft(PlayerSquare),
+                To = targetLeft,
+                Duration = TimeSpan.FromMilliseconds(durationMilliseconds),
+                EasingFunction = new SineEase { EasingMode = EasingMode.EaseInOut },
+                FillBehavior = FillBehavior.HoldEnd
+            };
+            DoubleAnimation topAnimation = leftAnimation.Clone();
+            topAnimation.From = Canvas.GetTop(PlayerSquare);
+            topAnimation.To = targetTop;
+
+            topAnimation.Completed += (_, _) =>
+            {
+                PlayerSquare.BeginAnimation(Canvas.LeftProperty, null);
+                PlayerSquare.BeginAnimation(Canvas.TopProperty, null);
+                Canvas.SetLeft(PlayerSquare, targetLeft);
+                Canvas.SetTop(PlayerSquare, targetTop);
+                completion.TrySetResult();
+            };
+
+            PlayerSquare.BeginAnimation(Canvas.LeftProperty, leftAnimation);
+            PlayerSquare.BeginAnimation(Canvas.TopProperty, topAnimation);
+
+            return completion.Task;
         }
 
         private Task<GameIntroLanguage> ShowLanguageChoiceAsync()
@@ -479,7 +1122,7 @@ namespace VraiPseudoSae.view.gameintro
             await Task.Delay(DialogueEndPauseMilliseconds);
         }
 
-        private static int GetDialogueCharacterDelay(DialogueTextStyle style, string word, int index)
+        private int GetDialogueCharacterDelay(DialogueTextStyle style, string word, int index)
         {
             int baseDelay = style == DialogueTextStyle.Rainbow
                 ? RainbowTextDelayMilliseconds
@@ -488,15 +1131,21 @@ namespace VraiPseudoSae.view.gameintro
             char character = word[index];
 
             if (IsRepeatedPunctuationBeforeLastCharacter(word, index))
-                return baseDelay;
+                return ApplyTextSpeed(baseDelay);
 
             if (character == ',' || character == ';' || character == ':')
-                return baseDelay + 180;
+                return ApplyTextSpeed(baseDelay + 180);
 
             if (character == '.' || character == '!' || character == '?')
-                return baseDelay + 420;
+                return ApplyTextSpeed(baseDelay + 420);
 
-            return baseDelay;
+            return ApplyTextSpeed(baseDelay);
+        }
+
+        private int ApplyTextSpeed(int delayMilliseconds)
+        {
+            double factor = 1.65 - settings.VitesseTexte * 0.012;
+            return Math.Max(8, (int)Math.Round(delayMilliseconds * factor));
         }
 
         private static bool IsRepeatedPunctuationBeforeLastCharacter(string word, int index)
@@ -604,7 +1253,7 @@ namespace VraiPseudoSae.view.gameintro
             }
 
             wordPanel.Children.Add(textBlock);
-            audio.Play("bip");
+            PlayDialogueTick();
         }
 
         private void UpdateRainbowGlyphs()
@@ -634,6 +1283,17 @@ namespace VraiPseudoSae.view.gameintro
 
         private void ShowPanelKeyHint()
         {
+            ApplyPanelKeyHintText();
+
+            if (!IsPlayerInPanelInteractionRange())
+            {
+                HidePanelKeyHint();
+                return;
+            }
+
+            if (PanelKeyHint.Visibility == Visibility.Visible)
+                return;
+
             PanelKeyHint.Visibility = Visibility.Visible;
             PanelHintTranslate.BeginAnimation(TranslateTransform.YProperty, new DoubleAnimation
             {
@@ -686,6 +1346,7 @@ namespace VraiPseudoSae.view.gameintro
 
             Canvas.SetLeft(PlayerSquare, Clamp(left, 0, MapSize - PlayerSquare.Width));
             Canvas.SetTop(PlayerSquare, Clamp(top, 0, MapSize - PlayerSquare.Height));
+            UpdatePanelKeyHintVisibility();
         }
 
         private void FocusIntroInput()
@@ -706,6 +1367,13 @@ namespace VraiPseudoSae.view.gameintro
                 return max;
 
             return value;
+        }
+
+        private static double Distance(Point a, Point b)
+        {
+            double dx = a.X - b.X;
+            double dy = a.Y - b.Y;
+            return Math.Sqrt(dx * dx + dy * dy);
         }
 
         private static Color ColorFromHsv(double hue, double saturation, double value)

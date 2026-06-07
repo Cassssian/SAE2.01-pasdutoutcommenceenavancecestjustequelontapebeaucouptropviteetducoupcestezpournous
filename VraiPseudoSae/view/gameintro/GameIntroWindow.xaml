@@ -40,6 +40,63 @@
             <Setter Property="TextOptions.TextRenderingMode" Value="Aliased"/>
             <Setter Property="TextOptions.TextFormattingMode" Value="Display"/>
         </Style>
+
+        <Style x:Key="SettingsPanelStyle" TargetType="{x:Type Border}">
+            <Setter Property="Background" Value="#EC080A10"/>
+            <Setter Property="BorderBrush" Value="#FFE6F0F7"/>
+            <Setter Property="BorderThickness" Value="3"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="22"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+        </Style>
+
+        <Style x:Key="SettingsTitleTextStyle" TargetType="{x:Type TextBlock}">
+            <Setter Property="FontFamily" Value="{StaticResource PixelFont}"/>
+            <Setter Property="FontSize" Value="22"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="#FFFFFFFF"/>
+            <Setter Property="TextOptions.TextRenderingMode" Value="Aliased"/>
+            <Setter Property="TextOptions.TextFormattingMode" Value="Display"/>
+        </Style>
+
+        <Style x:Key="SettingsBodyTextStyle" TargetType="{x:Type TextBlock}">
+            <Setter Property="FontFamily" Value="{StaticResource PixelFont}"/>
+            <Setter Property="FontSize" Value="17"/>
+            <Setter Property="Foreground" Value="#FFE6F0F7"/>
+            <Setter Property="TextOptions.TextRenderingMode" Value="Aliased"/>
+            <Setter Property="TextOptions.TextFormattingMode" Value="Display"/>
+        </Style>
+
+        <Style x:Key="SettingsCategoryButtonStyle" TargetType="{x:Type Border}">
+            <Setter Property="Height" Value="46"/>
+            <Setter Property="Margin" Value="0,0,0,12"/>
+            <Setter Property="Padding" Value="14,7"/>
+            <Setter Property="Background" Value="#FF11141C"/>
+            <Setter Property="BorderBrush" Value="#FF4F5B69"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="CornerRadius" Value="6"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+
+        <Style x:Key="SettingsKeyBoxStyle" TargetType="{x:Type Border}">
+            <Setter Property="Width" Value="240"/>
+            <Setter Property="Height" Value="42"/>
+            <Setter Property="Padding" Value="12,5"/>
+            <Setter Property="Background" Value="#FF000000"/>
+            <Setter Property="BorderBrush" Value="#FFFFFFFF"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="CornerRadius" Value="6"/>
+        </Style>
+
+        <Style x:Key="SettingsActionButtonStyle" TargetType="{x:Type Border}">
+            <Setter Property="Height" Value="42"/>
+            <Setter Property="Padding" Value="14,6"/>
+            <Setter Property="Background" Value="#FF11141C"/>
+            <Setter Property="BorderBrush" Value="#FFFFFFFF"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="CornerRadius" Value="6"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
     </UserControl.Resources>
 
     <Grid x:Name="Root" Background="#000000" ClipToBounds="True">
@@ -80,7 +137,7 @@
                            Canvas.Top="80"/>
 
                 <Border x:Name="PanelKeyHint"
-                        Width="18"
+                        Width="22"
                         Height="9"
                         MinWidth="0"
                         MinHeight="0"
@@ -99,15 +156,21 @@
                             <TranslateTransform x:Name="PanelHintTranslate" Y="0"/>
                         </TransformGroup>
                     </Border.RenderTransform>
-                    <TextBlock Text="E"
-                               FontFamily="{StaticResource PixelFont}"
-                               FontSize="6"
-                               FontWeight="Bold"
-                               Foreground="#FFFFFFFF"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               TextOptions.TextRenderingMode="Aliased"
-                               TextOptions.TextFormattingMode="Display"/>
+                    <Viewbox Stretch="Uniform"
+                             StretchDirection="DownOnly"
+                             Margin="1,0">
+                        <TextBlock x:Name="PanelKeyHintText"
+                                   Text="E"
+                                   FontFamily="{StaticResource PixelFont}"
+                                   FontSize="6"
+                                   FontWeight="Bold"
+                                   Foreground="#FFFFFFFF"
+                                   TextAlignment="Center"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   TextOptions.TextRenderingMode="Aliased"
+                                   TextOptions.TextFormattingMode="Display"/>
+                    </Viewbox>
                 </Border>
             </Canvas>
         </Canvas>
@@ -193,6 +256,498 @@
             </StackPanel>
         </Grid>
 
+        <Grid x:Name="SettingsIntroOverlay"
+              Background="#F2040509"
+              Visibility="Collapsed">
+            <Grid x:Name="SettingsWindowFrame"
+                  Width="1130"
+                  Height="482"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Top"
+                  Margin="0,42,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="292"/>
+                    <ColumnDefinition Width="24"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Border x:Name="SettingsCategoryPanel"
+                        Grid.Column="0"
+                        Style="{StaticResource SettingsPanelStyle}">
+                    <StackPanel>
+                        <TextBlock x:Name="SettingsCategoriesTitleText"
+                                   Style="{StaticResource SettingsTitleTextStyle}"
+                                   Margin="0,0,0,18"/>
+
+                        <Border x:Name="GeneralCategoryButton"
+                                Style="{StaticResource SettingsCategoryButtonStyle}"
+                                MouseLeftButtonUp="GeneralCategoryButton_MouseLeftButtonUp">
+                            <TextBlock x:Name="GeneralCategoryText"
+                                       Style="{StaticResource SettingsBodyTextStyle}"
+                                       FontSize="18"
+                                       FontWeight="Bold"
+                                       VerticalAlignment="Center"/>
+                        </Border>
+
+                        <Border x:Name="MainMenuCategoryButton"
+                                Style="{StaticResource SettingsCategoryButtonStyle}"
+                                MouseLeftButtonUp="MainMenuCategoryButton_MouseLeftButtonUp">
+                            <TextBlock x:Name="MainMenuCategoryText"
+                                       Style="{StaticResource SettingsBodyTextStyle}"
+                                       FontSize="18"
+                                       FontWeight="Bold"
+                                       VerticalAlignment="Center"/>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <Border x:Name="SettingsDetailsPanel"
+                        Grid.Column="2"
+                        Style="{StaticResource SettingsPanelStyle}">
+                    <Grid>
+                        <StackPanel x:Name="GeneralSettingsPanel">
+                            <TextBlock x:Name="GeneralSettingsTitleText"
+                                       Style="{StaticResource SettingsTitleTextStyle}"
+                                       Margin="0,0,0,18"/>
+
+                            <StackPanel x:Name="GeneralSettingsContent">
+                                <Grid x:Name="MasterVolumeSettingRow"
+                                      Margin="0,0,0,18">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="260"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="70"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock x:Name="MasterVolumeText"
+                                               Grid.Column="0"
+                                               Style="{StaticResource SettingsBodyTextStyle}"
+                                               VerticalAlignment="Center"/>
+                                    <Slider x:Name="MasterVolumeSlider"
+                                            Grid.Column="1"
+                                            Minimum="0"
+                                            Maximum="100"
+                                            Value="80"
+                                            VerticalAlignment="Center"/>
+                                    <TextBlock x:Name="MasterVolumeValueText"
+                                               Grid.Column="2"
+                                               Style="{StaticResource SettingsBodyTextStyle}"
+                                               HorizontalAlignment="Right"
+                                               VerticalAlignment="Center"/>
+                                </Grid>
+
+                                <Grid x:Name="DialogueVolumeSettingRow"
+                                      Margin="0,0,0,18">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="260"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="70"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock x:Name="DialogueVolumeText"
+                                               Grid.Column="0"
+                                               Style="{StaticResource SettingsBodyTextStyle}"
+                                               VerticalAlignment="Center"/>
+                                    <Slider x:Name="DialogueVolumeSlider"
+                                            Grid.Column="1"
+                                            Minimum="0"
+                                            Maximum="100"
+                                            Value="72"
+                                            VerticalAlignment="Center"/>
+                                    <TextBlock x:Name="DialogueVolumeValueText"
+                                               Grid.Column="2"
+                                               Style="{StaticResource SettingsBodyTextStyle}"
+                                               HorizontalAlignment="Right"
+                                               VerticalAlignment="Center"/>
+                                </Grid>
+
+                                <Grid x:Name="SfxVolumeSettingRow"
+                                      Margin="0,0,0,18">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="260"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="70"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock x:Name="SfxVolumeText"
+                                               Grid.Column="0"
+                                               Style="{StaticResource SettingsBodyTextStyle}"
+                                               VerticalAlignment="Center"/>
+                                    <Slider x:Name="SfxVolumeSlider"
+                                            Grid.Column="1"
+                                            Minimum="0"
+                                            Maximum="100"
+                                            Value="64"
+                                            VerticalAlignment="Center"/>
+                                    <TextBlock x:Name="SfxVolumeValueText"
+                                               Grid.Column="2"
+                                               Style="{StaticResource SettingsBodyTextStyle}"
+                                               HorizontalAlignment="Right"
+                                               VerticalAlignment="Center"/>
+                                </Grid>
+
+                                <Grid x:Name="TextSpeedSettingRow">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="260"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="70"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock x:Name="TextSpeedText"
+                                               Grid.Column="0"
+                                               Style="{StaticResource SettingsBodyTextStyle}"
+                                               VerticalAlignment="Center"/>
+                                    <Slider x:Name="TextSpeedSlider"
+                                            Grid.Column="1"
+                                            Minimum="0"
+                                            Maximum="100"
+                                            Value="45"
+                                            VerticalAlignment="Center"/>
+                                    <TextBlock x:Name="TextSpeedValueText"
+                                               Grid.Column="2"
+                                               Style="{StaticResource SettingsBodyTextStyle}"
+                                               HorizontalAlignment="Right"
+                                               VerticalAlignment="Center"/>
+                                </Grid>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <StackPanel x:Name="MainMenuSettingsPanel"
+                                    Visibility="Collapsed">
+                            <TextBlock x:Name="MainMenuSettingsTitleText"
+                                       Style="{StaticResource SettingsTitleTextStyle}"
+                                       Margin="0,0,0,18"/>
+
+                            <StackPanel x:Name="MainMenuBindingsList">
+                                <Grid Margin="0,0,0,8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="220"/>
+                                        <ColumnDefinition Width="250"/>
+                                        <ColumnDefinition Width="230"/>
+                                        <ColumnDefinition Width="62"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock x:Name="ActionHeaderText"
+                                               Grid.Column="0"
+                                               Style="{StaticResource SettingsBodyTextStyle}"
+                                               Opacity="0.76"/>
+                                    <TextBlock x:Name="KeyHeaderText"
+                                               Grid.Column="1"
+                                               Style="{StaticResource SettingsBodyTextStyle}"
+                                               Opacity="0.76"/>
+                                </Grid>
+
+                                <Grid x:Name="ForwardActionRow"
+                                      Margin="0,0,0,13">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="220"/>
+                                        <ColumnDefinition Width="250"/>
+                                        <ColumnDefinition Width="230"/>
+                                        <ColumnDefinition Width="62"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock x:Name="ForwardActionText"
+                                               Grid.Column="0"
+                                               Style="{StaticResource SettingsBodyTextStyle}"
+                                               VerticalAlignment="Center"/>
+                                    <Border x:Name="ForwardKeyBox"
+                                            Grid.Column="1"
+                                            Style="{StaticResource SettingsKeyBoxStyle}">
+                                        <TextBlock x:Name="ForwardKeyText"
+                                                   Style="{StaticResource SettingsBodyTextStyle}"
+                                                   Foreground="#FFFFFFFF"
+                                                   TextAlignment="Center"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"/>
+                                    </Border>
+                                    <Border x:Name="ForwardChangeButton"
+                                            Grid.Column="2"
+                                            Style="{StaticResource SettingsActionButtonStyle}"
+                                            Width="210"
+                                            MouseLeftButtonUp="ForwardChangeButton_MouseLeftButtonUp">
+                                        <TextBlock x:Name="ForwardChangeButtonText"
+                                                   Style="{StaticResource SettingsBodyTextStyle}"
+                                                   FontSize="15"
+                                                   Foreground="#FFFFFFFF"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"/>
+                                    </Border>
+                                    <Border x:Name="ForwardResetButton"
+                                            Grid.Column="3"
+                                            Style="{StaticResource SettingsActionButtonStyle}"
+                                            Width="48"
+                                            Padding="8"
+                                            MouseLeftButtonUp="ForwardResetButton_MouseLeftButtonUp">
+                                        <Viewbox Width="24" Height="24">
+                                            <Path Stroke="#FFFFFFFF"
+                                                  StrokeThickness="3"
+                                                  StrokeStartLineCap="Round"
+                                                  StrokeEndLineCap="Round"
+                                                  StrokeLineJoin="Round"
+                                                  Fill="Transparent"
+                                                  Data="M 18,6 L 8,6 L 8,16 M 8,6 C 4,12 7,24 19,23 C 29,22 31,9 22,5"/>
+                                        </Viewbox>
+                                    </Border>
+                                </Grid>
+
+                                <Grid x:Name="BackwardActionRow"
+                                      Margin="0,0,0,13">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="220"/>
+                                        <ColumnDefinition Width="250"/>
+                                        <ColumnDefinition Width="230"/>
+                                        <ColumnDefinition Width="62"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock x:Name="BackwardActionText"
+                                               Grid.Column="0"
+                                               Style="{StaticResource SettingsBodyTextStyle}"
+                                               VerticalAlignment="Center"/>
+                                    <Border x:Name="BackwardKeyBox"
+                                            Grid.Column="1"
+                                            Style="{StaticResource SettingsKeyBoxStyle}">
+                                        <TextBlock x:Name="BackwardKeyText"
+                                                   Style="{StaticResource SettingsBodyTextStyle}"
+                                                   Foreground="#FFFFFFFF"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"/>
+                                    </Border>
+                                    <Border x:Name="BackwardChangeButton"
+                                            Grid.Column="2"
+                                            Style="{StaticResource SettingsActionButtonStyle}"
+                                            Width="210"
+                                            MouseLeftButtonUp="BackwardChangeButton_MouseLeftButtonUp">
+                                        <TextBlock x:Name="BackwardChangeButtonText"
+                                                   Style="{StaticResource SettingsBodyTextStyle}"
+                                                   FontSize="15"
+                                                   Foreground="#FFFFFFFF"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"/>
+                                    </Border>
+                                    <Border x:Name="BackwardResetButton"
+                                            Grid.Column="3"
+                                            Style="{StaticResource SettingsActionButtonStyle}"
+                                            Width="48"
+                                            Padding="8"
+                                            MouseLeftButtonUp="BackwardResetButton_MouseLeftButtonUp">
+                                        <Viewbox Width="24" Height="24">
+                                            <Path Stroke="#FFFFFFFF"
+                                                  StrokeThickness="3"
+                                                  StrokeStartLineCap="Round"
+                                                  StrokeEndLineCap="Round"
+                                                  StrokeLineJoin="Round"
+                                                  Fill="Transparent"
+                                                  Data="M 18,6 L 8,6 L 8,16 M 8,6 C 4,12 7,24 19,23 C 29,22 31,9 22,5"/>
+                                        </Viewbox>
+                                    </Border>
+                                </Grid>
+
+                                <Grid x:Name="LeftActionRow"
+                                      Margin="0,0,0,13">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="220"/>
+                                        <ColumnDefinition Width="250"/>
+                                        <ColumnDefinition Width="230"/>
+                                        <ColumnDefinition Width="62"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock x:Name="LeftActionText"
+                                               Grid.Column="0"
+                                               Style="{StaticResource SettingsBodyTextStyle}"
+                                               VerticalAlignment="Center"/>
+                                    <Border x:Name="LeftKeyBox"
+                                            Grid.Column="1"
+                                            Style="{StaticResource SettingsKeyBoxStyle}">
+                                        <TextBlock x:Name="LeftKeyText"
+                                                   Style="{StaticResource SettingsBodyTextStyle}"
+                                                   Foreground="#FFFFFFFF"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"/>
+                                    </Border>
+                                    <Border x:Name="LeftChangeButton"
+                                            Grid.Column="2"
+                                            Style="{StaticResource SettingsActionButtonStyle}"
+                                            Width="210"
+                                            MouseLeftButtonUp="LeftChangeButton_MouseLeftButtonUp">
+                                        <TextBlock x:Name="LeftChangeButtonText"
+                                                   Style="{StaticResource SettingsBodyTextStyle}"
+                                                   FontSize="15"
+                                                   Foreground="#FFFFFFFF"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"/>
+                                    </Border>
+                                    <Border x:Name="LeftResetButton"
+                                            Grid.Column="3"
+                                            Style="{StaticResource SettingsActionButtonStyle}"
+                                            Width="48"
+                                            Padding="8"
+                                            MouseLeftButtonUp="LeftResetButton_MouseLeftButtonUp">
+                                        <Viewbox Width="24" Height="24">
+                                            <Path Stroke="#FFFFFFFF"
+                                                  StrokeThickness="3"
+                                                  StrokeStartLineCap="Round"
+                                                  StrokeEndLineCap="Round"
+                                                  StrokeLineJoin="Round"
+                                                  Fill="Transparent"
+                                                  Data="M 18,6 L 8,6 L 8,16 M 8,6 C 4,12 7,24 19,23 C 29,22 31,9 22,5"/>
+                                        </Viewbox>
+                                    </Border>
+                                </Grid>
+
+                                <Grid x:Name="RightActionRow"
+                                      Margin="0,0,0,13">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="220"/>
+                                        <ColumnDefinition Width="250"/>
+                                        <ColumnDefinition Width="230"/>
+                                        <ColumnDefinition Width="62"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock x:Name="RightActionText"
+                                               Grid.Column="0"
+                                               Style="{StaticResource SettingsBodyTextStyle}"
+                                               VerticalAlignment="Center"/>
+                                    <Border x:Name="RightKeyBox"
+                                            Grid.Column="1"
+                                            Style="{StaticResource SettingsKeyBoxStyle}">
+                                        <TextBlock x:Name="RightKeyText"
+                                                   Style="{StaticResource SettingsBodyTextStyle}"
+                                                   Foreground="#FFFFFFFF"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"/>
+                                    </Border>
+                                    <Border x:Name="RightChangeButton"
+                                            Grid.Column="2"
+                                            Style="{StaticResource SettingsActionButtonStyle}"
+                                            Width="210"
+                                            MouseLeftButtonUp="RightChangeButton_MouseLeftButtonUp">
+                                        <TextBlock x:Name="RightChangeButtonText"
+                                                   Style="{StaticResource SettingsBodyTextStyle}"
+                                                   FontSize="15"
+                                                   Foreground="#FFFFFFFF"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"/>
+                                    </Border>
+                                    <Border x:Name="RightResetButton"
+                                            Grid.Column="3"
+                                            Style="{StaticResource SettingsActionButtonStyle}"
+                                            Width="48"
+                                            Padding="8"
+                                            MouseLeftButtonUp="RightResetButton_MouseLeftButtonUp">
+                                        <Viewbox Width="24" Height="24">
+                                            <Path Stroke="#FFFFFFFF"
+                                                  StrokeThickness="3"
+                                                  StrokeStartLineCap="Round"
+                                                  StrokeEndLineCap="Round"
+                                                  StrokeLineJoin="Round"
+                                                  Fill="Transparent"
+                                                  Data="M 18,6 L 8,6 L 8,16 M 8,6 C 4,12 7,24 19,23 C 29,22 31,9 22,5"/>
+                                        </Viewbox>
+                                    </Border>
+                                </Grid>
+
+                                <Grid x:Name="InteractionActionRow">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="220"/>
+                                        <ColumnDefinition Width="250"/>
+                                        <ColumnDefinition Width="230"/>
+                                        <ColumnDefinition Width="62"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock x:Name="InteractionActionText"
+                                               Grid.Column="0"
+                                               Style="{StaticResource SettingsBodyTextStyle}"
+                                               VerticalAlignment="Center"/>
+                                    <Border x:Name="InteractionKeyBox"
+                                            Grid.Column="1"
+                                            Style="{StaticResource SettingsKeyBoxStyle}">
+                                        <TextBlock x:Name="InteractionKeyText"
+                                                   Style="{StaticResource SettingsBodyTextStyle}"
+                                                   Foreground="#FFFFFFFF"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"/>
+                                    </Border>
+                                    <Border x:Name="InteractionChangeButton"
+                                            Grid.Column="2"
+                                            Style="{StaticResource SettingsActionButtonStyle}"
+                                            Width="210"
+                                            MouseLeftButtonUp="InteractionChangeButton_MouseLeftButtonUp">
+                                        <TextBlock x:Name="InteractionChangeButtonText"
+                                                   Style="{StaticResource SettingsBodyTextStyle}"
+                                                   FontSize="15"
+                                                   Foreground="#FFFFFFFF"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"/>
+                                    </Border>
+                                    <Border x:Name="InteractionResetButton"
+                                            Grid.Column="3"
+                                            Style="{StaticResource SettingsActionButtonStyle}"
+                                            Width="48"
+                                            Padding="8"
+                                            MouseLeftButtonUp="InteractionResetButton_MouseLeftButtonUp">
+                                        <Viewbox Width="24" Height="24">
+                                            <Path Stroke="#FFFFFFFF"
+                                                  StrokeThickness="3"
+                                                  StrokeStartLineCap="Round"
+                                                  StrokeEndLineCap="Round"
+                                                  StrokeLineJoin="Round"
+                                                  Fill="Transparent"
+                                                  Data="M 18,6 L 8,6 L 8,16 M 8,6 C 4,12 7,24 19,23 C 29,22 31,9 22,5"/>
+                                        </Viewbox>
+                                    </Border>
+                                </Grid>
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <Border x:Name="SettingsCloseButton"
+                        Grid.Column="2"
+                        Width="42"
+                        Height="42"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        Margin="0,14,14,0"
+                        Background="#FF000000"
+                        BorderBrush="#FFFFFFFF"
+                        BorderThickness="2"
+                        CornerRadius="6"
+                        Cursor="Hand"
+                        Panel.ZIndex="4"
+                        MouseLeftButtonUp="SettingsCloseButton_MouseLeftButtonUp">
+                    <TextBlock Text="X"
+                               FontFamily="{StaticResource PixelFont}"
+                               FontSize="18"
+                               FontWeight="Bold"
+                               Foreground="#FFFFFFFF"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               TextOptions.TextRenderingMode="Aliased"
+                               TextOptions.TextFormattingMode="Display"/>
+                </Border>
+
+                <TextBlock x:Name="SettingsTemporaryCloseText"
+                           Grid.Column="2"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Bottom"
+                           Margin="0,0,18,18"
+                           FontFamily="{StaticResource PixelFont}"
+                           FontSize="13"
+                           Foreground="#FFE6F0F7"
+                           Opacity="0.72"
+                           TextOptions.TextRenderingMode="Aliased"
+                           TextOptions.TextFormattingMode="Display"/>
+            </Grid>
+
+            <Canvas x:Name="SettingsHighlightLayer"
+                    IsHitTestVisible="False">
+                <Border x:Name="SettingsTutorialHighlight"
+                        BorderBrush="#FFFF9B2F"
+                        BorderThickness="4"
+                        CornerRadius="12"
+                        Background="#00000000"
+                        Opacity="0"
+                        Visibility="Collapsed">
+                    <Border.Effect>
+                        <DropShadowEffect Color="#FFFF9B2F"
+                                          BlurRadius="20"
+                                          ShadowDepth="0"
+                                          Opacity="0.78"/>
+                    </Border.Effect>
+                </Border>
+            </Canvas>
+        </Grid>
+
         <Border x:Name="DialoguePanel"
                 Width="1080"
                 MinHeight="154"
@@ -212,10 +767,37 @@
                                   ShadowDepth="4"
                                   Opacity="0.55"/>
             </Border.Effect>
-            <WrapPanel x:Name="DialogueTextWrap"
-                       Width="1024"
-                       Orientation="Horizontal"
-                       Margin="0,0,0,8"/>
+            <Grid>
+                <WrapPanel x:Name="DialogueTextWrap"
+                           Width="924"
+                           HorizontalAlignment="Left"
+                           Orientation="Horizontal"
+                           Margin="0,0,0,8"/>
+
+                <Border x:Name="DialogueSpeakerPortrait"
+                        Width="78"
+                        Height="78"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        Margin="0,-58,8,0"
+                        Background="#FF080A10"
+                        BorderBrush="#FFE6F0F7"
+                        BorderThickness="3"
+                        CornerRadius="8"
+                        Visibility="Collapsed">
+                    <Grid>
+                        <Rectangle Width="38"
+                                   Height="38"
+                                   RadiusX="3"
+                                   RadiusY="3"
+                                   Fill="#FFE82424"
+                                   Stroke="#FF5A0000"
+                                   StrokeThickness="2"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
+                    </Grid>
+                </Border>
+            </Grid>
         </Border>
     </Grid>
 </UserControl>
