@@ -18,6 +18,9 @@ namespace VraiPseudoSae.view
     /// </summary>
     public partial class DropItemsOptions : Page
     {
+        /// <summary>
+        /// On sauvegarde le menu qui est là.
+        /// </summary>
         private DropItemsMenu menu;
 
 
