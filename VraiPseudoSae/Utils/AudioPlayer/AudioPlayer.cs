@@ -139,6 +139,18 @@ public sealed class JsonPakAudioService : IDisposable
     /// <summary>
     /// Initialise une nouvelle instance du service audio JSON/.pak.
     /// </summary>
+    /// <remarks>
+    /// Ce constructeur crée un catalogue vide. Il est utile pour les cas où le service
+    /// est seulement utilisé avec des fichiers audio locaux via <see cref="LoadFromPath(string, string)"/>.
+    /// </remarks>
+    public JsonPakAudioService()
+        : this(new PakAudioCatalog())
+    {
+    }
+
+    /// <summary>
+    /// Initialise une nouvelle instance du service audio JSON/.pak.
+    /// </summary>
     /// <param name="catalog">
     /// Le catalogue des entrées audio disponibles dans les fichiers <c>.pak</c>.
     /// </param>
@@ -260,6 +272,46 @@ public sealed class JsonPakAudioService : IDisposable
     }
 
     /// <summary>
+    /// Charge un son depuis un chemin de fichier local et l’associe à un alias utilisateur.
+    /// </summary>
+    /// <param name="filePath">
+    /// Le chemin du fichier audio à charger. Les formats pris en charge sont ceux de
+    /// <see cref="AudioDecodingHelper.FromFile(string)"/>.
+    /// </param>
+    /// <param name="alias">
+    /// L’alias utilisateur à associer au son chargé.
+    /// </param>
+    /// <exception cref="ArgumentException">
+    /// Levée si <paramref name="alias"/> est vide ou si <paramref name="filePath"/> est vide.
+    /// </exception>
+    /// <exception cref="FileNotFoundException">
+    /// Levée si le fichier demandé n’existe pas.
+    /// </exception>
+    /// <exception cref="NotSupportedException">
+    /// Levée si l’extension du fichier ne correspond à aucun format audio pris en charge.
+    /// </exception>
+    /// <remarks>
+    /// <para>
+    /// Le son est décodé une seule fois, stocké en mémoire sous l’alias fourni, puis peut être
+    /// joué autant de fois que nécessaire avec <see cref="Play(string, float)"/>.
+    /// </para>
+    /// <para>
+    /// Si l’alias existe déjà, il est remplacé par le nouveau fichier chargé.
+    /// </para>
+    /// </remarks>
+    public void LoadFromPath(string filePath, string alias)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(alias);
+
+        string normalizedAlias = NormalizeAlias(alias);
+
+        if (string.IsNullOrWhiteSpace(normalizedAlias))
+            throw new ArgumentException("L'alias ne peut pas être vide.", nameof(alias));
+
+        _cacheByAlias[normalizedAlias] = AudioDecodingHelper.FromFile(filePath);
+    }
+
+    /// <summary>
     /// Joue un son déjà associé à un alias utilisateur.
     /// </summary>
     /// <param name="alias">
@@ -344,6 +396,33 @@ public sealed class JsonPakAudioService : IDisposable
         try
         {
             Preload(key, alias);
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// Tente de charger un son depuis un chemin de fichier local et de l’associer à un alias,
+    /// sans propager d’exception.
+    /// </summary>
+    /// <param name="filePath">
+    /// Le chemin du fichier audio à charger.
+    /// </param>
+    /// <param name="alias">
+    /// L’alias utilisateur à associer au son.
+    /// </param>
+    /// <returns>
+    /// <see langword="true"/> si le chargement réussit ;
+    /// sinon <see langword="false"/>.
+    /// </returns>
+    public bool TryLoadFromPath(string filePath, string alias)
+    {
+        try
+        {
+            LoadFromPath(filePath, alias);
             return true;
         }
         catch

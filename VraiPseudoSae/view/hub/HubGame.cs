@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using IUTGame;
 using System.Collections.Generic;
 using System.Windows.Media;
+using VraiPseudoSae.view.Maze;
 using VraiPseudoSae.view.RLS_Pages;
 
 namespace VraiPseudoSae.view.hub
@@ -139,7 +140,7 @@ namespace VraiPseudoSae.view.hub
 
         private void LaunchMazeGame()
         {
-            Maze display = new Maze();
+            MazeWindow display = new MazeWindow();
             display.Show();
         }
 

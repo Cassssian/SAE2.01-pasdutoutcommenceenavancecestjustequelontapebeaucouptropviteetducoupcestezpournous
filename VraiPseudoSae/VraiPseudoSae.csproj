@@ -9,18 +9,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <None Remove="view\images_drop\decors\DecorManoir.png" />
-      <None Remove="data\Wizard\AnimationSheet_Character.png" />
-      <None Remove="view\intro_anim\**\*.png" />
+        <Resource Include="Assets\Font\**\*.ttf" />
+        <Resource Include="Assets\Font\**\*.otf" />
     </ItemGroup>
 
     <ItemGroup>
       <Page Update="view\MainWindow.xaml">
-        <Generator>MSBuild:Compile</Generator>
-        <XamlRuntime>Wpf</XamlRuntime>
-        <SubType>Designer</SubType>
-      </Page>
-      <Page Update="view\IntroWindow.xaml">
         <Generator>MSBuild:Compile</Generator>
         <XamlRuntime>Wpf</XamlRuntime>
         <SubType>Designer</SubType>
@@ -50,7 +44,12 @@
         <XamlRuntime>Wpf</XamlRuntime>
         <SubType>Designer</SubType>
       </Page>
-      <Page Update="view\MazeFolder\Maze.xaml">
+      <Page Update="view\Maze\MazeWindow.xaml">
+        <Generator>MSBuild:Compile</Generator>
+        <XamlRuntime>Wpf</XamlRuntime>
+        <SubType>Designer</SubType>
+      </Page>
+      <Page Update="view\intro\IntroWindow.xaml">
         <Generator>MSBuild:Compile</Generator>
         <XamlRuntime>Wpf</XamlRuntime>
         <SubType>Designer</SubType>
@@ -70,7 +69,23 @@
     <ItemGroup>
       <Resource Include="view\images_drop\decors\DecorManoir.png" />
       <Resource Include="data\Wizard\AnimationSheet_Character.png" />
-      <Resource Include="view\intro_anim\**\*.png" />
+      <Resource Include="view\intro\**\*.png" />
+      <Resource Include="..\Tilemap\Map Intro.png">
+        <Link>Tilemap\MapIntro.png</Link>
+      </Resource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Utils\SaveManager\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="Assets\woosh.mp3">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Assets\bip.wav">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>

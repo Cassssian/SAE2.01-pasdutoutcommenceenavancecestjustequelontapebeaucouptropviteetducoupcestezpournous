@@ -10,9 +10,9 @@ using System.Windows.Controls;
 using System.Windows.Threading;
 using System.Windows.Media.Animation;
 
-namespace VraiPseudoSae.view
+namespace VraiPseudoSae.view.Maze
 {
-    public partial class Maze : Window
+    public partial class MazeWindow : Window
     {
         private const int CellSize = 25;
         private const int Rows = 21;
@@ -80,7 +80,7 @@ namespace VraiPseudoSae.view
             }
         }
 
-        public Maze()
+        public MazeWindow()
         {
             InitializeComponent();
 
