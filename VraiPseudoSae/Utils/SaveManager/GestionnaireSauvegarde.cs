@@ -1,6 +1,6 @@
 using System.IO;
 
-namespace VraiPseudoSae.Utils.GestionnaireSauvegarde;
+namespace VraiPseudoSae.Utils.SaveManager;
 
 /// <summary>
 /// Gestionnaire de sauvegarde typé qui orchestre sérialisation, encodage et stockage disque.

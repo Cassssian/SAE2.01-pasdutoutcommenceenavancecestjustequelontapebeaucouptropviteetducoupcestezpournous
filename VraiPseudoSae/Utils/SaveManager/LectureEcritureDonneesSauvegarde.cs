@@ -1,7 +1,7 @@
 using System.IO;
 using System.Text;
 
-namespace VraiPseudoSae.Utils.GestionnaireSauvegarde;
+namespace VraiPseudoSae.Utils.SaveManager;
 
 /// <summary>
 /// Écrit les primitives de jeu dans un flux binaire compact.

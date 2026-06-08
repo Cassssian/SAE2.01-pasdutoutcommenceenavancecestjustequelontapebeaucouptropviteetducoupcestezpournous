@@ -69,8 +69,12 @@
     <ItemGroup>
       <Resource Include="data\Wizard\AnimationSheet_Character.png" />
       <Resource Include="view\intro\**\*.png" />
+      <Resource Include="Assets\perso hub\*.png" />
       <Resource Include="..\Tilemap\Map Intro.png">
         <Link>Tilemap\MapIntro.png</Link>
+      </Resource>
+      <Resource Include="..\Tilemap\Map.png">
+        <Link>Tilemap\Map.png</Link>
       </Resource>
     </ItemGroup>
 

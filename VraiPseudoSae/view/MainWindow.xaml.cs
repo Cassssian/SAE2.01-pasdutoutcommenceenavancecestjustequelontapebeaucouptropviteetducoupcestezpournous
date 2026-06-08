@@ -1,5 +1,5 @@
 using System.Windows;
-using VraiPseudoSae.Utils.GestionnaireSauvegarde;
+using VraiPseudoSae.Utils.SaveManager;
 using VraiPseudoSae.view.gameintro;
 using VraiPseudoSae.view.intro;
 using VraiPseudoSae.view.WizardSurvival;

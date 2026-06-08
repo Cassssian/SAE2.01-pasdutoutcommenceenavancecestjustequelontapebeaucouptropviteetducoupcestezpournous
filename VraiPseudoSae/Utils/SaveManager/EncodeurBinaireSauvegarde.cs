@@ -1,7 +1,7 @@
 using System.IO;
 using System.Text;
 
-namespace VraiPseudoSae.Utils.GestionnaireSauvegarde;
+namespace VraiPseudoSae.Utils.SaveManager;
 
 /// <summary>
 /// Encodeur binaire optimisé pour le jeu: en-tête court, bloc compressé et CRC32.

@@ -6,8 +6,8 @@
         <Path x:Name="StarPath"
               Fill="#F6BC3B"
               Stretch="Uniform"
-              Width="30"
-              Height="30"
+              HorizontalAlignment="Stretch"
+              VerticalAlignment="Stretch"
               RenderTransformOrigin="0.5,0.5">
             <Path.Data>
                 <PathGeometry>

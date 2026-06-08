@@ -17,15 +17,22 @@
 
     <Grid Background="#101820">
 
-        <Canvas Name="GameCanvas" Width="1280" Height="720" Background="#87CEEB" Focusable="True">
+        <Canvas Name="GameCanvas" Width="1280" Height="720" Focusable="True">
+            <Image x:Name="MapImage"
+                   Source="pack://application:,,,/Tilemap/Map.png"
+                   Width="640"
+                   Height="640"
+                   Stretch="Fill"
+                   RenderOptions.BitmapScalingMode="NearestNeighbor"
+                   IsHitTestVisible="False"/>
 
-            <!-- Sol -->
+            <!-- Sol 
             <Rectangle Width="1280" Height="260" Fill="#4FAE4F"
                        Canvas.Left="0" Canvas.Top="460"/>
-
-            <!-- Route -->
+                       
             <Polygon Points="420,720 860,720 760,420 520,420"
                      Fill="#8B7765"/>
+                     -->
 
             <!-- Zone foot -->
             <Canvas Name="FootballZone" Width="170" Height="120"
@@ -82,23 +89,6 @@
                            Canvas.Left="50"
                            Canvas.Top="15"/>
             </Canvas>
-
-            <!-- Arbres rétro -->
-            <Canvas Canvas.Left="240" Canvas.Top="250" IsHitTestVisible="False">
-                <Rectangle Width="18" Height="50" Fill="#6B3E26" Canvas.Left="22" Canvas.Top="42"/>
-                <Ellipse Width="60" Height="60" Fill="#2E8B57"/>
-            </Canvas>
-
-            <Canvas Canvas.Left="980" Canvas.Top="260" IsHitTestVisible="False">
-                <Rectangle Width="18" Height="50" Fill="#6B3E26" Canvas.Left="22" Canvas.Top="42"/>
-                <Ellipse Width="60" Height="60" Fill="#2E8B57"/>
-            </Canvas>
-
-            <Canvas Canvas.Left="600" Canvas.Top="260" IsHitTestVisible="False">
-                <Rectangle Width="18" Height="50" Fill="#6B3E26" Canvas.Left="22" Canvas.Top="42"/>
-                <Ellipse Width="60" Height="60" Fill="#2E8B57"/>
-            </Canvas>
-
             <local:StarControl Canvas.Right="10" Canvas.Top="10"/>
         </Canvas>
 

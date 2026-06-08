@@ -1,4 +1,4 @@
-namespace VraiPseudoSae.Utils.GestionnaireSauvegarde;
+namespace VraiPseudoSae.Utils.SaveManager;
 
 public sealed record ProgressionJeuSauvegarde(bool IntroductionTerminee);
 
