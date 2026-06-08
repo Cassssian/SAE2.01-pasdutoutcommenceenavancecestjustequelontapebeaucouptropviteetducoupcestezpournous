@@ -1,4 +1,4 @@
-﻿using VraiPseudoSae.data.PakManager;
+﻿using VraiPseudoSae.Utils.PakManager;
 
 namespace VraiPseudoSae.Utils.AudioPlayer;
 

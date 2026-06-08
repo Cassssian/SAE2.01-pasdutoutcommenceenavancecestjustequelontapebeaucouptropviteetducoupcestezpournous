@@ -67,10 +67,18 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Resource Include="data\Bird image.png">
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      </Resource>
       <Resource Include="data\Wizard\AnimationSheet_Character.png" />
       <Resource Include="view\intro\**\*.png" />
+      <Resource Include="Assets\perso hub\*.png" />
+      <None Remove="data\Bird image.png" />
       <Resource Include="..\Tilemap\Map Intro.png">
         <Link>Tilemap\MapIntro.png</Link>
+      </Resource>
+      <Resource Include="..\Tilemap\homepage chemin.png">
+        <Link>Tilemap\homepage.png</Link>
       </Resource>
     </ItemGroup>
 
@@ -85,6 +93,9 @@
       <None Update="Assets\bip.wav">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+      <None Update="Assets\Firewhole - love 2.mp3">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>  
     </ItemGroup>
 
 </Project>

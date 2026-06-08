@@ -1,7 +1,7 @@
 using System.IO;
 using System.IO.Compression;
 
-namespace VraiPseudoSae.Utils.GestionnaireSauvegarde;
+namespace VraiPseudoSae.Utils.SaveManager;
 
 /// <summary>
 /// Base commune des algorithmes de compression de sauvegarde.

@@ -1,0 +1,55 @@
+﻿<Window x:Class="VraiPseudoSae.view.Flappy_bird.FlappyBird"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Flappy Bird - Retro Arcade" Height="600" Width="400"
+        KeyDown="OnKeyDown" WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize">
+    <Window.Resources>
+        <Style x:Key="RetroTextStyle" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Impact, Arial Black"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect Color="Black" BlurRadius="0" ShadowDepth="3" Direction="315"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <LinearGradientBrush x:Key="PipeBrush" StartPoint="0,0" EndPoint="1,0">
+            <GradientStop Color="#104010" Offset="0.0"/>
+            <GradientStop Color="#39b539" Offset="0.2"/>
+            <GradientStop Color="#73f273" Offset="0.5"/>
+            <GradientStop Color="#248f24" Offset="0.8"/>
+            <GradientStop Color="#092409" Offset="1.0"/>
+        </LinearGradientBrush>
+    </Window.Resources>
+
+    <Grid>
+        <Canvas Name="GameCanvas" Focusable="True">
+            <Canvas.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <GradientStop Color="#1a0933" Offset="0.0"/>
+                    <GradientStop Color="#3a1c5c" Offset="0.4"/>
+                    <GradientStop Color="#b8354b" Offset="0.7"/>
+                    <GradientStop Color="#f07877" Offset="1.0"/>
+                </LinearGradientBrush>
+            </Canvas.Background>
+
+            <StackPanel Orientation="Horizontal" Canvas.Left="20" Canvas.Top="20" Panel.ZIndex="10">
+                <TextBlock Name="ScoreText" Text="SCORE: 0" Style="{StaticResource RetroTextStyle}" FontSize="22" Margin="0,0,25,0"/>
+                <TextBlock Name="BestScoreText" Text="BEST: 0" Style="{StaticResource RetroTextStyle}" FontSize="22" Foreground="#FFD700"/>
+            </StackPanel>
+
+            <TextBlock Name="MessageText" Text="APPUYEZ SUR ESPACE" 
+                       Style="{StaticResource RetroTextStyle}" FontSize="24" 
+                       Canvas.Left="50" Canvas.Top="260" Panel.ZIndex="10" TextAlignment="Center" Width="300"/>
+
+            <Image Name="Bird" Source="pack://application:,,,/VraiPseudoSae;component/data/Bird image.png" 
+                   Width="38" Height="38" Canvas.Left="60" Canvas.Top="220" Panel.ZIndex="5" RenderTransformOrigin="0.5,0.5">
+                <Image.RenderTransform>
+                    <RotateTransform x:Name="BirdRotation" Angle="0" />
+                </Image.RenderTransform>
+            </Image>
+        </Canvas>
+    </Grid>
+</Window>

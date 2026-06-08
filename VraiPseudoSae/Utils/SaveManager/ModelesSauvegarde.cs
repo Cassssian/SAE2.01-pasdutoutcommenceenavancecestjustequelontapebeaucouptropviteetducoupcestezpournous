@@ -1,4 +1,4 @@
-namespace VraiPseudoSae.Utils.GestionnaireSauvegarde;
+namespace VraiPseudoSae.Utils.SaveManager;
 
 /// <summary>
 /// Définit la compression appliquée au bloc binaire de sauvegarde.

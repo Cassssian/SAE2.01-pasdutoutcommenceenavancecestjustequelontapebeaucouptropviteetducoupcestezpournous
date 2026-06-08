@@ -6,5 +6,6 @@
     <Application.Resources>
         <FontFamily x:Key="PixelFont">/Assets/Font/ari_w9500/#Ari-W9500</FontFamily>
         <FontFamily x:Key="PixelFontDisplayStyle">/Assets/Font/ari_w9500/#Ari-W9500 Display</FontFamily>
+        <FontFamily x:Key="Planes">/Assets/Font/Planes/#Planes_ValMore</FontFamily>
     </Application.Resources>
 </Application>

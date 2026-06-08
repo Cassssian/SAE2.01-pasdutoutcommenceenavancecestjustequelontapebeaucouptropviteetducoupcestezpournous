@@ -8,99 +8,230 @@
         KeyboardNavigation.DirectionalNavigation="None"
         KeyboardNavigation.TabNavigation="None"
         Loaded="Window_Loaded"
-        Unloaded="Window_Unloaded">
+        Unloaded="Window_Unloaded"
+        PreviewKeyDown="HomePage_PreviewKeyDown"
+        PreviewKeyUp="HomePage_PreviewKeyUp">
     <UserControl.Resources>
         <Style TargetType="{x:Type TextBlock}">
+            <Setter Property="FontFamily" Value="{StaticResource Planes}"/>
+        </Style>
+
+        <Style x:Key="HubSettingsPanelStyle" TargetType="{x:Type Border}">
+            <Setter Property="Background" Value="#EC080A10"/>
+            <Setter Property="BorderBrush" Value="#FFE6F0F7"/>
+            <Setter Property="BorderThickness" Value="3"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="22"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+        </Style>
+
+        <Style x:Key="HubSettingsTitleTextStyle" TargetType="{x:Type TextBlock}">
             <Setter Property="FontFamily" Value="{StaticResource PixelFont}"/>
+            <Setter Property="FontSize" Value="22"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="#FFFFFFFF"/>
+            <Setter Property="TextOptions.TextRenderingMode" Value="Aliased"/>
+            <Setter Property="TextOptions.TextFormattingMode" Value="Display"/>
+        </Style>
+
+        <Style x:Key="HubSettingsBodyTextStyle" TargetType="{x:Type TextBlock}">
+            <Setter Property="FontFamily" Value="{StaticResource PixelFont}"/>
+            <Setter Property="FontSize" Value="17"/>
+            <Setter Property="Foreground" Value="#FFE6F0F7"/>
+            <Setter Property="TextOptions.TextRenderingMode" Value="Aliased"/>
+            <Setter Property="TextOptions.TextFormattingMode" Value="Display"/>
+        </Style>
+
+        <Style x:Key="HubSettingsCategoryButtonStyle" TargetType="{x:Type Border}">
+            <Setter Property="Height" Value="46"/>
+            <Setter Property="Margin" Value="0,0,0,12"/>
+            <Setter Property="Padding" Value="14,7"/>
+            <Setter Property="Background" Value="#FF11141C"/>
+            <Setter Property="BorderBrush" Value="#FF4F5B69"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="CornerRadius" Value="6"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+
+        <Style x:Key="HubSettingsKeyBoxStyle" TargetType="{x:Type Border}">
+            <Setter Property="Width" Value="240"/>
+            <Setter Property="Height" Value="42"/>
+            <Setter Property="Padding" Value="12,5"/>
+            <Setter Property="Background" Value="#FF000000"/>
+            <Setter Property="BorderBrush" Value="#FFFFFFFF"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="CornerRadius" Value="6"/>
+        </Style>
+
+        <Style x:Key="HubSettingsActionButtonStyle" TargetType="{x:Type Border}">
+            <Setter Property="Height" Value="42"/>
+            <Setter Property="Padding" Value="14,6"/>
+            <Setter Property="Background" Value="#FF11141C"/>
+            <Setter Property="BorderBrush" Value="#FFFFFFFF"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="CornerRadius" Value="6"/>
+            <Setter Property="Cursor" Value="Hand"/>
         </Style>
     </UserControl.Resources>
 
     <Grid Background="#101820">
+        <Grid x:Name="CameraViewport"
+              ClipToBounds="True">
+            <Canvas x:Name="WorldLayer"
+                    Width="1280"
+                    Height="720"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    RenderOptions.BitmapScalingMode="NearestNeighbor"
+                    SnapsToDevicePixels="True">
+                <Canvas.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform x:Name="WorldCameraScale"
+                                        ScaleX="1"
+                                        ScaleY="1"/>
+                        <TranslateTransform x:Name="WorldCameraTranslate"
+                                            X="0"
+                                            Y="0"/>
+                    </TransformGroup>
+                </Canvas.RenderTransform>
 
-        <Canvas Name="GameCanvas" Width="1280" Height="720" Background="#87CEEB" Focusable="True">
+                <Image x:Name="MapImage"
+                       Width="1280"
+                       Height="720"
+                       Source="pack://application:,,,/Tilemap/homepage.png"
+                       Stretch="Fill"
+                       RenderOptions.BitmapScalingMode="NearestNeighbor"
+                       IsHitTestVisible="False"/>
 
-            <!-- Sol -->
+        <Canvas Name="GameCanvas"
+                Width="1280"
+                Height="720"
+                Focusable="True"
+                RenderOptions.BitmapScalingMode="NearestNeighbor">
+
+            <!-- Sol 
             <Rectangle Width="1280" Height="260" Fill="#4FAE4F"
                        Canvas.Left="0" Canvas.Top="460"/>
-
-            <!-- Route -->
+                       
             <Polygon Points="420,720 860,720 760,420 520,420"
                      Fill="#8B7765"/>
+                     -->
 
             <!-- Zone foot -->
-            <Canvas Name="FootballZone" Width="170" Height="120"
-                    Canvas.Left="930" Canvas.Top="360"
+            <Canvas Name="FootballZone" Width="16" Height="16"
+                    Canvas.Left="768" Canvas.Top="192"
                     IsHitTestVisible="False">
-                <Polygon Points="85,0 170,30 85,60 0,30"
-                         Fill="#F4E285"/>
-                <TextBlock Text="FOOT"
-                           FontSize="20"
-                           FontWeight="Bold"
-                           Foreground="Black"
-                           Canvas.Left="52"
-                           Canvas.Top="15"/>
+                <Border
+                        Width="16"
+                        Height="16"
+                        Background="#FF111318"
+                        BorderBrush="#FF050609"
+                        BorderThickness="1"
+                        Opacity="100"
+                        Visibility="Visible"
+                        Panel.ZIndex="72"
+                        SnapsToDevicePixels="True"/>
             </Canvas>
 
             <!-- Zone RLS -->
-            <Canvas Name="RLSZone" Width="170" Height="120"
-                    Canvas.Left="550" Canvas.Top="360"
+            <Canvas Name="RLSZone" Width="16" Height="16"
+                    Canvas.Left="272" Canvas.Top="496"
                     IsHitTestVisible="False">
-                <Polygon Points="85,0 170,30 85,60 0,30"
-                         Fill="DarkSlateGray"/>
-                <TextBlock Text="RLS"
-                           FontSize="20"
-                           FontWeight="Bold"
-                           Foreground="Black"
-                           Canvas.Left="62"
-                           Canvas.Top="15"/>
+                <Border
+                    Width="16"
+                    Height="16"
+                    Background="#FF111318"
+                    BorderBrush="#FF050609"
+                    BorderThickness="1"
+                    Opacity="100"
+                    Visibility="Visible"
+                    Panel.ZIndex="72"
+                    SnapsToDevicePixels="True"/>
             </Canvas>
 
             <!-- Zone Nuit du Code -->
-            <Canvas Name="PinZone" Width="170" Height="120"
-                    Canvas.Left="850" Canvas.Top="550"
+            <Canvas Name="PinZone" Width="16" Height="16"
+                    Canvas.Left="592" Canvas.Top="96"
                     IsHitTestVisible="False">
-                <Polygon Points="85,0 170,30 85,60 0,30"
-                         Fill="#334B5F"/>
-                <TextBlock Text="Wizard"
-                           FontSize="20"
-                           FontWeight="Bold"
-                           Foreground="Black"
-                           Canvas.Left="46"
-                           Canvas.Top="15"/>
+                <Border
+                    Width="16"
+                    Height="16"
+                    Background="#FF111318"
+                    BorderBrush="#FF050609"
+                    BorderThickness="1"
+                    Opacity="100"
+                    Visibility="Visible"
+                    Panel.ZIndex="72"
+                    SnapsToDevicePixels="True"/>
             </Canvas>
             
             <!-- Zone labyrinthe -->
-            <Canvas Name="MazeZone" Width="170" Height="120"
-                    Canvas.Left="120" Canvas.Top="330"
+            <Canvas Name="MazeZone" Width="16" Height="16"
+                    Canvas.Left="608" Canvas.Top="416"
                     IsHitTestVisible="False">
-                <Polygon Points="85,0 170,30 85,60 0,30"
-                         Fill="#C792EA"/>
-                <TextBlock Text="LABY"
-                           FontSize="20"
-                           FontWeight="Bold"
-                           Foreground="Black"
-                           Canvas.Left="50"
-                           Canvas.Top="15"/>
+                <Border
+                    Width="16"
+                    Height="16"
+                    Background="#38FF5C"
+                    BorderBrush="#145C23"
+                    BorderThickness="1"
+                    Opacity="100"
+                    Visibility="Visible"
+                    Panel.ZIndex="72"
+                    SnapsToDevicePixels="True"/>
+            </Canvas>
+            
+            <!-- Zone Flappy -->
+            <Canvas Name="FlappyZone" Width="16" Height="16"
+                    Canvas.Left="976" Canvas.Top="496"
+                    IsHitTestVisible="False">
+                <Border
+                    Width="16"
+                    Height="16"
+                    Background="Blue"
+                    BorderBrush="Indianred"
+                    BorderThickness="1"
+                    Opacity="100"
+                    Visibility="Visible"
+                    Panel.ZIndex="72"
+                    SnapsToDevicePixels="True"/>
             </Canvas>
 
-            <!-- Arbres rétro -->
-            <Canvas Canvas.Left="240" Canvas.Top="250" IsHitTestVisible="False">
-                <Rectangle Width="18" Height="50" Fill="#6B3E26" Canvas.Left="22" Canvas.Top="42"/>
-                <Ellipse Width="60" Height="60" Fill="#2E8B57"/>
-            </Canvas>
-
-            <Canvas Canvas.Left="980" Canvas.Top="260" IsHitTestVisible="False">
-                <Rectangle Width="18" Height="50" Fill="#6B3E26" Canvas.Left="22" Canvas.Top="42"/>
-                <Ellipse Width="60" Height="60" Fill="#2E8B57"/>
-            </Canvas>
-
-            <Canvas Canvas.Left="600" Canvas.Top="260" IsHitTestVisible="False">
-                <Rectangle Width="18" Height="50" Fill="#6B3E26" Canvas.Left="22" Canvas.Top="42"/>
-                <Ellipse Width="60" Height="60" Fill="#2E8B57"/>
-            </Canvas>
-
+            <Border x:Name="PanelKeyHint"
+                    Width="22"
+                    Height="9"
+                    MinWidth="0"
+                    MinHeight="0"
+                    Padding="0"
+                    CornerRadius="2"
+                    BorderThickness="0.7"
+                    Background="#000000"
+                    BorderBrush="#FFFFFFFF"
+                    Visibility="Collapsed"
+                    Canvas.Left="629"
+                    Canvas.Top="372"
+                    Panel.ZIndex="170"
+                    RenderTransformOrigin="0.5,0.5">
+                <Viewbox Stretch="Uniform"
+                         StretchDirection="DownOnly"
+                         Margin="1,0">
+                    <TextBlock x:Name="PanelKeyHintText"
+                               Text="E"
+                               FontSize="6"
+                               FontWeight="Bold"
+                               FontFamily="{StaticResource PixelFont}"
+                               Foreground="#FFFFFFFF"
+                               TextAlignment="Center"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               TextOptions.TextRenderingMode="Aliased"
+                               TextOptions.TextFormattingMode="Display"/>
+                </Viewbox>
+            </Border>
             <local:StarControl Canvas.Right="10" Canvas.Top="10"/>
         </Canvas>
+            </Canvas>
+        </Grid>
 
         <Border HorizontalAlignment="Left"
                 VerticalAlignment="Top"
@@ -109,11 +240,13 @@
                 Background="#AA000000"
                 CornerRadius="8">
             <StackPanel>
-                <TextBlock Text="Déplacement : ZQSD / WASD"
+                <TextBlock x:Name="MovementHelpText"
+                           Text="Déplacement : ZQSD"
                            Foreground="White"
                            FontWeight="Bold"
                            FontSize="18"/>
-                <TextBlock Text="Interaction : E"
+                <TextBlock x:Name="InteractionHelpText"
+                           Text="Interaction : E"
                            Foreground="White"
                            FontSize="15"/>
                 <TextBlock Name="InfoText"
@@ -124,30 +257,449 @@
             </StackPanel>
         </Border>
 
-        <!-- Source XAML du sprite du joueur -->
-        <Canvas x:Name="PlayerSpriteSource"
-                Width="60"
-                Height="90"
-                Visibility="Collapsed">
-            <Ellipse Width="46" Height="14" Fill="#55000000"
-                     Canvas.Left="7" Canvas.Top="72"/>
+        <Grid x:Name="HubSettingsOverlay"
+              Background="#F2040509"
+              Focusable="True"
+              Visibility="Collapsed">
+            <Grid Width="1130"
+                  Height="482"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Top"
+                  Margin="0,42,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="292"/>
+                    <ColumnDefinition Width="24"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
 
-            <Rectangle Width="12" Height="24" Fill="#2244AA"
-                       Canvas.Left="14" Canvas.Top="50"/>
-            <Rectangle Width="12" Height="24" Fill="#2244AA"
-                       Canvas.Left="34" Canvas.Top="50"/>
+                <Border Grid.Column="0"
+                        Style="{StaticResource HubSettingsPanelStyle}">
+                    <StackPanel>
+                        <TextBlock Text="Catégories"
+                                   Style="{StaticResource HubSettingsTitleTextStyle}"
+                                   Margin="0,0,0,18"/>
 
-            <Rectangle Width="34" Height="30" Fill="#D95F43"
-                       RadiusX="4" RadiusY="4"
-                       Canvas.Left="13" Canvas.Top="24"/>
+                        <Border x:Name="GeneralCategoryButton"
+                                Style="{StaticResource HubSettingsCategoryButtonStyle}"
+                                MouseLeftButtonUp="GeneralCategoryButton_MouseLeftButtonUp">
+                            <TextBlock Text="Général"
+                                       Style="{StaticResource HubSettingsBodyTextStyle}"
+                                       FontSize="18"
+                                       FontWeight="Bold"
+                                       VerticalAlignment="Center"/>
+                        </Border>
 
-            <Ellipse Width="28" Height="28" Fill="#F2C29B"
-                     Canvas.Left="16" Canvas.Top="2"/>
+                        <Border x:Name="ControlsCategoryButton"
+                                Style="{StaticResource HubSettingsCategoryButtonStyle}"
+                                MouseLeftButtonUp="ControlsCategoryButton_MouseLeftButtonUp">
+                            <TextBlock Text="Menu principal"
+                                       Style="{StaticResource HubSettingsBodyTextStyle}"
+                                       FontSize="18"
+                                       FontWeight="Bold"
+                                       VerticalAlignment="Center"/>
+                        </Border>
+                        
+                        <Border x:Name="MazeCategoryButton"
+                                Style="{StaticResource HubSettingsCategoryButtonStyle}"
+                                MouseLeftButtonUp="MazeCategoryButton_MouseLeftButtonUp">
+                            <TextBlock Text="Labyrinthe"
+                                       Style="{StaticResource HubSettingsBodyTextStyle}"
+                                       FontSize="18"
+                                       FontWeight="Bold"
+                                       VerticalAlignment="Center"></TextBlock>
+                        </Border>
+                    </StackPanel>
+                </Border>
 
-            <Rectangle Width="28" Height="10" Fill="#2B1B17"
-                       RadiusX="3" RadiusY="3"
-                       Canvas.Left="16" Canvas.Top="2"/>
-        </Canvas>
+                <Border Grid.Column="2"
+                        Style="{StaticResource HubSettingsPanelStyle}">
+                    <Grid>
+                        <StackPanel x:Name="GeneralSettingsPanel">
+                            <TextBlock Text="Paramètres généraux"
+                                       Style="{StaticResource HubSettingsTitleTextStyle}"
+                                       Margin="0,0,0,18"/>
+
+                            <Grid Margin="0,0,0,18">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="260"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="70"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Volume général"
+                                           Style="{StaticResource HubSettingsBodyTextStyle}"
+                                           VerticalAlignment="Center"/>
+                                <Slider x:Name="MasterVolumeSlider"
+                                        Grid.Column="1"
+                                        Minimum="0"
+                                        Maximum="100"
+                                        TickFrequency="1"
+                                        IsSnapToTickEnabled="True"
+                                        VerticalAlignment="Center"/>
+                                <TextBlock x:Name="MasterVolumeValueText"
+                                           Grid.Column="2"
+                                           Style="{StaticResource HubSettingsBodyTextStyle}"
+                                           HorizontalAlignment="Right"
+                                           VerticalAlignment="Center"/>
+                            </Grid>
+
+                            <Grid Margin="0,0,0,18">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="260"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="70"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Volume de la musique"
+                                           Style="{StaticResource HubSettingsBodyTextStyle}"
+                                           VerticalAlignment="Center"/>
+                                <Slider x:Name="MusicVolumeSlider"
+                                        Grid.Column="1"
+                                        Minimum="0"
+                                        Maximum="100"
+                                        TickFrequency="1"
+                                        IsSnapToTickEnabled="True"
+                                        VerticalAlignment="Center"/>
+                                <TextBlock x:Name="MusicVolumeValueText"
+                                           Grid.Column="2"
+                                           Style="{StaticResource HubSettingsBodyTextStyle}"
+                                           HorizontalAlignment="Right"
+                                           VerticalAlignment="Center"/>
+                            </Grid>
+
+                            <Grid Margin="0,0,0,18">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="260"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="70"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Volume des dialogues"
+                                           Style="{StaticResource HubSettingsBodyTextStyle}"
+                                           VerticalAlignment="Center"/>
+                                <Slider x:Name="DialogueVolumeSlider"
+                                        Grid.Column="1"
+                                        Minimum="0"
+                                        Maximum="100"
+                                        TickFrequency="1"
+                                        IsSnapToTickEnabled="True"
+                                        VerticalAlignment="Center"/>
+                                <TextBlock x:Name="DialogueVolumeValueText"
+                                           Grid.Column="2"
+                                           Style="{StaticResource HubSettingsBodyTextStyle}"
+                                           HorizontalAlignment="Right"
+                                           VerticalAlignment="Center"/>
+                            </Grid>
+
+                            <Grid Margin="0,0,0,18">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="260"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="70"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Volume des SFX"
+                                           Style="{StaticResource HubSettingsBodyTextStyle}"
+                                           VerticalAlignment="Center"/>
+                                <Slider x:Name="SfxVolumeSlider"
+                                        Grid.Column="1"
+                                        Minimum="0"
+                                        Maximum="100"
+                                        TickFrequency="1"
+                                        IsSnapToTickEnabled="True"
+                                        VerticalAlignment="Center"/>
+                                <TextBlock x:Name="SfxVolumeValueText"
+                                           Grid.Column="2"
+                                           Style="{StaticResource HubSettingsBodyTextStyle}"
+                                           HorizontalAlignment="Right"
+                                           VerticalAlignment="Center"/>
+                            </Grid>
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="260"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="70"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Vitesse du texte"
+                                           Style="{StaticResource HubSettingsBodyTextStyle}"
+                                           VerticalAlignment="Center"/>
+                                <Slider x:Name="TextSpeedSlider"
+                                        Grid.Column="1"
+                                        Minimum="0"
+                                        Maximum="100"
+                                        TickFrequency="1"
+                                        IsSnapToTickEnabled="True"
+                                        VerticalAlignment="Center"/>
+                                <TextBlock x:Name="TextSpeedValueText"
+                                           Grid.Column="2"
+                                           Style="{StaticResource HubSettingsBodyTextStyle}"
+                                           HorizontalAlignment="Right"
+                                           VerticalAlignment="Center"/>
+                            </Grid>
+                        </StackPanel>
+
+                        <StackPanel x:Name="ControlsSettingsPanel"
+                                    Visibility="Collapsed">
+                            <TextBlock Text="Touches du menu principal"
+                                       Style="{StaticResource HubSettingsTitleTextStyle}"
+                                       Margin="0,0,0,18"/>
+
+                            <Grid Margin="0,0,0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="220"/>
+                                    <ColumnDefinition Width="250"/>
+                                    <ColumnDefinition Width="230"/>
+                                    <ColumnDefinition Width="62"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Action"
+                                           Style="{StaticResource HubSettingsBodyTextStyle}"
+                                           FontWeight="Bold"/>
+                                <TextBlock Text="Touche attribuée"
+                                           Grid.Column="1"
+                                           Style="{StaticResource HubSettingsBodyTextStyle}"
+                                           FontWeight="Bold"/>
+                            </Grid>
+
+                            <Grid Margin="0,0,0,13">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="220"/>
+                                    <ColumnDefinition Width="250"/>
+                                    <ColumnDefinition Width="230"/>
+                                    <ColumnDefinition Width="62"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Avancer"
+                                           Style="{StaticResource HubSettingsBodyTextStyle}"
+                                           VerticalAlignment="Center"/>
+                                <Border x:Name="ForwardKeyBox"
+                                        Grid.Column="1"
+                                        Style="{StaticResource HubSettingsKeyBoxStyle}">
+                                    <TextBlock x:Name="ForwardKeyText"
+                                               Style="{StaticResource HubSettingsBodyTextStyle}"
+                                               Foreground="#FFFFFFFF"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"/>
+                                </Border>
+                                <Border Grid.Column="2"
+                                        Style="{StaticResource HubSettingsActionButtonStyle}"
+                                        Width="210"
+                                        MouseLeftButtonUp="ForwardChangeButton_MouseLeftButtonUp">
+                                    <TextBlock Text="Changer la touche"
+                                               Style="{StaticResource HubSettingsBodyTextStyle}"
+                                               FontSize="15"
+                                               Foreground="#FFFFFFFF"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"/>
+                                </Border>
+                                <Border Grid.Column="3"
+                                        Style="{StaticResource HubSettingsActionButtonStyle}"
+                                        Width="48"
+                                        Padding="8"
+                                        MouseLeftButtonUp="ForwardResetButton_MouseLeftButtonUp">
+                                    <Viewbox Width="24" Height="24">
+                                        <Path Stroke="#FFFFFFFF" StrokeThickness="3" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" Fill="Transparent" Data="M 18,6 L 8,6 L 8,16 M 8,6 C 4,12 7,24 19,23 C 29,22 31,9 22,5"/>
+                                    </Viewbox>
+                                </Border>
+                            </Grid>
+
+                            <Grid Margin="0,0,0,13">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="220"/>
+                                    <ColumnDefinition Width="250"/>
+                                    <ColumnDefinition Width="230"/>
+                                    <ColumnDefinition Width="62"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Reculer"
+                                           Style="{StaticResource HubSettingsBodyTextStyle}"
+                                           VerticalAlignment="Center"/>
+                                <Border x:Name="BackwardKeyBox"
+                                        Grid.Column="1"
+                                        Style="{StaticResource HubSettingsKeyBoxStyle}">
+                                    <TextBlock x:Name="BackwardKeyText"
+                                               Style="{StaticResource HubSettingsBodyTextStyle}"
+                                               Foreground="#FFFFFFFF"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"/>
+                                </Border>
+                                <Border Grid.Column="2"
+                                        Style="{StaticResource HubSettingsActionButtonStyle}"
+                                        Width="210"
+                                        MouseLeftButtonUp="BackwardChangeButton_MouseLeftButtonUp">
+                                    <TextBlock Text="Changer la touche"
+                                               Style="{StaticResource HubSettingsBodyTextStyle}"
+                                               FontSize="15"
+                                               Foreground="#FFFFFFFF"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"/>
+                                </Border>
+                                <Border Grid.Column="3"
+                                        Style="{StaticResource HubSettingsActionButtonStyle}"
+                                        Width="48"
+                                        Padding="8"
+                                        MouseLeftButtonUp="BackwardResetButton_MouseLeftButtonUp">
+                                    <Viewbox Width="24" Height="24">
+                                        <Path Stroke="#FFFFFFFF" StrokeThickness="3" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" Fill="Transparent" Data="M 18,6 L 8,6 L 8,16 M 8,6 C 4,12 7,24 19,23 C 29,22 31,9 22,5"/>
+                                    </Viewbox>
+                                </Border>
+                            </Grid>
+
+                            <Grid Margin="0,0,0,13">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="220"/>
+                                    <ColumnDefinition Width="250"/>
+                                    <ColumnDefinition Width="230"/>
+                                    <ColumnDefinition Width="62"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Aller à gauche"
+                                           Style="{StaticResource HubSettingsBodyTextStyle}"
+                                           VerticalAlignment="Center"/>
+                                <Border x:Name="LeftKeyBox"
+                                        Grid.Column="1"
+                                        Style="{StaticResource HubSettingsKeyBoxStyle}">
+                                    <TextBlock x:Name="LeftKeyText"
+                                               Style="{StaticResource HubSettingsBodyTextStyle}"
+                                               Foreground="#FFFFFFFF"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"/>
+                                </Border>
+                                <Border Grid.Column="2"
+                                        Style="{StaticResource HubSettingsActionButtonStyle}"
+                                        Width="210"
+                                        MouseLeftButtonUp="LeftChangeButton_MouseLeftButtonUp">
+                                    <TextBlock Text="Changer la touche"
+                                               Style="{StaticResource HubSettingsBodyTextStyle}"
+                                               FontSize="15"
+                                               Foreground="#FFFFFFFF"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"/>
+                                </Border>
+                                <Border Grid.Column="3"
+                                        Style="{StaticResource HubSettingsActionButtonStyle}"
+                                        Width="48"
+                                        Padding="8"
+                                        MouseLeftButtonUp="LeftResetButton_MouseLeftButtonUp">
+                                    <Viewbox Width="24" Height="24">
+                                        <Path Stroke="#FFFFFFFF" StrokeThickness="3" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" Fill="Transparent" Data="M 18,6 L 8,6 L 8,16 M 8,6 C 4,12 7,24 19,23 C 29,22 31,9 22,5"/>
+                                    </Viewbox>
+                                </Border>
+                            </Grid>
+
+                            <Grid Margin="0,0,0,13">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="220"/>
+                                    <ColumnDefinition Width="250"/>
+                                    <ColumnDefinition Width="230"/>
+                                    <ColumnDefinition Width="62"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Aller à droite"
+                                           Style="{StaticResource HubSettingsBodyTextStyle}"
+                                           VerticalAlignment="Center"/>
+                                <Border x:Name="RightKeyBox"
+                                        Grid.Column="1"
+                                        Style="{StaticResource HubSettingsKeyBoxStyle}">
+                                    <TextBlock x:Name="RightKeyText"
+                                               Style="{StaticResource HubSettingsBodyTextStyle}"
+                                               Foreground="#FFFFFFFF"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"/>
+                                </Border>
+                                <Border Grid.Column="2"
+                                        Style="{StaticResource HubSettingsActionButtonStyle}"
+                                        Width="210"
+                                        MouseLeftButtonUp="RightChangeButton_MouseLeftButtonUp">
+                                    <TextBlock Text="Changer la touche"
+                                               Style="{StaticResource HubSettingsBodyTextStyle}"
+                                               FontSize="15"
+                                               Foreground="#FFFFFFFF"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"/>
+                                </Border>
+                                <Border Grid.Column="3"
+                                        Style="{StaticResource HubSettingsActionButtonStyle}"
+                                        Width="48"
+                                        Padding="8"
+                                        MouseLeftButtonUp="RightResetButton_MouseLeftButtonUp">
+                                    <Viewbox Width="24" Height="24">
+                                        <Path Stroke="#FFFFFFFF" StrokeThickness="3" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" Fill="Transparent" Data="M 18,6 L 8,6 L 8,16 M 8,6 C 4,12 7,24 19,23 C 29,22 31,9 22,5"/>
+                                    </Viewbox>
+                                </Border>
+                            </Grid>
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="220"/>
+                                    <ColumnDefinition Width="250"/>
+                                    <ColumnDefinition Width="230"/>
+                                    <ColumnDefinition Width="62"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Interaction"
+                                           Style="{StaticResource HubSettingsBodyTextStyle}"
+                                           VerticalAlignment="Center"/>
+                                <Border x:Name="InteractionKeyBox"
+                                        Grid.Column="1"
+                                        Style="{StaticResource HubSettingsKeyBoxStyle}">
+                                    <TextBlock x:Name="InteractionKeyText"
+                                               Style="{StaticResource HubSettingsBodyTextStyle}"
+                                               Foreground="#FFFFFFFF"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"/>
+                                </Border>
+                                <Border Grid.Column="2"
+                                        Style="{StaticResource HubSettingsActionButtonStyle}"
+                                        Width="210"
+                                        MouseLeftButtonUp="InteractionChangeButton_MouseLeftButtonUp">
+                                    <TextBlock Text="Changer la touche"
+                                               Style="{StaticResource HubSettingsBodyTextStyle}"
+                                               FontSize="15"
+                                               Foreground="#FFFFFFFF"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"/>
+                                </Border>
+                                <Border Grid.Column="3"
+                                        Style="{StaticResource HubSettingsActionButtonStyle}"
+                                        Width="48"
+                                        Padding="8"
+                                        MouseLeftButtonUp="InteractionResetButton_MouseLeftButtonUp">
+                                    <Viewbox Width="24" Height="24">
+                                        <Path Stroke="#FFFFFFFF" StrokeThickness="3" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" Fill="Transparent" Data="M 18,6 L 8,6 L 8,16 M 8,6 C 4,12 7,24 19,23 C 29,22 31,9 22,5"/>
+                                    </Viewbox>
+                                </Border>
+                            </Grid>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <Border Width="42"
+                        Height="42"
+                        Grid.Column="2"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        Margin="0,14,14,0"
+                        Background="#FF000000"
+                        BorderBrush="#FFFFFFFF"
+                        BorderThickness="2"
+                        CornerRadius="6"
+                        Cursor="Hand"
+                        Panel.ZIndex="4"
+                        MouseLeftButtonUp="HubSettingsCloseButton_MouseLeftButtonUp">
+                    <TextBlock Text="X"
+                               FontSize="18"
+                               FontWeight="Bold"
+                               Foreground="#FFFFFFFF"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               TextOptions.TextRenderingMode="Aliased"
+                               TextOptions.TextFormattingMode="Display"/>
+                </Border>
+
+                <TextBlock Text="Échap / X pour fermer"
+                           Grid.Column="2"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Bottom"
+                           Margin="0,0,18,18"
+                           FontSize="13"
+                           Foreground="#FFE6F0F7"
+                           Opacity="0.72"
+                           TextOptions.TextRenderingMode="Aliased"
+                           TextOptions.TextFormattingMode="Display"/>
+            </Grid>
+        </Grid>
 
         <ContentControl x:Name="MainContent"/>
     </Grid>

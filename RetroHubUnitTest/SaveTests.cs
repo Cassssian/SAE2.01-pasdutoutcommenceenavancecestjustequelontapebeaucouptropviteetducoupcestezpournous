@@ -1,5 +1,5 @@
 using System.IO;
-using VraiPseudoSae.Utils.GestionnaireSauvegarde;
+using VraiPseudoSae.Utils.SaveManager;
 
 namespace RetroHubUnitTest;
 

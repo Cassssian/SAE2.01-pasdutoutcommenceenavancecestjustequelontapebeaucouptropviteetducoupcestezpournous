@@ -1,4 +1,4 @@
-namespace VraiPseudoSae.Utils.GestionnaireSauvegarde;
+namespace VraiPseudoSae.Utils.SaveManager;
 
 /// <summary>
 /// Fabrique pratique pour créer un gestionnaire avec les composants par défaut.

@@ -1,6 +1,6 @@
 using System.IO;
 
-namespace VraiPseudoSae.Utils.GestionnaireSauvegarde;
+namespace VraiPseudoSae.Utils.SaveManager;
 
 /// <summary>
 /// Base pour les stratégies qui transforment un emplacement logique en chemin de fichier.

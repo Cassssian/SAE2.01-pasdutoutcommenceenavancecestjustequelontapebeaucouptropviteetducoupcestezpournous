@@ -5,8 +5,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using IUTGame.WPF;
 using VraiPseudoSae.data.GoalExplosion;
-using VraiPseudoSae.data.PakManager;
 using VraiPseudoSae.Utils.AudioPlayer;
+using VraiPseudoSae.Utils.PakManager;
 using VraiPseudoSae.Utils.Sprite;
 using VraiPseudoSae.view.RLS_Pages.GoalExplosions;
 

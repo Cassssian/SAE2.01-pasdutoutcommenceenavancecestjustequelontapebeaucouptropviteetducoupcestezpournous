@@ -1,6 +1,6 @@
 using System.IO;
 
-namespace VraiPseudoSae.Utils.GestionnaireSauvegarde;
+namespace VraiPseudoSae.Utils.SaveManager;
 
 /// <summary>
 /// Convertit un type de données de jeu en flux binaire compact, et inversement.

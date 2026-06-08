@@ -1,4 +1,4 @@
-﻿namespace VraiPseudoSae.data.PakManager;
+﻿namespace VraiPseudoSae.Utils.PakManager;
 
 public sealed class PakAudioEntry
 {

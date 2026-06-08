@@ -12,7 +12,13 @@ internal enum DialogueTextStyle
     Normal,
     PanelWord,
     ControlsWord,
-    Rainbow
+    Rainbow,
+    StarWord,
+    TileWord,
+    AccessWord,
+    Shake,
+    Italic,
+    StarCount
 }
 
 internal sealed record DialogueSegment(string Text, DialogueTextStyle Style);
@@ -30,6 +36,7 @@ internal enum SettingsIntroHighlightTarget
     GeneralCategory,
     GeneralSettings,
     MasterVolume,
+    MusicVolume,
     DialogueVolume,
     SfxVolume,
     TextSpeed,
@@ -52,6 +59,7 @@ internal sealed record SettingsIntroUiText(
     string MainMenuCategory,
     string GeneralTitle,
     string MasterVolume,
+    string MusicVolume,
     string DialogueVolume,
     string SfxVolume,
     string TextSpeed,
@@ -188,6 +196,7 @@ internal static class GameIntroScript
                 "Controls",
                 "General",
                 "Master volume",
+                "Music volume",
                 "Dialogue volume",
                 "SFX volume",
                 "Text speed",
@@ -210,6 +219,7 @@ internal static class GameIntroScript
             "Contrôles",
             "Général",
             "Volume général",
+            "Volume de la musique",
             "Volume des dialogues",
             "Volume des SFX",
             "Vitesse du texte",
@@ -244,6 +254,8 @@ internal static class GameIntroScript
                     Normal("The right panel shows the selected category. These settings affect the game right away, not after a confirmation screen.")),
                 Step(SettingsIntroCategory.General, SettingsIntroHighlightTarget.MasterVolume,
                     Normal("Master volume controls the whole mix. Lower it and every sound follows.")),
+                Step(SettingsIntroCategory.General, SettingsIntroHighlightTarget.MusicVolume,
+                    Normal("Music volume controls background tracks, including the hub theme, without changing dialogue or sound effects.")),
                 Step(SettingsIntroCategory.General, SettingsIntroHighlightTarget.DialogueVolume,
                     Normal("The dialogue volume only changes voices and text blips, so you can keep conversations readable without touching the rest.")),
                 Step(SettingsIntroCategory.General, SettingsIntroHighlightTarget.SfxVolume,
@@ -283,6 +295,8 @@ internal static class GameIntroScript
                 Normal("À droite, tu vois les paramètres de la catégorie choisie. Ces réglages s'appliquent tout de suite, sans écran de confirmation.")),
             Step(SettingsIntroCategory.General, SettingsIntroHighlightTarget.MasterVolume,
                 Normal("Le volume général contrôle tout le mélange sonore. Si tu le baisses, tous les sons suivent.")),
+            Step(SettingsIntroCategory.General, SettingsIntroHighlightTarget.MusicVolume,
+                Normal("Le volume de la musique règle les musiques de fond, comme celle du hub, sans toucher aux dialogues ni aux effets sonores.")),
             Step(SettingsIntroCategory.General, SettingsIntroHighlightTarget.DialogueVolume,
                 Normal("Le volume des dialogues règle seulement les voix et les petits bips du texte, pratique si tu veux mieux suivre les conversations.")),
             Step(SettingsIntroCategory.General, SettingsIntroHighlightTarget.SfxVolume,
@@ -308,6 +322,251 @@ internal static class GameIntroScript
         };
     }
 
+    public static IReadOnlyList<DialogueSegment> PostSettingsTourDone(GameIntroLanguage language)
+    {
+        return language == GameIntroLanguage.English
+            ? Block("There ! That's it for the tiny intro tou-")
+            : Block("Voilà ! C'est fini pour le petit tour d'intro-");
+    }
+
+    public static IReadOnlyList<DialogueSegment> CenterCabinetShake(GameIntroLanguage language)
+    {
+        return language == GameIntroLanguage.English
+            ? Block("OH NOOOO ! THE CENTRAL CABINET IS SHAKING AGAIN !!")
+            : Block("OH NOOOOON ! LA BORNE CENTRAL SE REMET À TREMBLER !!");
+    }
+
+    public static IReadOnlyList<DialogueSegment> StarAndTileDiscovery(GameIntroLanguage language)
+    {
+        if (language == GameIntroLanguage.English)
+        {
+            return new[]
+            {
+                Normal("Oh ! Look ! That's a "),
+                Star("game star"),
+                Normal(" !")
+            };
+        }
+
+        return new[]
+        {
+            Normal("Oh ! Regarde ! C'est une "),
+            Star("étoile de jeu"),
+            Normal(" !")
+        };
+    }
+
+    public static IReadOnlyList<DialogueSegment> TileDiscovery(GameIntroLanguage language)
+    {
+        if (language == GameIntroLanguage.English)
+        {
+            return new[]
+            {
+                Normal("And over there, that's a "),
+                Tile("tile"),
+                Normal(" that "),
+                Access("lets us access a game"),
+                Normal(" ! Let's get closer to the star and see if we can do something !")
+            };
+        }
+
+        return new[]
+        {
+            Normal("Et là, c'est une "),
+            Tile("case"),
+            Normal(" qui nous "),
+            Access("permet d'accéder à un jeu"),
+            Normal(" ! Allons-nous approcher près de l'étoile pour voir si on peut faire quelque chose !")
+        };
+    }
+
+    public static IReadOnlyList<DialogueSegment> StarApproach(GameIntroLanguage language)
+    {
+        return language == GameIntroLanguage.English
+            ? Block("Ooooooh, it shines so much, it's such a beautiful star !")
+            : Block("Ohhhhhhhhh, qu'est ce qu'elle brille, qu'est ce qu'elle est belle cette étoile !");
+    }
+
+    public static IReadOnlyList<DialogueSegment> StarInteractionPanic(GameIntroLanguage language)
+    {
+        return language == GameIntroLanguage.English
+            ? new[] { Shake("OH NO ! WHAT DID YOU DO ?!") }
+            : new[] { Shake("OH NON ! QU'EST CE QUE TU AS FAIT ?!") };
+    }
+
+    public static IReadOnlyList<DialogueSegment> StarAbsorbedPanic(GameIntroLanguage language)
+    {
+        return language == GameIntroLanguage.English
+            ? new[] { Shake("AAHHHHH !! I'M GOING TO DIE !!! WHY DID YOU DO THAT !!") }
+            : new[] { Shake("AAHHHHH !! JE VAIS MOURIR !!! POURQUOI TU AS FAIS ÇA !!") };
+    }
+
+    public static IReadOnlyList<DialogueSegment> Ellipsis()
+    {
+        return Block("...");
+    }
+
+    public static IReadOnlyList<DialogueSegment> WeirdAttraction(GameIntroLanguage language)
+    {
+        if (language == GameIntroLanguage.English)
+        {
+            return new[]
+            {
+                Normal("Well, I feel fine after all.... But I feel weird, like something is pulling me toward the "),
+                Tile("tile"),
+                Normal(".")
+            };
+        }
+
+        return new[]
+        {
+            Normal("Bon, je vais bien finalement.... Mais je me sens bizarre, comme attiré vers la "),
+            Tile("case"),
+            Normal(".")
+        };
+    }
+
+    public static IReadOnlyList<DialogueSegment> StarHudExplanation(GameIntroLanguage language)
+    {
+        if (language == GameIntroLanguage.English)
+        {
+            return new[]
+            {
+                Normal("And did you see this ? You can see the "),
+                StarCount("number of stars you currently own"),
+                Normal(" here.")
+            };
+        }
+
+        return new[]
+        {
+            Normal("Et tu as vu ici ? Tu peux voir le "),
+            StarCount("nombre d'étoiles que tu possèdes actuellement"),
+            Normal(".")
+        };
+    }
+
+    public static IReadOnlyList<DialogueSegment> BrokenTileBeforeAttack(GameIntroLanguage language)
+    {
+        if (language == GameIntroLanguage.English)
+        {
+            return new[]
+            {
+                Normal("Oh ? The "),
+                Tile("game tile"),
+                Normal(" looks weird... Looks like it's busted... Maybe "),
+                Rainbow("one good hit"),
+                Normal(" should make it work again.")
+            };
+        }
+
+        return new[]
+        {
+            Normal("Oh tiens ? La "),
+            Tile("case de jeu"),
+            Normal(" est bizarre.. On dirait qu'elle est H.S... Peut-être "),
+            Rainbow("un bon coup dedans"),
+            Normal(" devrait la refaire fonctionner.")
+        };
+    }
+
+    public static IReadOnlyList<DialogueSegment> AttackPainRant(GameIntroLanguage language)
+    {
+        return language == GameIntroLanguage.English
+            ? new[] { Shake("F**** H***, THAT HURTS !! WHO INSTALLED A TILE THIS HARD ?! MY HAND HUUUUURTS !!") }
+            : new[]
+            {
+                Shake("PU**** DE ME***, ÇA FAIT MAL CETTE ME*** !! AÀ@D##UÌ}&HIPP ! QUI EST LE CO***** DE ME*** QUI A INSTALLÉ CETTE CHI**** DURE COMME MA B*** !! AHHHHHH MA MAIN J'AI MAAAAAALLLL !! JE SUIS SÛR QU'IL SERAIT CAPABLE D'INSTALLER DES BLOQUEURS DE FENÊTRE EN PLEINE CANICULE CET EN**** DE ME*** ! AHHH JE SUIS SÛR QUE JE ME SUIS CASSÉ LA MAIN, FAIS CH***, F** !")
+            };
+    }
+
+    public static IReadOnlyList<IReadOnlyList<DialogueSegment>> AttackPainRantPages(GameIntroLanguage language)
+    {
+        if (language == GameIntroLanguage.English)
+        {
+            return new[]
+            {
+                new[] { Shake("F**** H***, THAT HURTS !!") },
+                new[] { Shake("WHO INSTALLED A TILE THIS HARD ?! MY HAND HUUUUURTS !!") },
+                new[] { Shake("I SWEAR THIS THING WAS MADE TO BREAK INTERNS !!") }
+            };
+        }
+
+        return new[]
+        {
+            new[] { Shake("PU**** DE ME***, ÇA FAIT MAL CETTE ME*** !! AÀ@D##UÌ}&HIPP !") },
+            new[] { Shake("QUI EST LE CO***** DE ME*** QUI A INSTALLÉ CETTE CHI**** DURE COMME MA B*** !!") },
+            new[] { Shake("AHHHHHH MA MAIN J'AI MAAAAAALLLL !! JE SUIS SÛR QU'IL SERAIT CAPABLE D'INSTALLER DES BLOQUEURS DE FENÊTRE EN PLEINE CANICULE CET EN**** DE ME*** !") },
+            new[] { Shake("AHHH JE SUIS SÛR QUE JE ME SUIS CASSÉ LA MAIN, FAIS CH***, F** !") }
+        };
+    }
+
+    public static IReadOnlyList<DialogueSegment> Disclaimer(GameIntroLanguage language)
+    {
+        return language == GameIntroLanguage.English
+            ? new[] { Italic("(we are not targeting anyone, this is just a silly contrast joke, nobody is designated :') )") }
+            : new[] { Italic("(on a rien contre vous, on a mis ça juste pour le côté rigolo avec le décalage, on attaque personne, personne n'est visé, on ne veut pas de problème, c'est juste une blague, aucun personnel n'a été désigné :') )") };
+    }
+
+    public static IReadOnlyList<DialogueSegment> WhatNow(GameIntroLanguage language)
+    {
+        return language == GameIntroLanguage.English
+            ? Block("F**** ! WHAT DO WE DO NOW !")
+            : Block("PU**** ! COMMENT FAIRE ALORS !");
+    }
+
+    public static IReadOnlyList<DialogueSegment> RememberStar(GameIntroLanguage language)
+    {
+        return language == GameIntroLanguage.English
+            ? Block("Oh, but we have the star !! But how do we use it... I'm only an intern here.. I don't know how to do anything...")
+            : Block("Oh mais on a l'étoile !! Mais comment faire... Je suis juste un stagiaire ici.. Je ne sais rien faire...");
+    }
+
+    public static IReadOnlyList<DialogueSegment> StarLeavesPanic(GameIntroLanguage language)
+    {
+        return language == GameIntroLanguage.English
+            ? new[] { Shake("NOOOO, WHAT DID YOU DO AGAIN ! THE STAR IS GONE ! YOU ABSOLUTE DOOFUS !! GREAT JOB !!") }
+            : new[] { Shake("NOOOOON, QU'EST CE QUE TU AS ENCORE FAIT ! L'ÉTOILE EST PARTIE ! TRIPLE BUSE !! BRAVO À TOI !!") };
+    }
+
+    public static IReadOnlyList<DialogueSegment> TileColorPanic(GameIntroLanguage language)
+    {
+        return language == GameIntroLanguage.English
+            ? Block("NO WAY ! YOU BROKE EVERYTHING ! YOU LOST THE STAR AND THE TILE IS COMPLETELY BROKEN ! HOW ARE WE SUPPOSED TO REPAIR THE HUB NOW !")
+            : Block("MAIS NON ! TU AS TOUT CASSÉ ! TU AS PERDU L'ÉTOILE ET LA CASE EST TOTALEMENT CASSÉE ! COMMENT ON VA RÉPARER LE HUB MAINTENANT !");
+    }
+
+    public static IReadOnlyList<DialogueSegment> FlashBlindPanic(GameIntroLanguage language)
+    {
+        return language == GameIntroLanguage.English
+            ? new[] { Shake("AAHHHH MY EYYYYEEEES !!! I CAN'T SEE ANYTHING !"), Normal(" I'M SURE THE TILE EXPLODED.") }
+            : new[] { Shake("AHHHHH MES YEUUUUUUUUXXXXX !!! JE NE VOIS PLUS RIEN !"), Normal(" JE SUIS SÛR QUE LA CASE A EXPLOSÉ.") };
+    }
+
+    public static IReadOnlyList<DialogueSegment> RepairedApology(GameIntroLanguage language)
+    {
+        if (language == GameIntroLanguage.English)
+        {
+            return new[]
+            {
+                Normal("Well, I deeply apologize for everything I said... "),
+                Rainbow("BUT WE REPAIRED THE TILE !!!"),
+                Normal(" We can now play ! Click on the interaction button to start"),
+                Access("the game"),
+                Normal(" !")
+            };
+        }
+
+        return new[]
+        {
+            Normal("Bon bah je m'excuse profondément de tout ce que j'ai pu dire... "),
+            Rainbow("MAIS ON A RÉPARÉ LA CASE !!!"),
+            Normal($"On peut jouer maintenant ! Cliques sur la touche d'interaction pour lancer"),
+            Access("le jeu"),
+            Normal(" !")
+        };
+    }
+
     private static IReadOnlyList<DialogueSegment> Block(string text)
     {
         return new[] { new DialogueSegment(text, DialogueTextStyle.Normal) };
@@ -321,6 +580,41 @@ internal static class GameIntroScript
     private static DialogueSegment Controls(string text)
     {
         return new DialogueSegment(text, DialogueTextStyle.ControlsWord);
+    }
+
+    private static DialogueSegment Star(string text)
+    {
+        return new DialogueSegment(text, DialogueTextStyle.StarWord);
+    }
+
+    private static DialogueSegment Tile(string text)
+    {
+        return new DialogueSegment(text, DialogueTextStyle.TileWord);
+    }
+
+    private static DialogueSegment Access(string text)
+    {
+        return new DialogueSegment(text, DialogueTextStyle.AccessWord);
+    }
+
+    private static DialogueSegment Shake(string text)
+    {
+        return new DialogueSegment(text, DialogueTextStyle.Shake);
+    }
+
+    private static DialogueSegment Italic(string text)
+    {
+        return new DialogueSegment(text, DialogueTextStyle.Italic);
+    }
+
+    private static DialogueSegment Rainbow(string text)
+    {
+        return new DialogueSegment(text, DialogueTextStyle.Rainbow);
+    }
+
+    private static DialogueSegment StarCount(string text)
+    {
+        return new DialogueSegment(text, DialogueTextStyle.StarCount);
     }
 
     private static SettingsIntroStep Step(

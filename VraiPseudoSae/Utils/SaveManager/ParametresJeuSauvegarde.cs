@@ -1,7 +1,8 @@
-namespace VraiPseudoSae.Utils.GestionnaireSauvegarde;
+namespace VraiPseudoSae.Utils.SaveManager;
 
 public sealed record ParametresJeuSauvegarde(
     int VolumeGeneral,
+    int VolumeMusique,
     int VolumeDialogues,
     int VolumeSfx,
     int VitesseTexte,
@@ -12,10 +13,11 @@ public sealed record ParametresJeuSauvegarde(
     string ToucheInteraction)
 {
     public static ParametresJeuSauvegarde ParDefaut { get; } = new(
-        VolumeGeneral: 80,
-        VolumeDialogues: 72,
-        VolumeSfx: 64,
-        VitesseTexte: 45,
+        VolumeGeneral: 100,
+        VolumeMusique: 100,
+        VolumeDialogues: 50,
+        VolumeSfx: 50,
+        VitesseTexte: 50,
         ToucheAvancer: "Z",
         ToucheReculer: "S",
         ToucheDroite: "D",
@@ -24,18 +26,7 @@ public sealed record ParametresJeuSauvegarde(
 
     public ParametresJeuSauvegarde Normaliser()
     {
-        return this with
-        {
-            VolumeGeneral = ClampPourcentage(VolumeGeneral),
-            VolumeDialogues = ClampPourcentage(VolumeDialogues),
-            VolumeSfx = ClampPourcentage(VolumeSfx),
-            VitesseTexte = ClampPourcentage(VitesseTexte),
-            ToucheAvancer = NormaliserTouche(ToucheAvancer, ParDefaut.ToucheAvancer),
-            ToucheReculer = NormaliserTouche(ToucheReculer, ParDefaut.ToucheReculer),
-            ToucheDroite = NormaliserTouche(ToucheDroite, ParDefaut.ToucheDroite),
-            ToucheGauche = NormaliserTouche(ToucheGauche, ParDefaut.ToucheGauche),
-            ToucheInteraction = NormaliserTouche(ToucheInteraction, ParDefaut.ToucheInteraction)
-        };
+        return new ParametresJeuSauvegarde(VolumeGeneral: ClampPourcentage(VolumeGeneral), VolumeMusique: ClampPourcentage(VolumeMusique), VolumeDialogues: ClampPourcentage(VolumeDialogues), VolumeSfx: ClampPourcentage(VolumeSfx), VitesseTexte: ClampPourcentage(VitesseTexte), ToucheAvancer: NormaliserTouche(ToucheAvancer, ParDefaut.ToucheAvancer), ToucheReculer: NormaliserTouche(ToucheReculer, ParDefaut.ToucheReculer), ToucheDroite: NormaliserTouche(ToucheDroite, ParDefaut.ToucheDroite), ToucheGauche: NormaliserTouche(ToucheGauche, ParDefaut.ToucheGauche), ToucheInteraction: NormaliserTouche(ToucheInteraction, ParDefaut.ToucheInteraction));
     }
 
     private static int ClampPourcentage(int valeur)
@@ -61,13 +52,14 @@ public sealed class ParametresJeuSauvegardeSerialiseur : SerialiseurBinaireSauve
 {
     public override string CleType => "retrohub.parametres";
 
-    public override int VersionActuelle => 1;
+    public override int VersionActuelle => 2;
 
     public override void Ecrire(EcrivainDonneesSauvegarde ecrivain, ParametresJeuSauvegarde valeur)
     {
         ParametresJeuSauvegarde normalise = valeur.Normaliser();
 
         ecrivain.EcrireEntierCompact(normalise.VolumeGeneral);
+        ecrivain.EcrireEntierCompact(normalise.VolumeMusique);
         ecrivain.EcrireEntierCompact(normalise.VolumeDialogues);
         ecrivain.EcrireEntierCompact(normalise.VolumeSfx);
         ecrivain.EcrireEntierCompact(normalise.VitesseTexte);
@@ -82,8 +74,14 @@ public sealed class ParametresJeuSauvegardeSerialiseur : SerialiseurBinaireSauve
     {
         VerifierVersionSupportee(version);
 
+        int volumeGeneral = lecteur.LireEntierCompact();
+        int volumeMusique = version >= 2
+            ? lecteur.LireEntierCompact()
+            : ParametresJeuSauvegarde.ParDefaut.VolumeMusique;
+
         return new ParametresJeuSauvegarde(
-            lecteur.LireEntierCompact(),
+            volumeGeneral,
+            volumeMusique,
             lecteur.LireEntierCompact(),
             lecteur.LireEntierCompact(),
             lecteur.LireEntierCompact(),
