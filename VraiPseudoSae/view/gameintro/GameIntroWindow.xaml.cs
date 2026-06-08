@@ -325,7 +325,7 @@ namespace VraiPseudoSae.view.gameintro
             movementEnabled = true;
             inputsLocked = false;
             movementTimer.Start();
-            //ProgressionJeuSauvegardeDepot.MarquerIntroductionTerminee();
+            ProgressionJeuSauvegardeDepot.MarquerIntroductionTerminee();
             FocusIntroInput();
         }
 
