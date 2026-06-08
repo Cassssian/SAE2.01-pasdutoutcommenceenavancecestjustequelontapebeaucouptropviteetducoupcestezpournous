@@ -2,7 +2,7 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:VraiPseudoSae"
-             StartupUri="view/MainWindow.xaml">
+             StartupUri="view/HomePage.xaml">
     <Application.Resources>
         <FontFamily x:Key="PixelFont">/Assets/Font/ari_w9500/#Ari-W9500</FontFamily>
         <FontFamily x:Key="PixelFontDisplayStyle">/Assets/Font/ari_w9500/#Ari-W9500 Display</FontFamily>

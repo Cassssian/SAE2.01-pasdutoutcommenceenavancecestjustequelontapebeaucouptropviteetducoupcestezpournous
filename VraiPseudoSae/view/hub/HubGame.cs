@@ -5,6 +5,7 @@ using IUTGame;
 using System.Collections.Generic;
 using System.Windows.Media;
 using VraiPseudoSae.view.Maze;
+using VraiPseudoSae.view.gameintro;
 using VraiPseudoSae.view.RLS_Pages;
 
 namespace VraiPseudoSae.view.hub
@@ -16,6 +17,7 @@ namespace VraiPseudoSae.view.hub
         private readonly Canvas mazeZone;
         private readonly Canvas rlsZone;
         private readonly Canvas pinZone;
+        private readonly GameIntroPlayerSpriteSet playerSprites;
 
         private HubPlayer player = null!;
 
@@ -23,6 +25,7 @@ namespace VraiPseudoSae.view.hub
             IScreen screen,
             string spritesFolder,
             string soundsFolder,
+            GameIntroPlayerSpriteSet playerSprites,
             HomePage homePage,
             Canvas footballZone,
             Canvas mazeZone,
@@ -30,6 +33,7 @@ namespace VraiPseudoSae.view.hub
             Canvas pinZone)
             : base(screen, spritesFolder, soundsFolder, 60)
         {
+            this.playerSprites = playerSprites;
             this.homePage = homePage;
             this.footballZone = footballZone;
             this.mazeZone = mazeZone;
@@ -39,7 +43,7 @@ namespace VraiPseudoSae.view.hub
 
         protected override void InitItems()
         {
-            player = new HubPlayer(610, 520, this);
+            player = new HubPlayer(610, 520, this, playerSprites);
             AddItem(player);
 
             Panel.SetZIndex(footballZone, (int)Canvas.GetTop(footballZone));
@@ -53,6 +57,7 @@ namespace VraiPseudoSae.view.hub
         public void UpdateInfoText()
         {
             Point playerCenter = player.Center;
+            homePage.CenterCameraOn(playerCenter);
 
             Point footballCenter = new Point(
                 Canvas.GetLeft(footballZone) + 85,

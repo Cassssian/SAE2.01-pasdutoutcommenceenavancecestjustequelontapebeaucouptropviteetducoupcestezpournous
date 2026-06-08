@@ -16,13 +16,39 @@
     </UserControl.Resources>
 
     <Grid Background="#101820">
-        
-        <Image x:Name="MapImage"
-               Source="pack://application:,,,/Tilemap/homepage.png"
-                   
-               IsHitTestVisible="False"/>
+        <Grid x:Name="CameraViewport"
+              ClipToBounds="True">
+            <Canvas x:Name="WorldLayer"
+                    Width="1280"
+                    Height="720"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    RenderOptions.BitmapScalingMode="NearestNeighbor"
+                    SnapsToDevicePixels="True">
+                <Canvas.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform x:Name="WorldCameraScale"
+                                        ScaleX="1"
+                                        ScaleY="1"/>
+                        <TranslateTransform x:Name="WorldCameraTranslate"
+                                            X="0"
+                                            Y="0"/>
+                    </TransformGroup>
+                </Canvas.RenderTransform>
 
-        <Canvas Name="GameCanvas" Width="1280" Height="720" Focusable="True">
+                <Image x:Name="MapImage"
+                       Width="1280"
+                       Height="720"
+                       Source="pack://application:,,,/Tilemap/homepage.png"
+                       Stretch="Fill"
+                       RenderOptions.BitmapScalingMode="NearestNeighbor"
+                       IsHitTestVisible="False"/>
+
+        <Canvas Name="GameCanvas"
+                Width="1280"
+                Height="720"
+                Focusable="True"
+                RenderOptions.BitmapScalingMode="NearestNeighbor">
 
             <!-- Sol 
             <Rectangle Width="1280" Height="260" Fill="#4FAE4F"
@@ -89,6 +115,8 @@
             </Canvas>
             <local:StarControl Canvas.Right="10" Canvas.Top="10"/>
         </Canvas>
+            </Canvas>
+        </Grid>
 
         <Border HorizontalAlignment="Left"
                 VerticalAlignment="Top"
@@ -111,31 +139,6 @@
                            Margin="0,6,0,0"/>
             </StackPanel>
         </Border>
-
-        <!-- Source XAML du sprite du joueur -->
-        <Canvas x:Name="PlayerSpriteSource"
-                Width="60"
-                Height="90"
-                Visibility="Collapsed">
-            <Ellipse Width="46" Height="14" Fill="#55000000"
-                     Canvas.Left="7" Canvas.Top="72"/>
-
-            <Rectangle Width="12" Height="24" Fill="#2244AA"
-                       Canvas.Left="14" Canvas.Top="50"/>
-            <Rectangle Width="12" Height="24" Fill="#2244AA"
-                       Canvas.Left="34" Canvas.Top="50"/>
-
-            <Rectangle Width="34" Height="30" Fill="#D95F43"
-                       RadiusX="4" RadiusY="4"
-                       Canvas.Left="13" Canvas.Top="24"/>
-
-            <Ellipse Width="28" Height="28" Fill="#F2C29B"
-                     Canvas.Left="16" Canvas.Top="2"/>
-
-            <Rectangle Width="28" Height="10" Fill="#2B1B17"
-                       RadiusX="3" RadiusY="3"
-                       Canvas.Left="16" Canvas.Top="2"/>
-        </Canvas>
 
         <ContentControl x:Name="MainContent"/>
     </Grid>

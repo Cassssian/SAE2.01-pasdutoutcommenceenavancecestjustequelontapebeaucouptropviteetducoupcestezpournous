@@ -136,10 +136,10 @@
                         SnapsToDevicePixels="True"/>
 
                 <Border x:Name="GameCaseTile"
-                        Width="12"
-                        Height="12"
-                        Canvas.Left="35"
-                        Canvas.Top="82"
+                        Width="16"
+                        Height="16"
+                        Canvas.Left="32"
+                        Canvas.Top="80"
                         Background="#FF111318"
                         BorderBrush="#FF050609"
                         BorderThickness="1"
