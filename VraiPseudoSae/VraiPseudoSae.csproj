@@ -73,8 +73,8 @@
       <Resource Include="..\Tilemap\Map Intro.png">
         <Link>Tilemap\MapIntro.png</Link>
       </Resource>
-      <Resource Include="..\Tilemap\Map.png">
-        <Link>Tilemap\Map.png</Link>
+      <Resource Include="..\Tilemap\homepage.png">
+        <Link>Tilemap\homepage.png</Link>
       </Resource>
     </ItemGroup>
 
