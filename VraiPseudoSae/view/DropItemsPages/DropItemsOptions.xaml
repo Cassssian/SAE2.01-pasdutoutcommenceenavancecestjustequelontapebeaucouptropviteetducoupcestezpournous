@@ -9,62 +9,102 @@
       Title="DropItemsOptions">
 
     <Page.Resources>
-        <Style x:Key="BigOptionButtonStyle" TargetType="RadioButton">
+        <Style x:Key="BigOptionButton" TargetType="RadioButton">
             <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="FontFamily" Value="PixelFontDisplayStyle"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="RadioButton">
-                        <Border x:Name="ButtonBorder" 
-                                Background="#FF4444" 
-                                BorderThickness="2" 
-                                CornerRadius="25" 
-                                Padding="15" 
-                                Cursor="Hand"
-                                Margin="10,0">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <Border x:Name="ShadowBorder" 
+                        Background="Black" 
+                        CornerRadius="0" 
+                        Padding="0,0,5,5"
+                        Margin="10,0">
+
+                            <Border x:Name="ButtonBorder" 
+                            Background="#FF4444" 
+                            BorderBrush="Black" 
+                            BorderThickness="3" 
+                            CornerRadius="0" 
+                            Padding="15">
+
+                                <ContentPresenter x:Name="Content" 
+                                          HorizontalAlignment="Center" 
+                                          VerticalAlignment="Center"/>
+                            </Border>
                         </Border>
 
                         <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ButtonBorder" Property="BorderBrush" Value="White" />
+                            </Trigger>
+
                             <Trigger Property="IsChecked" Value="True">
                                 <Setter TargetName="ButtonBorder" Property="Background" Value="#44AA44" />
-                                <Setter TargetName="ButtonBorder" Property="BorderBrush" Value="white" />
+                                <Setter TargetName="ButtonBorder" Property="BorderBrush" Value="White" />
                                 <Setter Property="Foreground" Value="Black"/>
-                            </Trigger>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="ButtonBorder" Property="BorderBrush" Value="white" />
+                                <Setter TargetName="ShadowBorder" Property="Padding" Value="5,5,0,0"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
+
+
+        <Style x:Key="MonBouton" TargetType="Button">
+            <Setter Property="Background" Value="#FF4444"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="FontFamily" Value="PixelFontDisplayStyle"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="ShadowBorder" 
+            Background="Black" 
+            CornerRadius="0" 
+            Padding="0,0,4,4">
+
+                            <Border x:Name="ButtonBorder" 
+                Background="{TemplateBinding Background}" 
+                BorderBrush="Black" 
+                BorderThickness="3" 
+                CornerRadius="0"
+                Padding="15,8">
+
+                                <ContentPresenter x:Name="Content" 
+                              HorizontalAlignment="Center" 
+                              VerticalAlignment="Center"/>
+                            </Border>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ButtonBorder" Property="Background" Value="#FF6666"/>
+                            </Trigger>
+
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="ShadowBorder" Property="Padding" Value="4,4,0,0"/>
+                                <Setter TargetName="ButtonBorder" Property="Background" Value="#CC3333"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="{x:Type Label}">
+            <Setter Property="FontFamily" Value="{StaticResource PixelFontDisplayStyle}"
+        </Style>
     </Page.Resources>
 
     <Grid>
-        <Grid.Resources>
-            <Style x:Key="MonBoutonRond" TargetType="Button">
-                <Setter Property="Background" Value="#FF4444"/>
-                <Setter Property="Foreground" Value="White"/>
-                <Setter Property="FontSize" Value="30"/>
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="Button">
-                            <Border x:Name="border" 
-                        Background="{TemplateBinding Background}" 
-                        CornerRadius="5">
-                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            </Border>
-                            <ControlTemplate.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter TargetName="border" Property="Background" Value="#FF6666"/>
-                                </Trigger>
-                            </ControlTemplate.Triggers>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-        </Grid.Resources>
-
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="100"/>
             <ColumnDefinition Width="10*"/>
@@ -94,21 +134,21 @@
 
         <UniformGrid Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="2" Columns="3" VerticalAlignment="Center" Height="120">
             <RadioButton Name="ButtonNuit" Content="NUIT" 
-                         Style="{StaticResource BigOptionButtonStyle}" 
+                         Style="{StaticResource BigOptionButton}" 
                          GroupName="Decors" 
                          FontSize="20" 
                          IsChecked="True" Checked="DecorNuitChoisi"/>
             <RadioButton Name="ButtonAube" Content="AUBE" 
-                         Style="{StaticResource BigOptionButtonStyle}" 
+                         Style="{StaticResource BigOptionButton}" 
                          GroupName="Decors" 
                          FontSize="20" Checked="DecorAubeChoisi"/>
             <RadioButton Name="ButtonJour" Content="JOUR" 
-                         Style="{StaticResource BigOptionButtonStyle}" 
+                         Style="{StaticResource BigOptionButton}" 
                          GroupName="Decors" 
                          FontSize="20" Checked="DecorJourChoisi"/>
         </UniformGrid>
 
-        <Button Style="{StaticResource MonBoutonRond}" Content="ENREGISTRER" Click="Retour_Menu" Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="3" 
+        <Button Style="{StaticResource MonBouton}" Content="ENREGISTRER" Click="Retour_Menu" Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="3" 
                 VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Cursor="Hand"/>
     </Grid>
 </Page>

@@ -10,22 +10,42 @@
 
     <Grid>
         <Grid.Resources>
-            <Style x:Key="MonBoutonRond" TargetType="Button">
+            <Style x:Key="MonBouton" TargetType="Button">
                 <Setter Property="Background" Value="#FF4444"/>
                 <Setter Property="Foreground" Value="White"/>
-                <Setter Property="FontSize" Value="30"/>
+                <Setter Property="FontSize" Value="24"/>
+                <Setter Property="FontFamily" Value="PixelFontDisplayStyle"/>
                 <Setter Property="FontWeight" Value="Bold"/>
+
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="Button">
-                            <Border x:Name="border" 
-                        Background="{TemplateBinding Background}" 
-                        CornerRadius="30">
-                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <Border x:Name="ShadowBorder" 
+                        Background="Black" 
+                        CornerRadius="0" 
+                        Padding="0,0,4,4">
+
+                                <Border x:Name="ButtonBorder" 
+                            Background="{TemplateBinding Background}" 
+                            BorderBrush="Black" 
+                            BorderThickness="3" 
+                            CornerRadius="0"
+                            Padding="15,8">
+
+                                    <ContentPresenter x:Name="Content" 
+                                          HorizontalAlignment="Center" 
+                                          VerticalAlignment="Center"/>
+                                </Border>
                             </Border>
+
                             <ControlTemplate.Triggers>
                                 <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter TargetName="border" Property="Background" Value="#FF6666"/>
+                                    <Setter TargetName="ButtonBorder" Property="Background" Value="#FF6666"/>
+                                </Trigger>
+
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter TargetName="ShadowBorder" Property="Padding" Value="4,4,0,0"/>
+                                    <Setter TargetName="ButtonBorder" Property="Background" Value="#CC3333"/>
                                 </Trigger>
                             </ControlTemplate.Triggers>
                         </ControlTemplate>
@@ -55,21 +75,21 @@
         </Grid.ColumnDefinitions>
 
 
-        <Button Style="{StaticResource MonBoutonRond}"
+        <Button Style="{StaticResource MonBouton}"
         Content="JOUER" 
         Click="Jouer"
         Grid.Row="3" Grid.Column="2"
         VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
         Cursor="Hand"/>
 
-        <Button Style="{StaticResource MonBoutonRond}"
+        <Button Style="{StaticResource MonBouton}"
         Content="OPTIONS" 
         Click="Options"
         Grid.Row="5" Grid.Column="2"
         VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
         Cursor="Hand"/>
 
-        <Button Style="{StaticResource MonBoutonRond}"
+        <Button Style="{StaticResource MonBouton}"
         Content="QUITTER LE JEU" 
         Click="Quitter"
         Grid.Row="7" Grid.Column="2"
