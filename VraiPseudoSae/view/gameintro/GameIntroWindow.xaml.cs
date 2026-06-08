@@ -325,7 +325,6 @@ namespace VraiPseudoSae.view.gameintro
             movementEnabled = true;
             inputsLocked = false;
             movementTimer.Start();
-            ProgressionJeuSauvegardeDepot.MarquerIntroductionTerminee();
             FocusIntroInput();
         }
 
@@ -1060,6 +1059,7 @@ namespace VraiPseudoSae.view.gameintro
             PlaySfx("woosh");
             await FocusCameraAsync(panelCenter, OverviewScale, 850, centerTarget: false);
             UnlockPlayerControls(IntroInteractionStage.WaitingForStarApproach);
+            ProgressionJeuSauvegardeDepot.MarquerIntroductionTerminee();
         }
 
         private async Task StartStarApproachSceneAsync()

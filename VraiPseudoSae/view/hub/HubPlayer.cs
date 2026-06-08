@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
 using IUTGame;
+using VraiPseudoSae.Utils.SaveManager;
 using VraiPseudoSae.Utils.Sprite;
 using VraiPseudoSae.view.gameintro;
 
@@ -15,6 +16,9 @@ namespace VraiPseudoSae.view.hub
         private const double MinTop = 0.0;
         private const double IdleFrameDuration = 0.18;
         private const double WalkFrameDuration = 0.14;
+        private const double InteractionContactMargin = 3.0;
+        private const double CollisionWidthRatio = 0.62;
+        private const double CollisionHeightRatio = 0.32;
 
         private readonly GameIntroPlayerSpriteSet sprites;
         private bool goUp;
@@ -27,6 +31,8 @@ namespace VraiPseudoSae.view.hub
         private double frameTimer;
         private int frame;
         private bool mirrored;
+        private bool inputLocked;
+        private ParametresJeuSauvegarde settings = ParametresJeuSauvegarde.ParDefaut;
 
         public HubPlayer(double x, double y, Game game, GameIntroPlayerSpriteSet sprites)
             : base(x, y, game, sprites.InitialSprite, 520)
@@ -42,6 +48,24 @@ namespace VraiPseudoSae.view.hub
         public override string TypeName => "HubPlayer";
 
         public Point Center => new Point(Left + Width / 2.0, Top + Height / 2.0);
+
+        public Rect CollisionBounds => GetCollisionBounds(Left, Top);
+
+        public Rect InteractionBounds => Expand(CollisionBounds, InteractionContactMargin);
+
+        public void ApplySettings(ParametresJeuSauvegarde nextSettings)
+        {
+            settings = nextSettings.Normaliser();
+            ResetMovementInput();
+        }
+
+        public void SetInputLocked(bool locked)
+        {
+            inputLocked = locked;
+
+            if (locked)
+                ResetMovementInput();
+        }
 
         public void Animate(TimeSpan interval)
         {
@@ -65,7 +89,7 @@ namespace VraiPseudoSae.view.hub
                 dx /= length;
                 dy /= length;
                 SetDirectionFromVector(dx, dy);
-                MoveXY(dx * MovementSpeed * seconds, dy * MovementSpeed * seconds);
+                MoveWithCollisions(dx * MovementSpeed * seconds, dy * MovementSpeed * seconds);
             }
 
             ClampToHub();
@@ -74,6 +98,45 @@ namespace VraiPseudoSae.view.hub
 
             if (TheGame is HubGame hubGame)
                 hubGame.UpdateInfoText();
+        }
+
+        private void MoveWithCollisions(double dx, double dy)
+        {
+            if (TheGame is not HubGame hubGame)
+            {
+                MoveXY(dx, dy);
+                return;
+            }
+
+            if (Math.Abs(dx) > 0.001 && CanOccupy(Left + dx, Top, hubGame))
+                MoveXY(dx, 0);
+
+            if (Math.Abs(dy) > 0.001 && CanOccupy(Left, Top + dy, hubGame))
+                MoveXY(0, dy);
+        }
+
+        private bool CanOccupy(double left, double top, HubGame hubGame)
+        {
+            return !hubGame.IsBlockedByLaunchZone(GetCollisionBounds(left, top));
+        }
+
+        private Rect GetCollisionBounds(double left, double top)
+        {
+            double collisionWidth = Math.Max(6.0, Width * CollisionWidthRatio);
+            double collisionHeight = Math.Max(4.0, Height * CollisionHeightRatio);
+            double collisionLeft = left + (Width - collisionWidth) / 2.0;
+            double collisionTop = top + Height - collisionHeight;
+
+            return new Rect(collisionLeft, collisionTop, collisionWidth, collisionHeight);
+        }
+
+        private static Rect Expand(Rect bounds, double margin)
+        {
+            return new Rect(
+                bounds.Left - margin,
+                bounds.Top - margin,
+                bounds.Width + margin * 2,
+                bounds.Height + margin * 2);
         }
 
         private void ClampToHub()
@@ -173,22 +236,43 @@ namespace VraiPseudoSae.view.hub
 
         public void KeyDown(Key key)
         {
-            if (key == Key.Z || key == Key.W || key == Key.Up) goUp = true;
-            if (key == Key.S || key == Key.Down) goDown = true;
-            if (key == Key.Q || key == Key.A || key == Key.Left) goLeft = true;
-            if (key == Key.D || key == Key.Right) goRight = true;
+            if (inputLocked)
+                return;
 
-            if (key == Key.E && TheGame is HubGame hubGame)
+            if (key == ForwardKey) goUp = true;
+            if (key == BackwardKey) goDown = true;
+            if (key == LeftKey) goLeft = true;
+            if (key == RightKey) goRight = true;
+
+            if (key == InteractionKey && TheGame is HubGame hubGame)
                 hubGame.TryLaunchMiniGame();
         }
 
         public void KeyUp(Key key)
         {
-            if (key == Key.Z || key == Key.W || key == Key.Up) goUp = false;
-            if (key == Key.S || key == Key.Down) goDown = false;
-            if (key == Key.Q || key == Key.A || key == Key.Left) goLeft = false;
-            if (key == Key.D || key == Key.Right) goRight = false;
+            if (key == ForwardKey) goUp = false;
+            if (key == BackwardKey) goDown = false;
+            if (key == LeftKey) goLeft = false;
+            if (key == RightKey) goRight = false;
         }
+
+        private void ResetMovementInput()
+        {
+            goUp = false;
+            goDown = false;
+            goLeft = false;
+            goRight = false;
+        }
+
+        private Key ForwardKey => HomePage.ParseSavedKey(settings.ToucheAvancer, Key.Z);
+
+        private Key BackwardKey => HomePage.ParseSavedKey(settings.ToucheReculer, Key.S);
+
+        private Key LeftKey => HomePage.ParseSavedKey(settings.ToucheGauche, Key.Q);
+
+        private Key RightKey => HomePage.ParseSavedKey(settings.ToucheDroite, Key.D);
+
+        private Key InteractionKey => HomePage.ParseSavedKey(settings.ToucheInteraction, Key.E);
 
         public override void CollideEffect(GameItem other) { }
     }
