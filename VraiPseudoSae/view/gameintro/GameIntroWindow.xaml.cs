@@ -59,14 +59,20 @@ namespace VraiPseudoSae.view.gameintro
         private EllipseGeometry revealHole = null!;
         private GameIntroGame? introGame;
         private TaskCompletionSource<GameIntroLanguage>? languageChoiceCompletion;
+        private TaskCompletionSource<bool>? dialogueInputCompletion;
         private DateTime animationStartUtc;
         private ParametresJeuSauvegarde settings = ParametresJeuSauvegardeDepot.ChargerOuDefaut();
         private GameIntroLanguage selectedLanguage = GameIntroLanguage.French;
         private GameIntroLanguage highlightedLanguage = GameIntroLanguage.French;
+        private SettingsIntroCategory selectedSettingsCategory = SettingsIntroCategory.General;
         private string? listeningBindingId;
         private IntroInteractionStage interactionStage = IntroInteractionStage.Panel;
         private bool waitingForSpace = true;
         private bool choosingLanguage;
+        private bool dialogueActive;
+        private bool dialogueTyping;
+        private bool dialogueRevealRequested;
+        private bool dialogueAdvanceRequested;
         private bool inputsLocked = true;
         private bool movementEnabled;
         private bool settingsIntroStarted;
@@ -171,6 +177,12 @@ namespace VraiPseudoSae.view.gameintro
                 return;
             }
 
+            if (TryHandleDialogueSkip(e))
+            {
+                e.Handled = true;
+                return;
+            }
+
             if (settingsOverlayVisible)
             {
                 if (e.Key == Key.Escape)
@@ -217,6 +229,24 @@ namespace VraiPseudoSae.view.gameintro
                 moveLeft = false;
             if (e.Key == RightKey)
                 moveRight = false;
+        }
+
+        private bool TryHandleDialogueSkip(KeyEventArgs e)
+        {
+            if (!dialogueActive || e.Key != Key.Space)
+                return false;
+
+            if (!e.IsRepeat)
+            {
+                if (dialogueTyping && !dialogueRevealRequested)
+                    dialogueRevealRequested = true;
+                else
+                    dialogueAdvanceRequested = true;
+
+                dialogueInputCompletion?.TrySetResult(true);
+            }
+
+            return true;
         }
 
         private bool TryHandleIntroInteraction()
@@ -324,6 +354,7 @@ namespace VraiPseudoSae.view.gameintro
             HideSettingsHighlight();
             settingsTutorialPlaying = false;
             UpdateSettingsCloseAvailability();
+            UpdateSettingsInteractionAvailability();
             DialoguePanel.Visibility = Visibility.Collapsed;
             DialogueSpeakerPortrait.Visibility = Visibility.Collapsed;
             FocusIntroInput();
@@ -339,6 +370,7 @@ namespace VraiPseudoSae.view.gameintro
             HidePanelKeyHint();
             ApplySettingsIntroText();
             UpdateSettingsCloseAvailability();
+            UpdateSettingsInteractionAvailability();
 
             SettingsIntroOverlay.Opacity = 0;
             SettingsIntroOverlay.Visibility = Visibility.Visible;
@@ -381,6 +413,19 @@ namespace VraiPseudoSae.view.gameintro
         {
             SettingsCloseButton.Opacity = settingsTutorialPlaying ? 0.35 : 1;
             SettingsTemporaryCloseText.Opacity = settingsTutorialPlaying ? 0.35 : 0.72;
+        }
+
+        private void UpdateSettingsInteractionAvailability()
+        {
+            bool enabled = !settingsTutorialPlaying;
+
+            GeneralCategoryButton.IsHitTestVisible = enabled;
+            MainMenuCategoryButton.IsHitTestVisible = enabled;
+            SettingsDetailsPanel.IsHitTestVisible = enabled;
+            SettingsCloseButton.IsHitTestVisible = enabled;
+
+            ApplySettingsCategoryButtonStates();
+            SettingsDetailsPanel.Opacity = enabled ? 1 : 0.72;
         }
 
         private void ConfigureSettingsControls()
@@ -438,11 +483,23 @@ namespace VraiPseudoSae.view.gameintro
 
         private void SelectSettingsCategory(SettingsIntroCategory category)
         {
+            selectedSettingsCategory = category;
             GeneralSettingsPanel.Visibility = category == SettingsIntroCategory.General ? Visibility.Visible : Visibility.Collapsed;
             MainMenuSettingsPanel.Visibility = category == SettingsIntroCategory.Controls ? Visibility.Visible : Visibility.Collapsed;
 
-            ApplyCategoryButtonState(GeneralCategoryButton, category == SettingsIntroCategory.General);
-            ApplyCategoryButtonState(MainMenuCategoryButton, category == SettingsIntroCategory.Controls);
+            ApplySettingsCategoryButtonStates();
+        }
+
+        private void ApplySettingsCategoryButtonStates()
+        {
+            ApplyCategoryButtonState(GeneralCategoryButton, selectedSettingsCategory == SettingsIntroCategory.General);
+            ApplyCategoryButtonState(MainMenuCategoryButton, selectedSettingsCategory == SettingsIntroCategory.Controls);
+
+            if (settingsTutorialPlaying)
+            {
+                GeneralCategoryButton.Opacity = 0.62;
+                MainMenuCategoryButton.Opacity = 0.62;
+            }
         }
 
         private static void ApplyCategoryButtonState(Border button, bool selected)
@@ -457,80 +514,129 @@ namespace VraiPseudoSae.view.gameintro
 
         private void GeneralCategoryButton_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            if (IgnoreSettingsInputDuringTutorial(e))
+                return;
+
             SelectSettingsCategory(SettingsIntroCategory.General);
             e.Handled = true;
         }
 
         private void MainMenuCategoryButton_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            if (IgnoreSettingsInputDuringTutorial(e))
+                return;
+
             SelectSettingsCategory(SettingsIntroCategory.Controls);
             e.Handled = true;
         }
 
         private void ForwardChangeButton_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            if (IgnoreSettingsInputDuringTutorial(e))
+                return;
+
             BeginBindingKeyCapture(ForwardBindingId);
             e.Handled = true;
         }
 
         private void BackwardChangeButton_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            if (IgnoreSettingsInputDuringTutorial(e))
+                return;
+
             BeginBindingKeyCapture(BackwardBindingId);
             e.Handled = true;
         }
 
         private void LeftChangeButton_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            if (IgnoreSettingsInputDuringTutorial(e))
+                return;
+
             BeginBindingKeyCapture(LeftBindingId);
             e.Handled = true;
         }
 
         private void RightChangeButton_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            if (IgnoreSettingsInputDuringTutorial(e))
+                return;
+
             BeginBindingKeyCapture(RightBindingId);
             e.Handled = true;
         }
 
         private void InteractionChangeButton_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            if (IgnoreSettingsInputDuringTutorial(e))
+                return;
+
             BeginBindingKeyCapture(InteractionBindingId);
             e.Handled = true;
         }
 
         private void ForwardResetButton_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            if (IgnoreSettingsInputDuringTutorial(e))
+                return;
+
             ResetBindingKey(ForwardBindingId);
             e.Handled = true;
         }
 
         private void BackwardResetButton_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            if (IgnoreSettingsInputDuringTutorial(e))
+                return;
+
             ResetBindingKey(BackwardBindingId);
             e.Handled = true;
         }
 
         private void LeftResetButton_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            if (IgnoreSettingsInputDuringTutorial(e))
+                return;
+
             ResetBindingKey(LeftBindingId);
             e.Handled = true;
         }
 
         private void RightResetButton_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            if (IgnoreSettingsInputDuringTutorial(e))
+                return;
+
             ResetBindingKey(RightBindingId);
             e.Handled = true;
         }
 
         private void InteractionResetButton_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            if (IgnoreSettingsInputDuringTutorial(e))
+                return;
+
             ResetBindingKey(InteractionBindingId);
             e.Handled = true;
         }
 
         private void SettingsCloseButton_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            if (IgnoreSettingsInputDuringTutorial(e))
+                return;
+
             CloseSettingsOverlayTemporarily();
             e.Handled = true;
+        }
+
+        private bool IgnoreSettingsInputDuringTutorial(MouseButtonEventArgs e)
+        {
+            if (!settingsTutorialPlaying)
+                return false;
+
+            e.Handled = true;
+            FocusIntroInput();
+            return true;
         }
 
         private void BeginBindingKeyCapture(string bindingId)
@@ -687,7 +793,7 @@ namespace VraiPseudoSae.view.gameintro
 
         private void SettingsSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if (applyingSettingsToUi)
+            if (applyingSettingsToUi || settingsTutorialPlaying)
                 return;
 
             settings = settings with
@@ -1763,36 +1869,76 @@ namespace VraiPseudoSae.view.gameintro
             DialogueTextWrap.Children.Clear();
             dialogueEffectGlyphs.Clear();
             DialoguePanel.Visibility = Visibility.Visible;
+            dialogueActive = true;
+            dialogueTyping = true;
+            dialogueRevealRequested = false;
+            dialogueAdvanceRequested = false;
 
-            for (int segmentIndex = 0; segmentIndex < segmentList.Count; segmentIndex++)
+            try
             {
-                DialogueSegment segment = segmentList[segmentIndex];
-                List<DialogueWordToken> tokens = SplitDialogueWords(segment.Text).ToList();
-
-                for (int tokenIndex = 0; tokenIndex < tokens.Count; tokenIndex++)
+                for (int segmentIndex = 0; segmentIndex < segmentList.Count; segmentIndex++)
                 {
-                    DialogueWordToken token = tokens[tokenIndex];
-                    StackPanel wordPanel = CreateWordPanel(token.LeadingSpaces, token.TrailingSpaces);
-                    DialogueTextWrap.Children.Add(wordPanel);
+                    DialogueSegment segment = segmentList[segmentIndex];
+                    List<DialogueWordToken> tokens = SplitDialogueWords(segment.Text).ToList();
 
-                    for (int i = 0; i < token.Word.Length; i++)
+                    for (int tokenIndex = 0; tokenIndex < tokens.Count; tokenIndex++)
                     {
-                        char character = token.Word[i];
-                        AddDialogueCharacter(wordPanel, character, segment.Style);
+                        DialogueWordToken token = tokens[tokenIndex];
+                        StackPanel wordPanel = CreateWordPanel(token.LeadingSpaces, token.TrailingSpaces);
+                        DialogueTextWrap.Children.Add(wordPanel);
 
-                        bool isLastCharacter =
-                            segmentIndex == segmentList.Count - 1 &&
-                            tokenIndex == tokens.Count - 1 &&
-                            i == token.Word.Length - 1;
+                        for (int i = 0; i < token.Word.Length; i++)
+                        {
+                            bool instantReveal = dialogueRevealRequested || dialogueAdvanceRequested;
+                            char character = token.Word[i];
+                            AddDialogueCharacter(wordPanel, character, segment.Style, !instantReveal);
 
-                        if (!isLastCharacter || endPauseMilliseconds > 0)
-                            await Task.Delay(GetDialogueCharacterDelay(segment.Style, token.Word, i));
+                            bool isLastCharacter =
+                                segmentIndex == segmentList.Count - 1 &&
+                                tokenIndex == tokens.Count - 1 &&
+                                i == token.Word.Length - 1;
+
+                            if ((!isLastCharacter || endPauseMilliseconds > 0) && !instantReveal)
+                            {
+                                int delay = GetDialogueCharacterDelay(segment.Style, token.Word, i);
+                                await WaitDialogueDelayAsync(delay, revealSkipsDelay: true);
+                            }
+                        }
                     }
                 }
-            }
 
-            if (endPauseMilliseconds > 0)
-                await Task.Delay(endPauseMilliseconds);
+                dialogueTyping = false;
+                dialogueRevealRequested = true;
+
+                if (endPauseMilliseconds > 0)
+                    await WaitDialogueDelayAsync(endPauseMilliseconds, revealSkipsDelay: false);
+            }
+            finally
+            {
+                dialogueInputCompletion?.TrySetResult(true);
+                dialogueInputCompletion = null;
+                dialogueActive = false;
+                dialogueTyping = false;
+                dialogueRevealRequested = false;
+                dialogueAdvanceRequested = false;
+            }
+        }
+
+        private async Task WaitDialogueDelayAsync(int delayMilliseconds, bool revealSkipsDelay)
+        {
+            if (delayMilliseconds <= 0 || dialogueAdvanceRequested)
+                return;
+
+            if (revealSkipsDelay && dialogueRevealRequested)
+                return;
+
+            TaskCompletionSource<bool> completion = new(TaskCreationOptions.RunContinuationsAsynchronously);
+            dialogueInputCompletion = completion;
+            Task delayTask = Task.Delay(delayMilliseconds);
+            await Task.WhenAny(delayTask, completion.Task);
+
+            if (ReferenceEquals(dialogueInputCompletion, completion))
+                dialogueInputCompletion = null;
         }
 
         private int GetDialogueCharacterDelay(DialogueTextStyle style, string word, int index)
@@ -1885,7 +2031,11 @@ namespace VraiPseudoSae.view.gameintro
             };
         }
 
-        private void AddDialogueCharacter(Panel wordPanel, char character, DialogueTextStyle style)
+        private void AddDialogueCharacter(
+            Panel wordPanel,
+            char character,
+            DialogueTextStyle style,
+            bool playTick = true)
         {
             TextBlock textBlock = new()
             {
@@ -1957,7 +2107,9 @@ namespace VraiPseudoSae.view.gameintro
             }
 
             wordPanel.Children.Add(textBlock);
-            PlayDialogueTick();
+
+            if (playTick)
+                PlayDialogueTick();
         }
 
         private void RegisterDialogueEffect(TextBlock textBlock, DialogueTextStyle style)
