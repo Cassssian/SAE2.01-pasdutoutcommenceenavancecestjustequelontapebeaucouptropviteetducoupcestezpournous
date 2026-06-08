@@ -11,7 +11,7 @@ namespace VraiPseudoSae.view.hub
     public class HubPlayer : GameItem, IAnimable, IKeyboardInteract
     {
         private const double HubSpriteScale = 1.0;
-        private const double MovementSpeed = 30.0;
+        private const double MovementSpeed = 90.0;
         private const double MinTop = 0.0;
         private const double IdleFrameDuration = 0.18;
         private const double WalkFrameDuration = 0.14;

@@ -84,18 +84,28 @@ namespace VraiPseudoSae.view
 
             double viewportWidth = CameraViewport.ActualWidth > 0 ? CameraViewport.ActualWidth : ViewportWidth;
             double viewportHeight = CameraViewport.ActualHeight > 0 ? CameraViewport.ActualHeight : ViewportHeight;
+            double worldWidth = WorldLayer.Width > 0 ? WorldLayer.Width : GameCanvas.Width;
+            double worldHeight = WorldLayer.Height > 0 ? WorldLayer.Height : GameCanvas.Height;
+            double scaledWorldWidth = worldWidth * CameraZoom;
+            double scaledWorldHeight = worldHeight * CameraZoom;
 
             WorldCameraTranslate.X = GetCameraAxisTranslation(
                 worldCenter.X,
-                viewportWidth);
+                viewportWidth,
+                scaledWorldWidth);
             WorldCameraTranslate.Y = GetCameraAxisTranslation(
                 worldCenter.Y,
-                viewportHeight);
+                viewportHeight,
+                scaledWorldHeight);
         }
 
-        private static double GetCameraAxisTranslation(double target, double viewportSize)
+        private static double GetCameraAxisTranslation(double target, double viewportSize, double scaledWorldSize)
         {
-            return viewportSize / 2.0 - target * CameraZoom;
+            if (scaledWorldSize <= viewportSize)
+                return (viewportSize - scaledWorldSize) / 2.0;
+
+            double desired = viewportSize / 2.0 - target * CameraZoom;
+            return Math.Clamp(desired, viewportSize - scaledWorldSize, 0);
         }
 
         public void SetInfoText(string message)
