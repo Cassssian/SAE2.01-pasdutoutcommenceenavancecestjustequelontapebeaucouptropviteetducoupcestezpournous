@@ -166,6 +166,25 @@ public sealed class AudioPlaybackEngine : IDisposable
         _mixer.AddMixerInput(input);
     }
 
+    public LoopingSoundHandle PlayLoopingSound(CachedSound sound, float volume = 1f)
+    {
+        var loopProvider = new LoopingCachedSoundSampleProvider(sound)
+        {
+            Volume = volume
+        };
+
+        ISampleProvider input = loopProvider;
+
+        if (input.WaveFormat.SampleRate != _mixer.WaveFormat.SampleRate ||
+            input.WaveFormat.Channels != _mixer.WaveFormat.Channels)
+        {
+            input = ConvertToMixerFormat(input);
+        }
+
+        _mixer.AddMixerInput(input);
+        return new LoopingSoundHandle(loopProvider);
+    }
+
     /// <summary>
     /// Convertit un fournisseur d’échantillons vers un format compatible avec celui du mixeur.
     /// </summary>
@@ -224,5 +243,95 @@ public sealed class AudioPlaybackEngine : IDisposable
     public void Dispose()
     {
         _outputDevice.Dispose();
+    }
+}
+
+public sealed class LoopingSoundHandle : IDisposable
+{
+    private readonly LoopingCachedSoundSampleProvider _provider;
+
+    internal LoopingSoundHandle(LoopingCachedSoundSampleProvider provider)
+    {
+        _provider = provider;
+    }
+
+    public float Volume
+    {
+        get => _provider.Volume;
+        set => _provider.Volume = value;
+    }
+
+    public void Stop()
+    {
+        _provider.Stop();
+    }
+
+    public void Dispose()
+    {
+        Stop();
+    }
+}
+
+internal sealed class LoopingCachedSoundSampleProvider : ISampleProvider
+{
+    private readonly CachedSound _cachedSound;
+    private long _position;
+    private bool _stopped;
+    private float _volume = 1f;
+
+    public LoopingCachedSoundSampleProvider(CachedSound cachedSound)
+    {
+        _cachedSound = cachedSound;
+    }
+
+    public WaveFormat WaveFormat => _cachedSound.WaveFormat;
+
+    public float Volume
+    {
+        get => _volume;
+        set => _volume = Math.Clamp(value, 0f, 1f);
+    }
+
+    public void Stop()
+    {
+        _stopped = true;
+    }
+
+    public int Read(float[] buffer, int offset, int count)
+    {
+        if (_stopped || _cachedSound.AudioData.Length == 0)
+            return 0;
+
+        int samplesWritten = 0;
+
+        while (samplesWritten < count)
+        {
+            long availableSamples = _cachedSound.AudioData.Length - _position;
+            if (availableSamples <= 0)
+            {
+                _position = 0;
+                availableSamples = _cachedSound.AudioData.Length;
+            }
+
+            int samplesToCopy = (int)Math.Min(availableSamples, count - samplesWritten);
+            int destinationOffset = offset + samplesWritten;
+
+            if (Math.Abs(_volume - 1f) <= 0.001f)
+            {
+                Array.Copy(_cachedSound.AudioData, _position, buffer, destinationOffset, samplesToCopy);
+            }
+            else
+            {
+                for (int i = 0; i < samplesToCopy; i++)
+                {
+                    buffer[destinationOffset + i] = _cachedSound.AudioData[_position + i] * _volume;
+                }
+            }
+
+            _position += samplesToCopy;
+            samplesWritten += samplesToCopy;
+        }
+
+        return samplesWritten;
     }
 }

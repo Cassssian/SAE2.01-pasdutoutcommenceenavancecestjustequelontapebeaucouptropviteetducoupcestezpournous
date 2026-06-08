@@ -442,6 +442,7 @@ namespace VraiPseudoSae.view.gameintro
             bindingKeyBoxes[InteractionBindingId] = InteractionKeyBox;
 
             MasterVolumeSlider.ValueChanged += SettingsSlider_ValueChanged;
+            MusicVolumeSlider.ValueChanged += SettingsSlider_ValueChanged;
             DialogueVolumeSlider.ValueChanged += SettingsSlider_ValueChanged;
             SfxVolumeSlider.ValueChanged += SettingsSlider_ValueChanged;
             TextSpeedSlider.ValueChanged += SettingsSlider_ValueChanged;
@@ -457,6 +458,7 @@ namespace VraiPseudoSae.view.gameintro
 
             GeneralSettingsTitleText.Text = ui.GeneralTitle;
             MasterVolumeText.Text = ui.MasterVolume;
+            MusicVolumeText.Text = ui.MusicVolume;
             DialogueVolumeText.Text = ui.DialogueVolume;
             SfxVolumeText.Text = ui.SfxVolume;
             TextSpeedText.Text = ui.TextSpeed;
@@ -780,6 +782,7 @@ namespace VraiPseudoSae.view.gameintro
             applyingSettingsToUi = true;
 
             MasterVolumeSlider.Value = settings.VolumeGeneral;
+            MusicVolumeSlider.Value = settings.VolumeMusique;
             DialogueVolumeSlider.Value = settings.VolumeDialogues;
             SfxVolumeSlider.Value = settings.VolumeSfx;
             TextSpeedSlider.Value = settings.VitesseTexte;
@@ -798,6 +801,7 @@ namespace VraiPseudoSae.view.gameintro
             settings = settings with
             {
                 VolumeGeneral = ToPercent(MasterVolumeSlider.Value),
+                VolumeMusique = ToPercent(MusicVolumeSlider.Value),
                 VolumeDialogues = ToPercent(DialogueVolumeSlider.Value),
                 VolumeSfx = ToPercent(SfxVolumeSlider.Value),
                 VitesseTexte = ToPercent(TextSpeedSlider.Value)
@@ -810,6 +814,7 @@ namespace VraiPseudoSae.view.gameintro
         private void UpdateSettingsValueTexts()
         {
             MasterVolumeValueText.Text = settings.VolumeGeneral + "%";
+            MusicVolumeValueText.Text = settings.VolumeMusique + "%";
             DialogueVolumeValueText.Text = settings.VolumeDialogues + "%";
             SfxVolumeValueText.Text = settings.VolumeSfx + "%";
             TextSpeedValueText.Text = settings.VitesseTexte + "%";
@@ -918,6 +923,7 @@ namespace VraiPseudoSae.view.gameintro
                 SettingsIntroHighlightTarget.GeneralCategory => GeneralCategoryButton,
                 SettingsIntroHighlightTarget.GeneralSettings => GeneralSettingsContent,
                 SettingsIntroHighlightTarget.MasterVolume => MasterVolumeSettingRow,
+                SettingsIntroHighlightTarget.MusicVolume => MusicVolumeSettingRow,
                 SettingsIntroHighlightTarget.DialogueVolume => DialogueVolumeSettingRow,
                 SettingsIntroHighlightTarget.SfxVolume => SfxVolumeSettingRow,
                 SettingsIntroHighlightTarget.TextSpeed => TextSpeedSettingRow,
@@ -1132,7 +1138,7 @@ namespace VraiPseudoSae.view.gameintro
             }) ?? Task.CompletedTask);
 
             for (int i = 0; i < 3; i++)
-                await ShowDialogueAsync(GameIntroScript.Ellipsis());
+                await ShowDialogueAsync(GameIntroScript.Ellipsis(), DialogueEndPauseMilliseconds, false);
 
             Task rantShake = ShakeCameraAsync(5200, 4.8);
             DialogueSpeakerPortrait.Visibility = Visibility.Visible;
@@ -1863,7 +1869,7 @@ namespace VraiPseudoSae.view.gameintro
 
         private async Task ShowDialogueAsync(
             IEnumerable<DialogueSegment> segments,
-            int endPauseMilliseconds = DialogueEndPauseMilliseconds)
+            int endPauseMilliseconds = DialogueEndPauseMilliseconds, bool withPunctuationWait = true)
         {
             List<DialogueSegment> segmentList = segments.ToList();
             DialogueTextWrap.Children.Clear();
@@ -1898,7 +1904,7 @@ namespace VraiPseudoSae.view.gameintro
                                 tokenIndex == tokens.Count - 1 &&
                                 i == token.Word.Length - 1;
 
-                            if ((!isLastCharacter || endPauseMilliseconds > 0) && !instantReveal)
+                            if (((!isLastCharacter || endPauseMilliseconds > 0) && !instantReveal) && withPunctuationWait)
                             {
                                 int delay = GetDialogueCharacterDelay(segment.Style, token.Word, i);
                                 await WaitDialogueDelayAsync(delay, revealSkipsDelay: true);

@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using IUTGame;
 using System.Collections.Generic;
+using VraiPseudoSae.Utils.AudioPlayer;
 using VraiPseudoSae.Utils.SaveManager;
 using VraiPseudoSae.view.Flappy_bird;
 using VraiPseudoSae.view.Maze;
@@ -14,6 +15,10 @@ namespace VraiPseudoSae.view.hub
 {
     public class HubGame : Game
     {
+        private const string HubMusicAlias = "hub";
+        private const string HubMusicPath = "Assets/Firewhole - love 2.mp3";
+        private const float HubMusicBaseVolume = 0.2f;
+
         private readonly HomePage homePage;
         private readonly Canvas footballZone;
         private readonly Canvas mazeZone;
@@ -24,9 +29,12 @@ namespace VraiPseudoSae.view.hub
         private readonly List<HubLaunchZone> launchZones = new();
         private readonly Rect settingsPanelInteractionBounds = new(624, 384, 32, 32);
         private readonly Rect settingsPanelCollisionBounds = new(624, 384, 32, 16);
+        private readonly JsonPakAudioService audio = new();
 
         private HubPlayer player = null!;
         private ParametresJeuSauvegarde settings;
+        private LoopingSoundHandle? hubMusic;
+        private bool audioDisposed;
 
         public HubGame(
             IScreen screen,
@@ -50,6 +58,7 @@ namespace VraiPseudoSae.view.hub
             this.pinZone = pinZone;
             this.flappyZone = flappyZone;
             this.settings = settings.Normaliser();
+            audio.LoadFromPath(HubMusicPath, HubMusicAlias);
         }
 
         protected override void InitItems()
@@ -70,6 +79,8 @@ namespace VraiPseudoSae.view.hub
             Panel.SetZIndex(rlsZone, (int)Canvas.GetTop(rlsZone));
             Panel.SetZIndex(pinZone, (int)Canvas.GetTop(pinZone));
             Panel.SetZIndex(flappyZone, (int)Canvas.GetTop(flappyZone));
+            StartHubMusic();
+            
         }
 
         public Point PlayerCenter => player.Center;
@@ -101,7 +112,11 @@ namespace VraiPseudoSae.view.hub
             }
 
             HubLaunchZone? zone = GetLaunchZoneAt(player.InteractionBounds);
-            zone?.Launch();
+            if (zone is null)
+                return;
+
+            zone.Launch();
+            StopHubMusic();
         }
 
         public bool IsBlockedByLaunchZone(Rect bounds)
@@ -122,12 +137,47 @@ namespace VraiPseudoSae.view.hub
         {
             settings = nextSettings.Normaliser();
             player?.ApplySettings(settings);
+            if (hubMusic is not null)
+                hubMusic.Volume = GetHubMusicVolume();
             UpdateInfoText();
         }
 
         public void SetInputLocked(bool locked)
         {
             player?.SetInputLocked(locked);
+        }
+
+        public void StopHubMusic()
+        {
+            hubMusic?.Dispose();
+            hubMusic = null;
+
+            if (audioDisposed)
+                return;
+
+            audio.Dispose();
+            audioDisposed = true;
+        }
+
+        private void StartHubMusic()
+        {
+            if (audioDisposed)
+                return;
+
+            if (hubMusic is not null)
+            {
+                hubMusic.Volume = GetHubMusicVolume();
+                return;
+            }
+
+            hubMusic = audio.PlayLooping(HubMusicAlias, GetHubMusicVolume());
+        }
+
+        private float GetHubMusicVolume()
+        {
+            return (float)(HubMusicBaseVolume
+                           * settings.VolumeGeneral / 100.0
+                           * settings.VolumeMusique / 100.0);
         }
 
         private HubLaunchZone? GetLaunchZoneAt(Rect interactionBounds)
@@ -193,19 +243,9 @@ namespace VraiPseudoSae.view.hub
         {
         }
 
-        private sealed class HubLaunchZone
+        private sealed class HubLaunchZone(Canvas visual, string displayName, Action launch)
         {
-            private readonly Canvas visual;
-            private readonly Action launch;
-
-            public HubLaunchZone(Canvas visual, string displayName, Action launch)
-            {
-                this.visual = visual;
-                DisplayName = displayName;
-                this.launch = launch;
-            }
-
-            public string DisplayName { get; }
+            public string DisplayName { get; } = displayName;
 
             public Rect Bounds => new(
                 Canvas.GetLeft(visual),

@@ -422,6 +422,30 @@
                                                VerticalAlignment="Center"/>
                                 </Grid>
 
+                                <Grid x:Name="MusicVolumeSettingRow"
+                                      Margin="0,0,0,18">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="260"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="70"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock x:Name="MusicVolumeText"
+                                               Grid.Column="0"
+                                               Style="{StaticResource SettingsBodyTextStyle}"
+                                               VerticalAlignment="Center"/>
+                                    <Slider x:Name="MusicVolumeSlider"
+                                            Grid.Column="1"
+                                            Minimum="0"
+                                            Maximum="100"
+                                            Value="100"
+                                            VerticalAlignment="Center"/>
+                                    <TextBlock x:Name="MusicVolumeValueText"
+                                               Grid.Column="2"
+                                               Style="{StaticResource SettingsBodyTextStyle}"
+                                               HorizontalAlignment="Right"
+                                               VerticalAlignment="Center"/>
+                                </Grid>
+
                                 <Grid x:Name="DialogueVolumeSettingRow"
                                       Margin="0,0,0,18">
                                     <Grid.ColumnDefinitions>

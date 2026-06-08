@@ -77,7 +77,7 @@
       <Resource Include="..\Tilemap\Map Intro.png">
         <Link>Tilemap\MapIntro.png</Link>
       </Resource>
-      <Resource Include="..\Tilemap\homepage.png">
+      <Resource Include="..\Tilemap\homepage chemin.png">
         <Link>Tilemap\homepage.png</Link>
       </Resource>
     </ItemGroup>
@@ -93,6 +93,9 @@
       <None Update="Assets\bip.wav">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+      <None Update="Assets\Firewhole - love 2.mp3">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>  
     </ItemGroup>
 
 </Project>

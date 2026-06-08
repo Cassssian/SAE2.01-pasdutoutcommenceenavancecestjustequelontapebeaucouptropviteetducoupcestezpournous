@@ -75,6 +75,7 @@ namespace VraiPseudoSae.view
 
         private void Window_Unloaded(object sender, RoutedEventArgs e)
         {
+            hubGame?.StopHubMusic();
             hubGame?.Pause();
         }
 
@@ -203,6 +204,7 @@ namespace VraiPseudoSae.view
             bindingKeyBoxes[InteractionBindingId] = InteractionKeyBox;
 
             MasterVolumeSlider.ValueChanged += SettingsSlider_ValueChanged;
+            MusicVolumeSlider.ValueChanged += SettingsSlider_ValueChanged;
             DialogueVolumeSlider.ValueChanged += SettingsSlider_ValueChanged;
             SfxVolumeSlider.ValueChanged += SettingsSlider_ValueChanged;
             TextSpeedSlider.ValueChanged += SettingsSlider_ValueChanged;
@@ -214,6 +216,7 @@ namespace VraiPseudoSae.view
             applyingSettingsToUi = true;
 
             MasterVolumeSlider.Value = settings.VolumeGeneral;
+            MusicVolumeSlider.Value = settings.VolumeMusique;
             DialogueVolumeSlider.Value = settings.VolumeDialogues;
             SfxVolumeSlider.Value = settings.VolumeSfx;
             TextSpeedSlider.Value = settings.VitesseTexte;
@@ -234,6 +237,7 @@ namespace VraiPseudoSae.view
             settings = settings with
             {
                 VolumeGeneral = ToPercent(MasterVolumeSlider.Value),
+                VolumeMusique = ToPercent(MusicVolumeSlider.Value),
                 VolumeDialogues = ToPercent(DialogueVolumeSlider.Value),
                 VolumeSfx = ToPercent(SfxVolumeSlider.Value),
                 VitesseTexte = ToPercent(TextSpeedSlider.Value)
@@ -246,6 +250,7 @@ namespace VraiPseudoSae.view
         private void UpdateSettingsValueTexts()
         {
             MasterVolumeValueText.Text = settings.VolumeGeneral + "%";
+            MusicVolumeValueText.Text = settings.VolumeMusique + "%";
             DialogueVolumeValueText.Text = settings.VolumeDialogues + "%";
             SfxVolumeValueText.Text = settings.VolumeSfx + "%";
             TextSpeedValueText.Text = settings.VitesseTexte + "%";

@@ -36,6 +36,7 @@ internal enum SettingsIntroHighlightTarget
     GeneralCategory,
     GeneralSettings,
     MasterVolume,
+    MusicVolume,
     DialogueVolume,
     SfxVolume,
     TextSpeed,
@@ -58,6 +59,7 @@ internal sealed record SettingsIntroUiText(
     string MainMenuCategory,
     string GeneralTitle,
     string MasterVolume,
+    string MusicVolume,
     string DialogueVolume,
     string SfxVolume,
     string TextSpeed,
@@ -194,6 +196,7 @@ internal static class GameIntroScript
                 "Controls",
                 "General",
                 "Master volume",
+                "Music volume",
                 "Dialogue volume",
                 "SFX volume",
                 "Text speed",
@@ -216,6 +219,7 @@ internal static class GameIntroScript
             "Contrôles",
             "Général",
             "Volume général",
+            "Volume de la musique",
             "Volume des dialogues",
             "Volume des SFX",
             "Vitesse du texte",
@@ -250,6 +254,8 @@ internal static class GameIntroScript
                     Normal("The right panel shows the selected category. These settings affect the game right away, not after a confirmation screen.")),
                 Step(SettingsIntroCategory.General, SettingsIntroHighlightTarget.MasterVolume,
                     Normal("Master volume controls the whole mix. Lower it and every sound follows.")),
+                Step(SettingsIntroCategory.General, SettingsIntroHighlightTarget.MusicVolume,
+                    Normal("Music volume controls background tracks, including the hub theme, without changing dialogue or sound effects.")),
                 Step(SettingsIntroCategory.General, SettingsIntroHighlightTarget.DialogueVolume,
                     Normal("The dialogue volume only changes voices and text blips, so you can keep conversations readable without touching the rest.")),
                 Step(SettingsIntroCategory.General, SettingsIntroHighlightTarget.SfxVolume,
@@ -289,6 +295,8 @@ internal static class GameIntroScript
                 Normal("À droite, tu vois les paramètres de la catégorie choisie. Ces réglages s'appliquent tout de suite, sans écran de confirmation.")),
             Step(SettingsIntroCategory.General, SettingsIntroHighlightTarget.MasterVolume,
                 Normal("Le volume général contrôle tout le mélange sonore. Si tu le baisses, tous les sons suivent.")),
+            Step(SettingsIntroCategory.General, SettingsIntroHighlightTarget.MusicVolume,
+                Normal("Le volume de la musique règle les musiques de fond, comme celle du hub, sans toucher aux dialogues ni aux effets sonores.")),
             Step(SettingsIntroCategory.General, SettingsIntroHighlightTarget.DialogueVolume,
                 Normal("Le volume des dialogues règle seulement les voix et les petits bips du texte, pratique si tu veux mieux suivre les conversations.")),
             Step(SettingsIntroCategory.General, SettingsIntroHighlightTarget.SfxVolume,
@@ -325,7 +333,7 @@ internal static class GameIntroScript
     {
         return language == GameIntroLanguage.English
             ? Block("OH NOOOO ! THE CENTRAL CABINET IS SHAKING AGAIN !!")
-            : Block("OH NOOOOON ! LA BORNE CENTRE SE REMET À TREMBLER !!");
+            : Block("OH NOOOOON ! LA BORNE CENTRAL SE REMET À TREMBLER !!");
     }
 
     public static IReadOnlyList<DialogueSegment> StarAndTileDiscovery(GameIntroLanguage language)
@@ -542,14 +550,20 @@ internal static class GameIntroScript
             return new[]
             {
                 Normal("Well, I deeply apologize for everything I said... "),
-                Rainbow("BUT WE REPAIRED THE TILE !!!")
+                Rainbow("BUT WE REPAIRED THE TILE !!!"),
+                Normal(" We can now play ! Click on the interaction button to start"),
+                Access("the game"),
+                Normal(" !")
             };
         }
 
         return new[]
         {
             Normal("Bon bah je m'excuse profondément de tout ce que j'ai pu dire... "),
-            Rainbow("MAIS ON A RÉPARÉ LA CASE !!!")
+            Rainbow("MAIS ON A RÉPARÉ LA CASE !!!"),
+            Normal($"On peut jouer maintenant ! Cliques sur la touche d'interaction pour lancer"),
+            Access("le jeu"),
+            Normal(" !")
         };
     }
 

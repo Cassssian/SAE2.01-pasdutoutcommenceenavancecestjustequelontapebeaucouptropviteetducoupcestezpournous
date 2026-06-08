@@ -348,6 +348,29 @@
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="70"/>
                                 </Grid.ColumnDefinitions>
+                                <TextBlock Text="Volume de la musique"
+                                           Style="{StaticResource HubSettingsBodyTextStyle}"
+                                           VerticalAlignment="Center"/>
+                                <Slider x:Name="MusicVolumeSlider"
+                                        Grid.Column="1"
+                                        Minimum="0"
+                                        Maximum="100"
+                                        TickFrequency="1"
+                                        IsSnapToTickEnabled="True"
+                                        VerticalAlignment="Center"/>
+                                <TextBlock x:Name="MusicVolumeValueText"
+                                           Grid.Column="2"
+                                           Style="{StaticResource HubSettingsBodyTextStyle}"
+                                           HorizontalAlignment="Right"
+                                           VerticalAlignment="Center"/>
+                            </Grid>
+
+                            <Grid Margin="0,0,0,18">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="260"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="70"/>
+                                </Grid.ColumnDefinitions>
                                 <TextBlock Text="Volume des dialogues"
                                            Style="{StaticResource HubSettingsBodyTextStyle}"
                                            VerticalAlignment="Center"/>

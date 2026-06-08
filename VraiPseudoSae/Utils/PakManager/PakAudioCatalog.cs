@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.IO.Compression;
 
-namespace VraiPseudoSae.data.PakManager;
+namespace VraiPseudoSae.Utils.PakManager;
 
 public sealed class PakAudioCatalog
 {

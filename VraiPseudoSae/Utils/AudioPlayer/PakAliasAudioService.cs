@@ -1,5 +1,5 @@
 ﻿using System.IO;
-using VraiPseudoSae.data.PakManager;
+using VraiPseudoSae.Utils.PakManager;
 
 namespace VraiPseudoSae.Utils.AudioPlayer;
 

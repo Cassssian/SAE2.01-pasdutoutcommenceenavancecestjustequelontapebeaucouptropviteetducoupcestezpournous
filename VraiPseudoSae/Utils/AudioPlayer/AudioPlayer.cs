@@ -1,6 +1,6 @@
 ﻿using System.IO;
 using System.Text.Json;
-using VraiPseudoSae.data.PakManager;
+using VraiPseudoSae.Utils.PakManager;
 
 namespace VraiPseudoSae.Utils.AudioPlayer;
 
@@ -335,6 +335,16 @@ public sealed class JsonPakAudioService : IDisposable
             throw new KeyNotFoundException($"Alias audio introuvable : {alias}");
 
         _engine.PlaySound(sound, volume);
+    }
+
+    public LoopingSoundHandle PlayLooping(string alias, float volume = 1f)
+    {
+        string normalizedAlias = NormalizeAlias(alias);
+
+        if (!_cacheByAlias.TryGetValue(normalizedAlias, out var sound))
+            throw new KeyNotFoundException($"Alias audio introuvable : {alias}");
+
+        return _engine.PlayLoopingSound(sound, volume);
     }
 
     /// <summary>
